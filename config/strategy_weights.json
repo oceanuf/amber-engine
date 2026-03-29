@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "last_updated": "2026-03-29T14:50:00",
+  "last_updated": "2026-03-29T15:30:00",
   "algorithm_weights": {
     "Gravity-Dip": {
       "weight": 1.0,
@@ -21,6 +21,26 @@
       "weight": 1.0,
       "enabled": true,
       "description": "分红保护垫策略，评估股息收益保护"
+    },
+    "Weekly-RSI": {
+      "weight": 1.0,
+      "enabled": true,
+      "description": "周线RSI超买超卖屏障，30/70规则，提供一票否决权"
+    },
+    "Z-Score-Bias": {
+      "weight": 1.0,
+      "enabled": true,
+      "description": "Z分数偏离策略，利用60日标准差寻找统计学极端错价回归"
+    },
+    "Triple-Cross": {
+      "weight": 1.0,
+      "enabled": true,
+      "description": "三重均线交叉策略，监测5/20/60/120四重均线的多头排列"
+    },
+    "Volume-Retracement": {
+      "weight": 1.0,
+      "enabled": true,
+      "description": "缩量回踩策略，识别波动率萎缩至50%以下且回踩均线不破"
     }
   },
   "resonance_rules": {
