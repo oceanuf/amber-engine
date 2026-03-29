@@ -1,0 +1,156 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Strategy Parameters Configuration",
+  "description": "策略参数外部化配置，支持逻辑透明与动态调整",
+  "type": "object",
+  "required": [
+    "version",
+    "last_updated",
+    "dimensions",
+    "score_thresholds"
+  ],
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "策略参数版本"
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "最后更新时间"
+    },
+    "dimensions": {
+      "type": "object",
+      "description": "评分维度配置",
+      "required": [
+        "safety",
+        "trend",
+        "momentum"
+      ],
+      "properties": {
+        "safety": {
+          "type": "object",
+          "description": "安全维度配置",
+          "required": [
+            "weight",
+            "bias_threshold",
+            "score_if_oversold"
+          ],
+          "properties": {
+            "weight": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100,
+              "description": "维度权重"
+            },
+            "bias_threshold": {
+              "type": "number",
+              "description": "乖离率阈值 (%)，小于此值视为超卖安全区"
+            },
+            "score_if_oversold": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100,
+              "description": "超卖安全区得分"
+            }
+          }
+        },
+        "trend": {
+          "type": "object",
+          "description": "趋势维度配置",
+          "required": [
+            "weight",
+            "price_above_ma_score",
+            "ma_trend_up_score"
+          ],
+          "properties": {
+            "weight": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100,
+              "description": "维度权重"
+            },
+            "price_above_ma_score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100,
+              "description": "价格高于MA20时的得分"
+            },
+            "ma_trend_up_score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100,
+              "description": "MA20向上趋势时的得分"
+            }
+          }
+        },
+        "momentum": {
+          "type": "object",
+          "description": "动能维度配置",
+          "required": [
+            "weight",
+            "roc_positive_score"
+          ],
+          "properties": {
+            "weight": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100,
+              "description": "维度权重"
+            },
+            "roc_positive_score": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100,
+              "description": "ROC5为正时的得分"
+            }
+          }
+        }
+      }
+    },
+    "score_thresholds": {
+      "type": "object",
+      "description": "评分阈值配置",
+      "required": [
+        "extreme_comfort",
+        "comfort",
+        "neutral",
+        "caution",
+        "survival_warning"
+      ],
+      "properties": {
+        "extreme_comfort": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "极度舒适阈值，大于等于此值"
+        },
+        "comfort": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "舒适阈值"
+        },
+        "neutral": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "中性阈值"
+        },
+        "caution": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "谨慎阈值"
+        },
+        "survival_warning": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "生存预警阈值，小于此值"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

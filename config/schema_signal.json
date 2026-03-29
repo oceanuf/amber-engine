@@ -1,0 +1,138 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Strategy Signal Schema",
+  "description": "验证策略信号输出的 JSON 结构",
+  "type": "object",
+  "required": [
+    "ticker",
+    "name",
+    "analysis_time",
+    "synthesis_time",
+    "latest_date",
+    "latest_price",
+    "latest_change",
+    "latest_ma20",
+    "latest_bias_20",
+    "latest_roc_5",
+    "total_score",
+    "signal_status",
+    "dimension_scores",
+    "strategy_params_version",
+    "source_module"
+  ],
+  "properties": {
+    "ticker": {
+      "type": "string",
+      "pattern": "^[0-9]{6}$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "analysis_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "分析执行时间 (ISO 8601)"
+    },
+    "synthesis_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "合成执行时间 (ISO 8601)"
+    },
+    "latest_date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "最新指标日期"
+    },
+    "latest_price": {
+      "type": ["number", "null"],
+      "description": "最新价格"
+    },
+    "latest_change": {
+      "type": ["number", "null"],
+      "description": "最新涨跌幅百分比"
+    },
+    "latest_ma20": {
+      "type": ["number", "null"],
+      "description": "最新20日移动平均线"
+    },
+    "latest_bias_20": {
+      "type": ["number", "null"],
+      "description": "最新乖离率"
+    },
+    "latest_roc_5": {
+      "type": ["number", "null"],
+      "description": "最新5日变化率"
+    },
+    "total_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "策略总分 (0-100)"
+    },
+    "signal_status": {
+      "type": "string",
+      "enum": ["极度舒适", "舒适", "中性", "谨慎", "生存预警", "未知"],
+      "description": "信号状态"
+    },
+    "dimension_scores": {
+      "type": "object",
+      "required": [
+        "safety",
+        "trend",
+        "momentum",
+        "weighted_safety",
+        "weighted_trend",
+        "weighted_momentum"
+      ],
+      "properties": {
+        "safety": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "安全维度原始得分"
+        },
+        "trend": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "趋势维度原始得分"
+        },
+        "momentum": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "动能维度原始得分"
+        },
+        "weighted_safety": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "加权安全得分"
+        },
+        "weighted_trend": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "加权趋势得分"
+        },
+        "weighted_momentum": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "加权动能得分"
+        }
+      },
+      "additionalProperties": false
+    },
+    "strategy_params_version": {
+      "type": "string",
+      "description": "策略参数版本"
+    },
+    "source_module": {
+      "type": "string",
+      "pattern": "^synthesizer_[a-z_]+$"
+    }
+  },
+  "additionalProperties": false
+}

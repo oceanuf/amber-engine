@@ -104,8 +104,18 @@ MODULES = [
         "timeout": 600,
         "frequency": "daily",
         "dependencies": ["storer_vault_storer"]
+    },
+    {
+        "name": "synthesizer_score_engine",
+        "path": "scripts/synthesizer/score_engine.py",
+        "retry_on": ["ANALYSIS_NOT_FOUND", "PARAMS_NOT_FOUND", "SYNTHESIS_FAIL", "FILE_WRITE_FAIL"],
+        "circuit_break_on": ["SCHEMA_VALIDATE_FAIL", "ATOMIC_VALIDATE_FAIL"],
+        "max_retries": 2,
+        "timeout": 600,
+        "frequency": "daily",
+        "dependencies": ["analyzer_indicator_engine"]
     }
-    # 可以添加更多模块：Analyzer, Synthesizer 等
+    # 可以添加更多模块：Synthesizer, Targeter 等
 ]
 
 LOG_DIR = "logs"
