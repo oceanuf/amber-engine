@@ -1,0 +1,61 @@
+{
+  "system_config": {
+    "version": "3.1-Museum",
+    "ui_priority": "trade_first",
+    "refresh_rate": 30,
+    "last_updated": "2026-03-27 18:36 GMT+8",
+    "update_note": "[2613-164号] 自动化索引与数据注入"
+  },
+  "active_status": {
+    "current_gist": "Gist_00128",
+    "phase": "MARKET_MONITORING",
+    "heartbeat": "2026-03-27 18:45:00",
+    "next_heartbeat": "2026-03-27 19:45:00",
+    "system_health": "EXCELLENT"
+  },
+  "market_snapshot": {
+    "top_alpha": [
+      "518880",
+      "518800",
+      "512660"
+    ],
+    "avg_bias": "-4.2%",
+    "opportunity_count": 38,
+    "scan_time": "2026-03-27 18:30:00",
+    "data_source": "TUSHARE_VERIFIED"
+  },
+  "portfolio_summary": {
+    "total_value": 1000000,
+    "p_l_ratio": "+0.15%",
+    "p_l_amount": 1500,
+    "sentry_alert": "CLEAR",
+    "position_count": 3,
+    "cash_balance": 876500,
+    "update_time": "2026-03-27 18:36:00"
+  },
+  "museum_map": {
+    "L1": "list.html",
+    "L2_ETF": "/archive/etf_details/index.html",
+    "L2_Strategy": "/archive/reports/index.html",
+    "L3_Latest": "REPORT_Gist_00127.md",
+    "L3_Portfolio": "portfolio_v1.html",
+    "Quiet_Zone": "/scripts/"
+  },
+  "summary_stats": {
+    "etf_total": 10,
+    "reports_total": 1,
+    "alerts_today": 2,
+    "data_quality": 98.7,
+    "system_uptime": "99.9%",
+    "alpha_reports": 0
+  },
+  "automation_status": {
+    "index_generation": "COMPLETED",
+    "data_injection": "PENDING",
+    "heartbeat_monitor": "ACTIVE",
+    "sentry_pulse": "READY",
+    "last_index_update": "2026-03-27T18:46:02.623785",
+    "reports_index": "COMPLETED",
+    "last_reports_update": "2026-03-27T18:46:02.645162"
+  }
+}

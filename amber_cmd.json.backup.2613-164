@@ -1,0 +1,94 @@
+{
+  "system_name": "琥珀引擎 3.0",
+  "version": "3.0.0",
+  "ui_priority": "trade_first",
+  "last_updated": "2026-03-27 18:23 GMT+8",
+  "update_note": "[2613-163号] 视觉重心调整令 + 三层架构重构",
+  "layout_config": {
+    "layer_1": {
+      "name": "总览 (Amber Dashboard - 实战视野)",
+      "entry": "list.html",
+      "layout": "双核驱动",
+      "sections": [
+        {
+          "id": "combat",
+          "name": "核心实战区 (Live Combat)",
+          "content": "128号模拟盘看板",
+          "features": ["实时P&L曲线", "当前持仓", "熔断状态"]
+        },
+        {
+          "id": "radar",
+          "name": "价值发现区 (Alpha Radar)",
+          "content": "59支ETF扫描快照",
+          "features": ["Top 3偏离度", "实时排名", "赛道分析"]
+        },
+        {
+          "id": "archive",
+          "name": "历史档案库 (Archives)",
+          "content": "战报时间线",
+          "features": ["按时间排列", "直达/archive/reports/", "完整历史"]
+        }
+      ]
+    },
+    "layer_2": {
+      "name": "分类与索引 (The Strategy & Data)",
+      "sections": [
+        {
+          "id": "trading_detail",
+          "name": "模拟交易详情页",
+          "description": "查看每一笔虚拟成交的价格、时间及逻辑",
+          "path": "/portfolio_v1.html"
+        },
+        {
+          "id": "etf_comparison",
+          "name": "全量ETF对比表",
+          "description": "59支标的的实时Bias排名热力图",
+          "path": "/archive/data/etf_comparison.html"
+        }
+      ]
+    },
+    "layer_3": {
+      "name": "展现 (The Insight)",
+      "content_types": [".md报告", ".json原始数据"],
+      "examples": [
+        "/REPORT_Gist_00127.md",
+        "/archive/data/scan_results.json",
+        "/SYSTEM_MEMORY.md"
+      ]
+    },
+    "quiet_footer": {
+      "name": "页脚静默区 (The Quiet Foundation)",
+      "purpose": "只有在主编需要审计底层代码或检查系统认知时，才下拉到底部点击",
+      "links": [
+        {"icon": "🛠️", "text": "算法核心", "path": "/scripts/"},
+        {"icon": "📋", "text": "系统记忆", "path": "/SYSTEM_MEMORY.md"},
+        {"icon": "🐙", "text": "GitHub Source", "url": "https://github.com/oceanuf/amber-sentry-logs"},
+        {"icon": "⚙️", "text": "amber_cmd控制台", "path": "/amber_cmd.json"}
+      ]
+    }
+  },
+  "automation_rules": {
+    "dashboard_generation": {
+      "priority": "trade_first",
+      "refresh_interval": "real_time",
+      "data_sources": ["128号模拟交易系统", "127号Alpha扫描"],
+      "update_triggers": ["交易执行", "市场收盘", "手动刷新"]
+    },
+    "data_validation": {
+      "tier_1": "Tushare Pro (真值锚点)",
+      "tier_2": "AkShare (需0.1%精度验伪)",
+      "tier_3": "Crawler (救急抓取)",
+      "fallback": "DATA_UNAVAILABLE (严禁伪造)"
+    }
+  },
+  "time_discipline": {
+    "domestic_audit": "≥17:00",
+    "global_audit": "≥20:00",
+    "bronze_launch": "2026-03-25 17:05"
+  },
+  "team_structure": {
+    "editor_in_chief": "Haiyang (意志层)",
+    "architect": "Gemini (逻辑层)",
+    "engineer": "Cheese (执行层)"
+  }
+}
