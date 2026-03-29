@@ -1,5 +1,5 @@
 {
-  "data": [
+  "cpi": [
     {
       "month": "202503",
       "cpi": 101.4,
@@ -316,10 +316,6 @@
       "cpi_yoy": 5.4
     }
   ],
-  "metadata": {
-    "fetch_time": "2026-03-29 18:30:20",
-    "module": "ingest_tushare_adapter",
-    "ticker_count": 1,
-    "data_points": 63
-  }
+  "update_time": "2026-03-29 17:10:10",
+  "source": "macro_backup.py - 基于中国统计局历史数据近似"
 }
