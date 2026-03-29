@@ -125,9 +125,16 @@ def main():
     if data is None:
         sys.exit(2)
     
-    # 3. 基本验证
-    if not basic_validation(data):
-        sys.exit(3)
+    # 3. 基本验证（仅当没有提供 schema 时执行）
+    if not args.schema:
+        # 通用基本验证：检查是否为字典
+        if not isinstance(data, dict):
+            print(f"[VALIDATE:ERROR] 数据必须是 JSON 对象", file=sys.stderr)
+            sys.exit(3)
+        print(f"[VALIDATE:INFO] 基本验证通过", file=sys.stdout)
+    else:
+        # 有 schema 文件，跳过基本验证，直接进行 schema 验证
+        print(f"[VALIDATE:INFO] 使用 schema 验证，跳过基本验证", file=sys.stdout)
     
     # 4. Schema 验证（如果提供了 schema）
     if args.schema:

@@ -41,9 +41,37 @@ MODULES = [
         "retry_on": ["NET_TIMEOUT"],  # 对这些错误码重试
         "circuit_break_on": ["SCHEMA_MISMATCH", "AUTH_FAIL"],  # 对这些错误码熔断
         "max_retries": 3,
-        "timeout": 300  # 秒
+        "timeout": 300,  # 秒
+        "frequency": "daily"
+    },
+    {
+        "name": "ingest_etf_index",
+        "path": "scripts/ingest/etf_index.py",
+        "retry_on": ["NET_TIMEOUT"],  # 对这些错误码重试
+        "circuit_break_on": ["SCHEMA_MISMATCH", "AUTH_FAIL"],  # 对这些错误码熔断
+        "max_retries": 3,
+        "timeout": 300,  # 秒
+        "frequency": "daily"
+    },
+    {
+        "name": "ingest_macro_logic",
+        "path": "scripts/ingest/macro_logic.py",
+        "retry_on": ["NET_TIMEOUT"],  # 对这些错误码重试
+        "circuit_break_on": ["SCHEMA_MISMATCH", "AUTH_FAIL"],  # 对这些错误码熔断
+        "max_retries": 3,
+        "timeout": 300,  # 秒
+        "frequency": "weekly"
+    },
+    {
+        "name": "ingest_sentiment_monitor",
+        "path": "scripts/ingest/sentiment_monitor.py",
+        "retry_on": ["NET_TIMEOUT"],  # 对这些错误码重试
+        "circuit_break_on": ["SCHEMA_MISMATCH", "AUTH_FAIL"],  # 对这些错误码熔断
+        "max_retries": 3,
+        "timeout": 300,  # 秒
+        "frequency": "daily"
     }
-    # 可以添加更多模块：Cleaner, Storer 等
+    # 可以添加更多模块：Cleaner, Storer, Analyzer 等
 ]
 
 LOG_DIR = "logs"

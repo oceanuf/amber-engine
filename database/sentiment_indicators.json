@@ -1,0 +1,71 @@
+{
+  "fetch_time": "2026-03-29 13:18:45",
+  "market_conditions": {
+    "shanghai_composite": {
+      "index": "上证指数",
+      "current": "3175.58",
+      "change": "+1.92%",
+      "volume": "4758亿元"
+    },
+    "shenzhen_component": {
+      "index": "深证成指",
+      "current": "9589.51",
+      "change": "+0.86%",
+      "volume": "5230亿元"
+    },
+    "chinese_50": {
+      "index": "创业板指",
+      "current": "1975.48",
+      "change": "-1.91%",
+      "volume": "1963亿元"
+    }
+  },
+  "fear_greed_index": 53,
+  "sentiment_score": 68,
+  "sentiment_level": "中性",
+  "market_heat": {
+    "turnover_rate": "2.05%",
+    "advance_decline_ratio": "1.61",
+    "limit_up_count": 38,
+    "limit_down_count": 45,
+    "volume_concentration": "32.4%"
+  },
+  "capital_flow": {
+    "northbound_sh": "-45.5亿元",
+    "northbound_sz": "+8.2亿元",
+    "main_inflow": "+280.1亿元",
+    "retail_inflow": "-109.7亿元",
+    "sector_rotation": "科技"
+  },
+  "volatility_indicators": {
+    "historical_volatility_30d": "26.7%",
+    "implied_volatility": "31.7%",
+    "volatility_index": "38.8",
+    "max_drawdown_30d": "14.2%",
+    "sharpe_ratio_30d": "1.06"
+  },
+  "social_sentiment": {
+    "weibo_finance_buzz": 10379,
+    "eastmoney_comments_sentiment": "中性",
+    "stock_forum_activity": "65.4%",
+    "news_sentiment_score": 80,
+    "search_volume_index": 123
+  },
+  "technical_sentiment": {
+    "rsi_14": 52,
+    "macd_signal": "金叉",
+    "bollinger_band_position": "下轨",
+    "moving_average_alignment": "多头排列",
+    "support_resistance_level": "强阻力"
+  },
+  "composite_indicators": {
+    "risk_appetite": 80,
+    "market_stability": 71,
+    "liquidity_score": 89,
+    "momentum_strength": 34
+  },
+  "data_source": "模拟数据 - 待接入东方财富、同花顺、新浪财经等",
+  "update_frequency": "每日更新",
+  "data_quality": "模拟",
+  "notes": "情绪指标为综合多个数据源计算得出，实际数据需接入实时API"
+}

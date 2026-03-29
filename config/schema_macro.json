@@ -1,0 +1,213 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Macroeconomic Indicators Data Schema",
+  "description": "验证宏观经济指标数据提取输出的JSON结构",
+  "type": "object",
+  "required": [
+    "fetch_time",
+    "data_period",
+    "monthly_indicators",
+    "quarterly_indicators",
+    "liquidity_indicators",
+    "policy_indicators",
+    "data_source"
+  ],
+  "properties": {
+    "fetch_time": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$",
+      "description": "数据抓取时间戳"
+    },
+    "data_period": {
+      "type": "object",
+      "required": ["latest_month", "latest_quarter", "update_frequency"],
+      "properties": {
+        "latest_month": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}$"
+        },
+        "latest_quarter": {
+          "type": "string",
+          "pattern": "^\\d{4}-Q[1-4]$"
+        },
+        "update_frequency": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "monthly_indicators": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "month",
+          "m2_growth",
+          "cpi",
+          "ppi",
+          "pmi",
+          "industrial_growth",
+          "retail_sales_growth"
+        ],
+        "properties": {
+          "month": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}$"
+          },
+          "m2_growth": {
+            "type": "string",
+            "pattern": "^[+-]?\\d+\\.\\d%$"
+          },
+          "cpi": {
+            "type": "string",
+            "pattern": "^[+-]?\\d+\\.\\d%$"
+          },
+          "ppi": {
+            "type": "string",
+            "pattern": "^[+-]?\\d+\\.\\d%$"
+          },
+          "pmi": {
+            "type": "string",
+            "pattern": "^\\d+\\.\\d$"
+          },
+          "industrial_growth": {
+            "type": "string",
+            "pattern": "^[+-]?\\d+\\.\\d%$"
+          },
+          "retail_sales_growth": {
+            "type": "string",
+            "pattern": "^[+-]?\\d+\\.\\d%$"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "quarterly_indicators": {
+      "type": "object",
+      "required": [
+        "quarter",
+        "gdp_growth",
+        "gdp_size",
+        "investment_growth",
+        "export_growth",
+        "import_growth"
+      ],
+      "properties": {
+        "quarter": {
+          "type": "string",
+          "pattern": "^\\d{4}-Q[1-4]$"
+        },
+        "gdp_growth": {
+          "type": "string",
+          "pattern": "^[+-]?\\d+\\.\\d%$"
+        },
+        "gdp_size": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d万亿元$"
+        },
+        "investment_growth": {
+          "type": "string",
+          "pattern": "^[+-]?\\d+\\.\\d%$"
+        },
+        "export_growth": {
+          "type": "string",
+          "pattern": "^[+-]?\\d+\\.\\d%$"
+        },
+        "import_growth": {
+          "type": "string",
+          "pattern": "^[+-]?\\d+\\.\\d%$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "liquidity_indicators": {
+      "type": "object",
+      "required": [
+        "shibor_overnight",
+        "shibor_1w",
+        "shibor_1m",
+        "dr007",
+        "lpr_1y",
+        "lpr_5y",
+        "reserve_ratio"
+      ],
+      "properties": {
+        "shibor_overnight": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d{3}%$"
+        },
+        "shibor_1w": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d{3}%$"
+        },
+        "shibor_1m": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d{3}%$"
+        },
+        "dr007": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d{3}%$"
+        },
+        "lpr_1y": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d{2}%$"
+        },
+        "lpr_5y": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d{2}%$"
+        },
+        "reserve_ratio": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d%$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "policy_indicators": {
+      "type": "object",
+      "required": [
+        "monetary_policy_stance",
+        "fiscal_policy_stance",
+        "risk_appetite",
+        "liquidity_condition",
+        "inflation_outlook"
+      ],
+      "properties": {
+        "monetary_policy_stance": {
+          "type": "string",
+          "enum": ["宽松", "稳健", "稳健中性", "紧缩", "未知"]
+        },
+        "fiscal_policy_stance": {
+          "type": "string",
+          "enum": ["积极", "积极有为", "稳健", "紧缩", "未知"]
+        },
+        "risk_appetite": {
+          "type": "string",
+          "enum": ["低", "中", "高"]
+        },
+        "liquidity_condition": {
+          "type": "string",
+          "enum": ["宽松", "适度", "偏紧", "紧张"]
+        },
+        "inflation_outlook": {
+          "type": "string",
+          "enum": ["可控", "温和", "压力上升", "高企", "通缩风险"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "data_source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "data_quality": {
+      "type": "string",
+      "enum": ["模拟", "实测", "官方", "第三方"]
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,28 @@
+{
+  "timestamp": "2026-03-29T13:18:45.935049",
+  "total_modules": 4,
+  "successful": 4,
+  "failed": 0,
+  "details": [
+    {
+      "module": "ingest_etf_gold",
+      "success": true,
+      "error": null
+    },
+    {
+      "module": "ingest_etf_index",
+      "success": true,
+      "error": null
+    },
+    {
+      "module": "ingest_macro_logic",
+      "success": true,
+      "error": null
+    },
+    {
+      "module": "ingest_sentiment_monitor",
+      "success": true,
+      "error": null
+    }
+  ]
+}

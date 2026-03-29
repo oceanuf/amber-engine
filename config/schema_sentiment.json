@@ -1,0 +1,332 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Market Sentiment Indicators Data Schema",
+  "description": "验证市场情绪指标数据提取输出的JSON结构",
+  "type": "object",
+  "required": [
+    "fetch_time",
+    "market_conditions",
+    "fear_greed_index",
+    "sentiment_score",
+    "sentiment_level",
+    "market_heat",
+    "capital_flow",
+    "volatility_indicators",
+    "social_sentiment",
+    "technical_sentiment",
+    "composite_indicators",
+    "data_source"
+  ],
+  "properties": {
+    "fetch_time": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$",
+      "description": "数据抓取时间戳"
+    },
+    "market_conditions": {
+      "type": "object",
+      "required": ["shanghai_composite", "shenzhen_component", "chinese_50"],
+      "properties": {
+        "shanghai_composite": {
+          "type": "object",
+          "required": ["index", "current", "change", "volume"],
+          "properties": {
+            "index": {
+              "type": "string",
+              "enum": ["上证指数"]
+            },
+            "current": {
+              "type": "string",
+              "pattern": "^\\d+\\.\\d{2}$"
+            },
+            "change": {
+              "type": "string",
+              "pattern": "^[+-]\\d+\\.\\d{2}%$"
+            },
+            "volume": {
+              "type": "string",
+              "pattern": "^\\d+亿元$"
+            }
+          },
+          "additionalProperties": false
+        },
+        "shenzhen_component": {
+          "type": "object",
+          "required": ["index", "current", "change", "volume"],
+          "properties": {
+            "index": {
+              "type": "string",
+              "enum": ["深证成指"]
+            },
+            "current": {
+              "type": "string",
+              "pattern": "^\\d+\\.\\d{2}$"
+            },
+            "change": {
+              "type": "string",
+              "pattern": "^[+-]\\d+\\.\\d{2}%$"
+            },
+            "volume": {
+              "type": "string",
+              "pattern": "^\\d+亿元$"
+            }
+          },
+          "additionalProperties": false
+        },
+        "chinese_50": {
+          "type": "object",
+          "required": ["index", "current", "change", "volume"],
+          "properties": {
+            "index": {
+              "type": "string",
+              "enum": ["创业板指"]
+            },
+            "current": {
+              "type": "string",
+              "pattern": "^\\d+\\.\\d{2}$"
+            },
+            "change": {
+              "type": "string",
+              "pattern": "^[+-]\\d+\\.\\d{2}%$"
+            },
+            "volume": {
+              "type": "string",
+              "pattern": "^\\d+亿元$"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "fear_greed_index": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "sentiment_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "sentiment_level": {
+      "type": "string",
+      "enum": ["极度恐慌", "恐慌", "中性", "贪婪", "极度贪婪"]
+    },
+    "market_heat": {
+      "type": "object",
+      "required": [
+        "turnover_rate",
+        "advance_decline_ratio",
+        "limit_up_count",
+        "limit_down_count",
+        "volume_concentration"
+      ],
+      "properties": {
+        "turnover_rate": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d{2}%$"
+        },
+        "advance_decline_ratio": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d{2}$"
+        },
+        "limit_up_count": {
+          "type": "number",
+          "minimum": 0
+        },
+        "limit_down_count": {
+          "type": "number",
+          "minimum": 0
+        },
+        "volume_concentration": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d%$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "capital_flow": {
+      "type": "object",
+      "required": [
+        "northbound_sh",
+        "northbound_sz",
+        "main_inflow",
+        "retail_inflow",
+        "sector_rotation"
+      ],
+      "properties": {
+        "northbound_sh": {
+          "type": "string",
+          "pattern": "^[+-]\\d+\\.\\d亿元$"
+        },
+        "northbound_sz": {
+          "type": "string",
+          "pattern": "^[+-]\\d+\\.\\d亿元$"
+        },
+        "main_inflow": {
+          "type": "string",
+          "pattern": "^[+-]\\d+\\.\\d亿元$"
+        },
+        "retail_inflow": {
+          "type": "string",
+          "pattern": "^[+-]\\d+\\.\\d亿元$"
+        },
+        "sector_rotation": {
+          "type": "string",
+          "enum": ["金融", "科技", "消费", "周期", "均衡", "医药", "新能源", "其他"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "volatility_indicators": {
+      "type": "object",
+      "required": [
+        "historical_volatility_30d",
+        "implied_volatility",
+        "volatility_index",
+        "max_drawdown_30d",
+        "sharpe_ratio_30d"
+      ],
+      "properties": {
+        "historical_volatility_30d": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d%$"
+        },
+        "implied_volatility": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d%$"
+        },
+        "volatility_index": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d$"
+        },
+        "max_drawdown_30d": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d%$"
+        },
+        "sharpe_ratio_30d": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d{2}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "social_sentiment": {
+      "type": "object",
+      "required": [
+        "weibo_finance_buzz",
+        "eastmoney_comments_sentiment",
+        "stock_forum_activity",
+        "news_sentiment_score",
+        "search_volume_index"
+      ],
+      "properties": {
+        "weibo_finance_buzz": {
+          "type": "number",
+          "minimum": 0
+        },
+        "eastmoney_comments_sentiment": {
+          "type": "string",
+          "enum": ["偏空", "中性", "偏多"]
+        },
+        "stock_forum_activity": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d%$"
+        },
+        "news_sentiment_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "search_volume_index": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "technical_sentiment": {
+      "type": "object",
+      "required": [
+        "rsi_14",
+        "macd_signal",
+        "bollinger_band_position",
+        "moving_average_alignment",
+        "support_resistance_level"
+      ],
+      "properties": {
+        "rsi_14": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "macd_signal": {
+          "type": "string",
+          "enum": ["金叉", "死叉", "中性"]
+        },
+        "bollinger_band_position": {
+          "type": "string",
+          "enum": ["上轨", "中轨", "下轨"]
+        },
+        "moving_average_alignment": {
+          "type": "string",
+          "enum": ["多头排列", "空头排列", "纠结"]
+        },
+        "support_resistance_level": {
+          "type": "string",
+          "enum": ["强支撑", "弱支撑", "强阻力", "弱阻力", "突破中"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "composite_indicators": {
+      "type": "object",
+      "required": [
+        "risk_appetite",
+        "market_stability",
+        "liquidity_score",
+        "momentum_strength"
+      ],
+      "properties": {
+        "risk_appetite": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "market_stability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "liquidity_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "momentum_strength": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        }
+      },
+      "additionalProperties": false
+    },
+    "data_source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "update_frequency": {
+      "type": "string",
+      "enum": ["每日更新", "实时更新", "每周更新", "每月更新"]
+    },
+    "data_quality": {
+      "type": "string",
+      "enum": ["模拟", "实测", "官方", "第三方"]
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

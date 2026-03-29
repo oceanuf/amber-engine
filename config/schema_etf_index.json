@@ -1,0 +1,101 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Broad-based ETF Index Data Schema",
+  "description": "验证宽基ETF数据提取输出的JSON结构",
+  "type": "object",
+  "required": [
+    "fetch_time",
+    "data_source",
+    "etf_count",
+    "etfs"
+  ],
+  "properties": {
+    "fetch_time": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$",
+      "description": "数据抓取时间戳"
+    },
+    "data_source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "etf_count": {
+      "type": "number",
+      "minimum": 1
+    },
+    "etfs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "ticker",
+          "name",
+          "index_name",
+          "current_nav",
+          "daily_change",
+          "ytd_return",
+          "volume",
+          "nav_history",
+          "last_updated"
+        ],
+        "properties": {
+          "ticker": {
+            "type": "string",
+            "pattern": "^[0-9]{6}$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "index_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "current_nav": {
+            "type": "string",
+            "pattern": "^\\d+\\.\\d{3}$"
+          },
+          "daily_change": {
+            "type": "string",
+            "pattern": "^[+-]\\d+\\.\\d{2}%$"
+          },
+          "ytd_return": {
+            "type": "string",
+            "pattern": "^[+-]\\d+\\.\\d{2}%$"
+          },
+          "volume": {
+            "type": "string",
+            "pattern": "^\\d+万手$"
+          },
+          "nav_history": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["date", "price", "change"],
+              "properties": {
+                "date": {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                "price": {
+                  "type": "string",
+                  "pattern": "^\\d+\\.\\d{3}$"
+                },
+                "change": {
+                  "type": "string",
+                  "pattern": "^[+-]\\d+\\.\\d{2}%$"
+                }
+              }
+            }
+          },
+          "last_updated": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
