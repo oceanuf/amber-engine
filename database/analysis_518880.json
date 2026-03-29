@@ -1,0 +1,109 @@
+{
+  "ticker": "518880",
+  "name": "华安黄金易ETF",
+  "analysis_time": "2026-03-29T14:12:08.320040",
+  "last_updated": "2026-03-29 13:56:30",
+  "source_module": "analyzer_indicator_engine",
+  "indicators": [
+    {
+      "date": "2026-03-29",
+      "price": 4.879,
+      "change": -0.41,
+      "ma5": 4.8522,
+      "ma20": null,
+      "ma60": null,
+      "bias_20": null,
+      "roc_5": 0.3497
+    },
+    {
+      "date": "2026-03-28",
+      "price": 4.847,
+      "change": 0.44,
+      "ma5": 4.8488,
+      "ma20": null,
+      "ma60": null,
+      "bias_20": null,
+      "roc_5": -0.9806
+    },
+    {
+      "date": "2026-03-27",
+      "price": 4.896,
+      "change": -0.02,
+      "ma5": 4.8584,
+      "ma20": null,
+      "ma60": null,
+      "bias_20": null,
+      "roc_5": 0.3896
+    },
+    {
+      "date": "2026-03-26",
+      "price": 4.832,
+      "change": 0.33,
+      "ma5": 4.8546,
+      "ma20": null,
+      "ma60": null,
+      "bias_20": null,
+      "roc_5": 0.4365
+    },
+    {
+      "date": "2026-03-25",
+      "price": 4.807,
+      "change": -0.12,
+      "ma5": 4.8504,
+      "ma20": null,
+      "ma60": null,
+      "bias_20": null,
+      "roc_5": -0.4968
+    },
+    {
+      "date": "2026-03-24",
+      "price": 4.862,
+      "change": -0.43,
+      "ma5": 4.8552,
+      "ma20": null,
+      "ma60": null,
+      "bias_20": null,
+      "roc_5": null
+    },
+    {
+      "date": "2026-03-23",
+      "price": 4.895,
+      "change": 0.29,
+      "ma5": null,
+      "ma20": null,
+      "ma60": null,
+      "bias_20": null,
+      "roc_5": null
+    },
+    {
+      "date": "2026-03-22",
+      "price": 4.877,
+      "change": 0.04,
+      "ma5": null,
+      "ma20": null,
+      "ma60": null,
+      "bias_20": null,
+      "roc_5": null
+    },
+    {
+      "date": "2026-03-21",
+      "price": 4.811,
+      "change": 0.22,
+      "ma5": null,
+      "ma20": null,
+      "ma60": null,
+      "bias_20": null,
+      "roc_5": null
+    },
+    {
+      "date": "2026-03-20",
+      "price": 4.831,
+      "change": -0.47,
+      "ma5": null,
+      "ma20": null,
+      "ma60": null,
+      "bias_20": null,
+      "roc_5": null
+    }
+  ]
+}

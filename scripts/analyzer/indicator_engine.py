@@ -1,0 +1,272 @@
+#!/usr/bin/env python3
+"""
+Analyzer module for ETF technical indicators - 符合 V1.2.1 标准
+标准输出: database/analysis_518880.json
+计算指标: 5日、20日、60日移动平均线，乖离率(Bias)，5日变化率(ROC)
+"""
+
+import os
+import sys
+import json
+import tempfile
+import shutil
+import datetime
+import statistics
+from typing import List, Dict, Any, Optional
+
+# 模块常量
+MODULE_NAME = "analyzer_indicator_engine"
+OUTPUT_FILE = "database/analysis_518880.json"
+TMP_SUFFIX = ".tmp"
+SCHEMA_FILE = "config/schema_analysis.json"  # 验证用
+MAX_RETRIES = 3
+RETRY_DELAY = 5  # 秒
+
+def log_info(msg):
+    """INFO 级别日志"""
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print(f"[{timestamp}] [{MODULE_NAME}:INFO] {msg}", file=sys.stdout)
+
+def log_warn(msg):
+    """WARN 级别日志"""
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print(f"[{timestamp}] [{MODULE_NAME}:WARN] {msg}", file=sys.stdout)
+
+def log_error(code, msg):
+    """ERROR 级别日志，遵循结构化 stderr 格式"""
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    sys.stderr.write(f"[{code}]: {msg}\n")
+    # 同时打印到 stdout 便于调试
+    print(f"[{timestamp}] [{MODULE_NAME}:ERROR] {code}: {msg}", file=sys.stdout)
+
+def load_history_data(ticker: str = "518880") -> Optional[Dict[str, Any]]:
+    """
+    加载历史数据文件
+    """
+    history_file = f"database/history_{ticker}.json"
+    if not os.path.exists(history_file):
+        log_error("HISTORY_NOT_FOUND", f"历史数据文件不存在: {history_file}")
+        return None
+    
+    try:
+        with open(history_file, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        
+        # 验证基本结构
+        if "history" not in data or not isinstance(data["history"], list):
+            log_error("INVALID_HISTORY_FORMAT", "历史数据格式无效: 缺少 'history' 数组")
+            return None
+        
+        if len(data["history"]) == 0:
+            log_error("EMPTY_HISTORY", "历史数据为空")
+            return None
+        
+        return data
+    except json.JSONDecodeError as e:
+        log_error("JSON_PARSE_ERROR", f"解析历史数据 JSON 失败: {e}")
+        return None
+    except Exception as e:
+        log_error("HISTORY_LOAD_ERROR", f"加载历史数据失败: {e}")
+        return None
+
+def calculate_moving_average(prices: List[float], window: int) -> List[Optional[float]]:
+    """
+    计算移动平均线
+    如果数据不足，返回 None
+    """
+    ma_values = []
+    n = len(prices)
+    
+    for i in range(n):
+        if i < window - 1:
+            # 数据不足，无法计算该窗口的移动平均
+            ma_values.append(None)
+        else:
+            window_prices = prices[i - window + 1:i + 1]
+            ma = statistics.mean(window_prices)
+            ma_values.append(round(ma, 4))
+    
+    return ma_values
+
+def calculate_bias(current_price: float, ma20: Optional[float]) -> Optional[float]:
+    """
+    计算乖离率: (现价 - 20日均线) / 20日均线 * 100%
+    """
+    if ma20 is None or ma20 == 0:
+        return None
+    bias = ((current_price - ma20) / ma20) * 100
+    return round(bias, 4)
+
+def calculate_roc(current_price: float, price_n_days_ago: Optional[float]) -> Optional[float]:
+    """
+    计算N日变化率: (现价 - N日前价格) / N日前价格 * 100%
+    这里计算5日ROC
+    """
+    if price_n_days_ago is None or price_n_days_ago == 0:
+        return None
+    roc = ((current_price - price_n_days_ago) / price_n_days_ago) * 100
+    return round(roc, 4)
+
+def analyze_indicators(history_data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """
+    分析技术指标
+    """
+    try:
+        ticker = history_data.get("ticker", "518880")
+        name = history_data.get("name", "未知ETF")
+        history = history_data["history"]
+        
+        # 按日期排序 (确保最新的在前)
+        sorted_history = sorted(history, key=lambda x: x["date"], reverse=False)  # 升序，最旧的在前
+        
+        # 提取价格和涨跌幅
+        prices = []
+        changes = []
+        dates = []
+        
+        for item in sorted_history:
+            try:
+                price = float(item["price"])
+                # 解析涨跌幅字符串 (如 "+0.44%" 或 "-0.41%")
+                change_str = item["change"]
+                if change_str.endswith("%"):
+                    change_str = change_str[:-1]
+                change = float(change_str)
+                
+                prices.append(price)
+                changes.append(change)
+                dates.append(item["date"])
+            except (ValueError, KeyError) as e:
+                log_warn(f"解析历史数据项失败: {item}, 错误: {e}")
+                continue
+        
+        if len(prices) == 0:
+            log_error("NO_VALID_PRICES", "没有有效的价格数据")
+            return None
+        
+        # 计算移动平均线
+        ma5_list = calculate_moving_average(prices, 5)
+        ma20_list = calculate_moving_average(prices, 20)
+        ma60_list = calculate_moving_average(prices, 60)
+        
+        # 准备指标结果 (保持原始顺序，最新的在最后)
+        indicators = []
+        n = len(prices)
+        
+        for i in range(n):
+            # 获取5日前价格用于ROC计算
+            price_5_days_ago = prices[i - 5] if i >= 5 else None
+            
+            indicator = {
+                "date": dates[i],
+                "price": prices[i],
+                "change": changes[i],
+                "ma5": ma5_list[i],
+                "ma20": ma20_list[i],
+                "ma60": ma60_list[i],
+                "bias_20": calculate_bias(prices[i], ma20_list[i]),
+                "roc_5": calculate_roc(prices[i], price_5_days_ago)
+            }
+            indicators.append(indicator)
+        
+        # 反转顺序，让最新的在前 (与原始历史数据格式一致)
+        indicators.reverse()
+        
+        # 构建输出数据结构
+        analysis_time = datetime.datetime.now().isoformat()
+        result = {
+            "ticker": ticker,
+            "name": name,
+            "analysis_time": analysis_time,
+            "last_updated": history_data.get("last_updated", analysis_time),
+            "source_module": MODULE_NAME,
+            "indicators": indicators
+        }
+        
+        return result
+        
+    except Exception as e:
+        log_error("ANALYSIS_ERROR", f"分析指标时发生错误: {e}")
+        return None
+
+def validate_with_schema(data: Dict[str, Any], schema_file: str) -> bool:
+    """
+    使用 jsonschema 验证数据
+    """
+    try:
+        import jsonschema
+        with open(schema_file, 'r', encoding='utf-8') as f:
+            schema = json.load(f)
+        jsonschema.validate(instance=data, schema=schema)
+        log_info("Schema 验证通过")
+        return True
+    except ImportError:
+        log_warn("jsonschema 库未安装，跳过 Schema 验证")
+        return True
+    except jsonschema.ValidationError as e:
+        log_error("SCHEMA_VALIDATE_FAIL", f"Schema 验证失败: {e.message}")
+        return False
+    except Exception as e:
+        log_error("VALIDATE_ERROR", f"验证过程出错: {e}")
+        return False
+
+def write_with_atomic_protocol(data: Dict[str, Any], output_file: str) -> bool:
+    """
+    原子写入协议: Write(.tmp) -> Validate -> Rename(.json)
+    """
+    tmp_file = output_file + TMP_SUFFIX
+    
+    try:
+        # 1. 写入临时文件
+        with open(tmp_file, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+        log_info(f"数据写入临时文件: {tmp_file}")
+        
+        # 2. 验证数据 (使用 Schema)
+        if not validate_with_schema(data, SCHEMA_FILE):
+            log_error("ATOMIC_VALIDATE_FAIL", "原子写入协议: Schema 验证失败")
+            os.remove(tmp_file)
+            return False
+        
+        # 3. 原子重命名
+        shutil.move(tmp_file, output_file)
+        log_info(f"原子重命名完成: {tmp_file} -> {output_file}")
+        return True
+        
+    except Exception as e:
+        log_error("ATOMIC_WRITE_FAIL", f"原子写入协议失败: {e}")
+        # 清理临时文件
+        if os.path.exists(tmp_file):
+            os.remove(tmp_file)
+        return False
+
+def main():
+    """主函数"""
+    log_info(f"开始执行 {MODULE_NAME}")
+    
+    # 1. 加载历史数据
+    history_data = load_history_data()
+    if not history_data:
+        log_error("DATA_LOAD_FAIL", "加载历史数据失败，模块退出")
+        sys.exit(101)  # 数据加载失败
+    
+    log_info(f"加载历史数据成功，共 {len(history_data['history'])} 条记录")
+    
+    # 2. 分析技术指标
+    analysis_result = analyze_indicators(history_data)
+    if not analysis_result:
+        log_error("ANALYSIS_FAIL", "分析技术指标失败，模块退出")
+        sys.exit(102)  # 分析失败
+    
+    log_info(f"技术指标分析完成，生成 {len(analysis_result['indicators'])} 个指标点")
+    
+    # 3. 原子写入输出文件
+    if not write_with_atomic_protocol(analysis_result, OUTPUT_FILE):
+        log_error("WRITE_FAIL", "写入输出文件失败，模块退出")
+        sys.exit(103)  # 写入失败
+    
+    log_info(f"成功生成分析文件: {OUTPUT_FILE}")
+    sys.exit(0)  # 成功
+
+if __name__ == "__main__":
+    main()

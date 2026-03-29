@@ -1,5 +1,5 @@
 {
-  "fetch_time": "2026-03-29 13:57:00",
+  "fetch_time": "2026-03-29 14:13:56",
   "data_source": "模拟数据 - 待接入真实API",
   "etf_count": 7,
   "etfs": [
@@ -7,277 +7,277 @@
       "ticker": "510300",
       "name": "华泰柏瑞沪深300ETF",
       "index_name": "沪深300",
-      "current_nav": "3.8580",
-      "daily_change": "+0.22%",
-      "ytd_return": "-3.61%",
-      "volume": "666万手",
+      "current_nav": "3.8680",
+      "daily_change": "+0.46%",
+      "ytd_return": "-2.99%",
+      "volume": "524万手",
       "nav_history": [
         {
           "date": "2026-03-29",
-          "price": "3.8130",
-          "change": "-0.49%"
-        },
-        {
-          "date": "2026-03-28",
-          "price": "3.8500",
-          "change": "-0.46%"
-        },
-        {
-          "date": "2026-03-27",
-          "price": "3.8430",
+          "price": "3.8170",
           "change": "-0.08%"
         },
         {
+          "date": "2026-03-28",
+          "price": "3.8270",
+          "change": "+0.26%"
+        },
+        {
+          "date": "2026-03-27",
+          "price": "3.8830",
+          "change": "+0.30%"
+        },
+        {
           "date": "2026-03-26",
-          "price": "3.8480",
-          "change": "+0.18%"
+          "price": "3.8780",
+          "change": "+0.20%"
         },
         {
           "date": "2026-03-25",
-          "price": "3.8760",
-          "change": "+0.08%"
+          "price": "3.8810",
+          "change": "+0.41%"
         }
       ],
-      "last_updated": "2026-03-29 13:57:00",
-      "cleaned_time": "2026-03-29 13:57:18",
+      "last_updated": "2026-03-29 14:13:56",
+      "cleaned_time": "2026-03-29 14:14:03",
       "cleaned_by": "cleaner_etf_purify"
     },
     {
       "ticker": "510500",
       "name": "南方中证500ETF",
       "index_name": "中证500",
-      "current_nav": "5.6490",
-      "daily_change": "+0.51%",
-      "ytd_return": "+6.54%",
-      "volume": "274万手",
+      "current_nav": "5.6430",
+      "daily_change": "+0.41%",
+      "ytd_return": "+11.82%",
+      "volume": "236万手",
       "nav_history": [
         {
           "date": "2026-03-29",
-          "price": "5.5760",
-          "change": "+0.39%"
+          "price": "5.5790",
+          "change": "+0.35%"
         },
         {
           "date": "2026-03-28",
-          "price": "5.6660",
-          "change": "-0.06%"
+          "price": "5.5720",
+          "change": "+0.31%"
         },
         {
           "date": "2026-03-27",
-          "price": "5.6530",
-          "change": "-0.13%"
+          "price": "5.6490",
+          "change": "+0.27%"
         },
         {
           "date": "2026-03-26",
-          "price": "5.6020",
-          "change": "-0.17%"
+          "price": "5.5800",
+          "change": "-0.18%"
         },
         {
           "date": "2026-03-25",
-          "price": "5.6310",
-          "change": "-0.22%"
+          "price": "5.5790",
+          "change": "-0.02%"
         }
       ],
-      "last_updated": "2026-03-29 13:57:00",
-      "cleaned_time": "2026-03-29 13:57:18",
+      "last_updated": "2026-03-29 14:13:56",
+      "cleaned_time": "2026-03-29 14:14:03",
       "cleaned_by": "cleaner_etf_purify"
     },
     {
       "ticker": "159919",
       "name": "嘉实沪深300ETF",
       "index_name": "沪深300",
-      "current_nav": "3.8370",
-      "daily_change": "-0.21%",
-      "ytd_return": "+14.01%",
-      "volume": "268万手",
+      "current_nav": "3.8590",
+      "daily_change": "+0.37%",
+      "ytd_return": "+14.82%",
+      "volume": "908万手",
       "nav_history": [
         {
           "date": "2026-03-29",
-          "price": "3.8640",
-          "change": "-0.14%"
+          "price": "3.8630",
+          "change": "-0.40%"
         },
         {
           "date": "2026-03-28",
-          "price": "3.8380",
-          "change": "-0.49%"
+          "price": "3.8640",
+          "change": "+0.24%"
         },
         {
           "date": "2026-03-27",
-          "price": "3.8720",
-          "change": "-0.35%"
+          "price": "3.8510",
+          "change": "+0.39%"
         },
         {
           "date": "2026-03-26",
-          "price": "3.8180",
-          "change": "+0.25%"
+          "price": "3.8050",
+          "change": "-0.02%"
         },
         {
           "date": "2026-03-25",
-          "price": "3.8670",
-          "change": "+0.20%"
+          "price": "3.8020",
+          "change": "-0.26%"
         }
       ],
-      "last_updated": "2026-03-29 13:57:00",
-      "cleaned_time": "2026-03-29 13:57:18",
+      "last_updated": "2026-03-29 14:13:56",
+      "cleaned_time": "2026-03-29 14:14:03",
       "cleaned_by": "cleaner_etf_purify"
     },
     {
       "ticker": "159915",
       "name": "易方达创业板ETF",
       "index_name": "创业板指",
-      "current_nav": "2.1440",
-      "daily_change": "-0.26%",
-      "ytd_return": "+7.61%",
-      "volume": "459万手",
+      "current_nav": "2.1720",
+      "daily_change": "+1.01%",
+      "ytd_return": "+7.83%",
+      "volume": "146万手",
       "nav_history": [
         {
           "date": "2026-03-29",
-          "price": "2.1920",
-          "change": "-0.45%"
+          "price": "2.1350",
+          "change": "-0.35%"
         },
         {
           "date": "2026-03-28",
-          "price": "2.1380",
-          "change": "-0.36%"
+          "price": "2.1070",
+          "change": "-0.42%"
         },
         {
           "date": "2026-03-27",
-          "price": "2.1220",
-          "change": "-0.26%"
+          "price": "2.1880",
+          "change": "-0.11%"
         },
         {
           "date": "2026-03-26",
-          "price": "2.1590",
-          "change": "-0.24%"
+          "price": "2.1300",
+          "change": "-0.41%"
         },
         {
           "date": "2026-03-25",
-          "price": "2.1980",
-          "change": "+0.34%"
+          "price": "2.1530",
+          "change": "-0.23%"
         }
       ],
-      "last_updated": "2026-03-29 13:57:00",
-      "cleaned_time": "2026-03-29 13:57:18",
+      "last_updated": "2026-03-29 14:13:56",
+      "cleaned_time": "2026-03-29 14:14:03",
       "cleaned_by": "cleaner_etf_purify"
     },
     {
       "ticker": "588000",
       "name": "华夏上证科创板50ETF",
       "index_name": "科创50",
-      "current_nav": "0.9840",
-      "daily_change": "+0.42%",
-      "ytd_return": "+0.06%",
-      "volume": "386万手",
+      "current_nav": "0.9810",
+      "daily_change": "+0.15%",
+      "ytd_return": "-4.68%",
+      "volume": "485万手",
       "nav_history": [
         {
           "date": "2026-03-29",
-          "price": "1.0050",
-          "change": "-0.22%"
+          "price": "0.9870",
+          "change": "+0.39%"
         },
         {
           "date": "2026-03-28",
-          "price": "0.9520",
-          "change": "-0.38%"
+          "price": "0.9610",
+          "change": "+0.49%"
         },
         {
           "date": "2026-03-27",
-          "price": "0.9540",
-          "change": "+0.22%"
+          "price": "0.9610",
+          "change": "+0.17%"
         },
         {
           "date": "2026-03-26",
-          "price": "0.9740",
+          "price": "1.0210",
           "change": "+0.13%"
         },
         {
           "date": "2026-03-25",
-          "price": "0.9330",
-          "change": "+0.41%"
+          "price": "0.9490",
+          "change": "-0.15%"
         }
       ],
-      "last_updated": "2026-03-29 13:57:00",
-      "cleaned_time": "2026-03-29 13:57:18",
+      "last_updated": "2026-03-29 14:13:56",
+      "cleaned_time": "2026-03-29 14:14:03",
       "cleaned_by": "cleaner_etf_purify"
     },
     {
       "ticker": "510050",
       "name": "华夏上证50ETF",
       "index_name": "上证50",
-      "current_nav": "2.5660",
-      "daily_change": "+0.24%",
-      "ytd_return": "-2.57%",
-      "volume": "246万手",
+      "current_nav": "2.5810",
+      "daily_change": "+0.82%",
+      "ytd_return": "+10.40%",
+      "volume": "499万手",
       "nav_history": [
         {
           "date": "2026-03-29",
-          "price": "2.5930",
-          "change": "+0.33%"
+          "price": "2.5450",
+          "change": "+0.08%"
         },
         {
           "date": "2026-03-28",
-          "price": "2.6040",
-          "change": "+0.44%"
+          "price": "2.6080",
+          "change": "+0.11%"
         },
         {
           "date": "2026-03-27",
-          "price": "2.5210",
-          "change": "+0.19%"
+          "price": "2.5440",
+          "change": "-0.38%"
         },
         {
           "date": "2026-03-26",
-          "price": "2.5950",
-          "change": "+0.47%"
+          "price": "2.5570",
+          "change": "+0.35%"
         },
         {
           "date": "2026-03-25",
-          "price": "2.5640",
-          "change": "-0.03%"
+          "price": "2.5880",
+          "change": "+0.39%"
         }
       ],
-      "last_updated": "2026-03-29 13:57:00",
-      "cleaned_time": "2026-03-29 13:57:18",
+      "last_updated": "2026-03-29 14:13:56",
+      "cleaned_time": "2026-03-29 14:14:03",
       "cleaned_by": "cleaner_etf_purify"
     },
     {
       "ticker": "512100",
       "name": "南方中证1000ETF",
       "index_name": "中证1000",
-      "current_nav": "2.3310",
-      "daily_change": "+0.90%",
-      "ytd_return": "+14.04%",
-      "volume": "187万手",
+      "current_nav": "2.3160",
+      "daily_change": "+0.27%",
+      "ytd_return": "+5.13%",
+      "volume": "837万手",
       "nav_history": [
         {
           "date": "2026-03-29",
-          "price": "2.2750",
-          "change": "-0.49%"
+          "price": "2.3240",
+          "change": "+0.35%"
         },
         {
           "date": "2026-03-28",
-          "price": "2.3550",
-          "change": "+0.21%"
+          "price": "2.3410",
+          "change": "-0.14%"
         },
         {
           "date": "2026-03-27",
-          "price": "2.2790",
-          "change": "+0.47%"
+          "price": "2.2870",
+          "change": "-0.24%"
         },
         {
           "date": "2026-03-26",
-          "price": "2.3440",
-          "change": "-0.25%"
+          "price": "2.3530",
+          "change": "+0.47%"
         },
         {
           "date": "2026-03-25",
-          "price": "2.2630",
-          "change": "-0.17%"
+          "price": "2.2750",
+          "change": "-0.48%"
         }
       ],
-      "last_updated": "2026-03-29 13:57:00",
-      "cleaned_time": "2026-03-29 13:57:18",
+      "last_updated": "2026-03-29 14:13:56",
+      "cleaned_time": "2026-03-29 14:14:03",
       "cleaned_by": "cleaner_etf_purify"
     }
   ],
-  "cleaned_time": "2026-03-29 13:57:18",
+  "cleaned_time": "2026-03-29 14:14:03",
   "cleaned_by": "cleaner_etf_purify",
   "cleaned_count": 7,
   "failed_count": 0

@@ -1,68 +1,68 @@
 {
-  "fetch_time": "2026-03-29 13:57:12",
+  "fetch_time": "2026-03-29 14:13:57",
   "market_conditions": {
     "shanghai_composite": {
       "index": "上证指数",
-      "current": "3058.21",
-      "change": "+1.24%",
-      "volume": "3816亿元"
+      "current": "3002.56",
+      "change": "-0.29%",
+      "volume": "4410亿元"
     },
     "shenzhen_component": {
       "index": "深证成指",
-      "current": "10364.65",
-      "change": "-0.64%",
-      "volume": "4193亿元"
+      "current": "9880.19",
+      "change": "+1.39%",
+      "volume": "5672亿元"
     },
     "chinese_50": {
       "index": "创业板指",
-      "current": "1956.88",
-      "change": "+2.97%",
-      "volume": "2234亿元"
+      "current": "1884.94",
+      "change": "+3.40%",
+      "volume": "1758亿元"
     }
   },
   "fear_greed_index": 36,
-  "sentiment_score": 62,
+  "sentiment_score": 65,
   "sentiment_level": "恐慌",
   "market_heat": {
-    "turnover_rate": "1.68%",
-    "advance_decline_ratio": "1.59",
-    "limit_up_count": 38,
-    "limit_down_count": 31,
-    "volume_concentration": "63.6%"
+    "turnover_rate": "1.11%",
+    "advance_decline_ratio": "1.50",
+    "limit_up_count": 45,
+    "limit_down_count": 40,
+    "volume_concentration": "58.8%"
   },
   "capital_flow": {
-    "northbound_sh": "+33.0亿元",
-    "northbound_sz": "-9.3亿元",
-    "main_inflow": "+75.5亿元",
-    "retail_inflow": "-145.0亿元",
+    "northbound_sh": "+71.0亿元",
+    "northbound_sz": "-1.6亿元",
+    "main_inflow": "+269.5亿元",
+    "retail_inflow": "-165.7亿元",
     "sector_rotation": "科技"
   },
   "volatility_indicators": {
-    "historical_volatility_30d": "15.5%",
-    "implied_volatility": "23.0%",
-    "volatility_index": "40.1",
-    "max_drawdown_30d": "14.4%",
-    "sharpe_ratio_30d": "2.40"
+    "historical_volatility_30d": "19.0%",
+    "implied_volatility": "24.8%",
+    "volatility_index": "44.4",
+    "max_drawdown_30d": "9.7%",
+    "sharpe_ratio_30d": "0.82"
   },
   "social_sentiment": {
-    "weibo_finance_buzz": 18513,
-    "eastmoney_comments_sentiment": "偏多",
-    "stock_forum_activity": "81.1%",
-    "news_sentiment_score": 68,
-    "search_volume_index": 58
+    "weibo_finance_buzz": 12350,
+    "eastmoney_comments_sentiment": "偏空",
+    "stock_forum_activity": "62.6%",
+    "news_sentiment_score": 67,
+    "search_volume_index": 86
   },
   "technical_sentiment": {
-    "rsi_14": 57,
-    "macd_signal": "中性",
-    "bollinger_band_position": "上轨",
+    "rsi_14": 51,
+    "macd_signal": "金叉",
+    "bollinger_band_position": "下轨",
     "moving_average_alignment": "纠结",
-    "support_resistance_level": "强阻力"
+    "support_resistance_level": "弱支撑"
   },
   "composite_indicators": {
-    "risk_appetite": 37,
-    "market_stability": 60,
-    "liquidity_score": 67,
-    "momentum_strength": 54
+    "risk_appetite": 67,
+    "market_stability": 75,
+    "liquidity_score": 55,
+    "momentum_strength": 55
   },
   "data_source": "模拟数据 - 待接入东方财富、同花顺、新浪财经等",
   "update_frequency": "每日更新",
