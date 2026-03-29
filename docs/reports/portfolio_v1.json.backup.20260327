@@ -1,0 +1,167 @@
+{
+  "account_info": {
+    "account_id": "QUANT_LAB_001",
+    "initial_capital": 500000.0,
+    "available_cash": 399973.9634661116,
+    "position_value": 99928.14145223188,
+    "total_value": 499902.1049183435,
+    "created_at": "2026-03-27 18:52:00",
+    "last_updated": "2026-03-27T20:55:05.653362"
+  },
+  "trading_constraints": {
+    "single_etf_limit": 100000.0,
+    "position_limit_percent": 20,
+    "commission_rate": 0.0002,
+    "tax_rate": 0.001,
+    "min_trade_amount": 10000.0,
+    "max_daily_trades": 10
+  },
+  "current_positions": [
+    {
+      "code": "518880",
+      "name": "华安黄金ETF",
+      "quantity": 20725,
+      "avg_price": 4.82,
+      "current_price": 4.82162323050576,
+      "position_value": 99928.14145223188,
+      "unrealized_pnl": 33.641452231880976,
+      "unrealized_pnl_percent": 0.03367698144730789,
+      "entry_time": "2026-03-27T18:58:34.351495",
+      "last_updated": "2026-03-27T20:44:45.386640"
+    }
+  ],
+  "pending_orders": [],
+  "trading_history": [
+    {
+      "trade_id": "TRADE_20260327_185834_518880",
+      "timestamp": "2026-03-27T18:58:34.351480",
+      "code": "518880",
+      "name": "华安黄金ETF",
+      "action": "BUY",
+      "price": 4.82,
+      "quantity": 4149,
+      "amount": 20000.0,
+      "commission": 4.0,
+      "tax": 20.0,
+      "total_cost": 20024.0,
+      "signal": {
+        "bias": -4.1,
+        "ma20_trend": "UP",
+        "signal_strength": "STRONG"
+      },
+      "status": "EXECUTED"
+    },
+    {
+      "trade_id": "TRADE_20260327_191437_518880",
+      "timestamp": "2026-03-27T19:14:37.379559",
+      "code": "518880",
+      "name": "华安黄金ETF",
+      "action": "BUY",
+      "price": 4.82,
+      "quantity": 4149,
+      "amount": 20000.0,
+      "commission": 4.0,
+      "tax": 20.0,
+      "total_cost": 20024.0,
+      "signal": {
+        "bias": -4.1,
+        "ma20_trend": "UP",
+        "signal_strength": "STRONG"
+      },
+      "status": "EXECUTED"
+    },
+    {
+      "trade_id": "TRADE_20260327_192939_518880",
+      "timestamp": "2026-03-27T19:29:39.380644",
+      "code": "518880",
+      "name": "华安黄金ETF",
+      "action": "BUY",
+      "price": 4.82,
+      "quantity": 4149,
+      "amount": 20000.0,
+      "commission": 4.0,
+      "tax": 20.0,
+      "total_cost": 20024.0,
+      "signal": {
+        "bias": -4.1,
+        "ma20_trend": "UP",
+        "signal_strength": "STRONG"
+      },
+      "status": "EXECUTED"
+    },
+    {
+      "trade_id": "TRADE_20260327_194441_518880",
+      "timestamp": "2026-03-27T19:44:41.381921",
+      "code": "518880",
+      "name": "华安黄金ETF",
+      "action": "BUY",
+      "price": 4.82,
+      "quantity": 4149,
+      "amount": 20000.0,
+      "commission": 4.0,
+      "tax": 20.0,
+      "total_cost": 20024.0,
+      "signal": {
+        "bias": -4.1,
+        "ma20_trend": "UP",
+        "signal_strength": "STRONG"
+      },
+      "status": "EXECUTED"
+    },
+    {
+      "trade_id": "TRADE_20260327_195943_518880",
+      "timestamp": "2026-03-27T19:59:43.383187",
+      "code": "518880",
+      "name": "华安黄金ETF",
+      "action": "BUY",
+      "price": 4.82,
+      "quantity": 4090,
+      "amount": 19716.106531876183,
+      "commission": 3.9432213063752366,
+      "tax": 19.716106531876182,
+      "total_cost": 19739.765859714433,
+      "signal": {
+        "bias": -4.1,
+        "ma20_trend": "UP",
+        "signal_strength": "STRONG"
+      },
+      "status": "EXECUTED"
+    },
+    {
+      "trade_id": "TRADE_20260327_204445_518880",
+      "timestamp": "2026-03-27T20:44:45.386621",
+      "code": "518880",
+      "name": "华安黄金ETF",
+      "action": "BUY",
+      "price": 4.82,
+      "quantity": 39,
+      "amount": 190.0426230262965,
+      "commission": 0.0380085246052593,
+      "tax": 0.1900426230262965,
+      "total_cost": 190.27067417392806,
+      "signal": {
+        "bias": -4.1,
+        "ma20_trend": "UP",
+        "signal_strength": "STRONG"
+      },
+      "status": "EXECUTED"
+    }
+  ],
+  "performance_metrics": {
+    "total_trades": 6,
+    "winning_trades": 0,
+    "losing_trades": 0,
+    "total_profit": 0.0,
+    "max_drawdown": 0.0,
+    "sharpe_ratio": 0.0,
+    "win_rate": "0.00%"
+  },
+  "risk_parameters": {
+    "bias_threshold": -3.5,
+    "ma20_trend": "UP",
+    "batch_size": 20000.0,
+    "stop_loss": -5.0,
+    "take_profit": 10.0,
+    "max_position_duration": 30
+  }
+}

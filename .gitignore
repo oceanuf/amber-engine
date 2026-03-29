@@ -1,0 +1,87 @@
+# 🏛️ 法典 V3.1 [2614-001] 合规.gitignore
+# 创建时间: 2026-03-29
+
+# === 环境与配置 ===
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+~/.amber_env
+
+# === Python ===
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# === 虚拟环境 ===
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# === 日志文件 ===
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# === 编辑器 ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# === 测试 ===
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# === 文档 ===
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+
+# === 系统 ===
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# === OpenClaw ===
+.openclaw/
+.openclaw/workspace-state.json
+
+# === 私有数据 ===
+_PRIVATE_DATA/
