@@ -84,8 +84,18 @@ MODULES = [
         "timeout": 600,  # 清洗可能需要更长时间
         "frequency": "daily",
         "dependencies": ["ingest_etf_gold", "ingest_etf_index"]  # 依赖这两个 ingest 模块
+    },
+    {
+        "name": "storer_vault_storer",
+        "path": "scripts/storer/vault_storer.py",
+        "retry_on": ["FILE_WRITE_FAIL", "BACKUP_FAIL"],  # 对这些错误码重试
+        "circuit_break_on": ["PERMISSION_FAIL", "MERGE_FAIL"],  # 对这些错误码熔断
+        "max_retries": 2,
+        "timeout": 900,  # 存储可能需要更长时间（包含备份操作）
+        "frequency": "daily",
+        "dependencies": ["cleaner_etf_purify"]  # 依赖 cleaner 模块
     }
-    # 可以添加更多模块：Storer, Analyzer, Synthesizer 等
+    # 可以添加更多模块：Analyzer, Synthesizer 等
 ]
 
 LOG_DIR = "logs"

@@ -1,0 +1,35 @@
+{
+  "ticker": "159919",
+  "name": "嘉实沪深300ETF",
+  "history": [
+    {
+      "date": "2026-03-29",
+      "price": "3.8880",
+      "change": "+0.08%"
+    },
+    {
+      "date": "2026-03-28",
+      "price": "3.8600",
+      "change": "+0.39%"
+    },
+    {
+      "date": "2026-03-27",
+      "price": "3.8740",
+      "change": "+0.23%"
+    },
+    {
+      "date": "2026-03-26",
+      "price": "3.8530",
+      "change": "-0.08%"
+    },
+    {
+      "date": "2026-03-25",
+      "price": "3.8590",
+      "change": "+0.36%"
+    }
+  ],
+  "last_updated": "2026-03-29 13:56:30",
+  "created_time": "2026-03-29 13:56:25",
+  "source_module": "storer_vault_storer",
+  "update_count": 2
+}
