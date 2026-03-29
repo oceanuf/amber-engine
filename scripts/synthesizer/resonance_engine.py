@@ -113,17 +113,29 @@ def discover_strategies() -> List[BaseStrategy]:
     strategies = []
     
     try:
-        # 手动导入第一阶段算法 (G1-G4)
+        # 手动导入所有算法 (G1-G10)
         from strategies.gravity_dip import GravityDipStrategy
         from strategies.dual_momentum import DualMomentumStrategy
         from strategies.vol_squeeze import VolSqueezeStrategy
         from strategies.dividend_alpha import DividendAlphaStrategy
+        from strategies.weekly_rsi import WeeklyRSIStrategy
+        from strategies.z_score_bias import ZScoreBiasStrategy
+        from strategies.triple_cross import TripleCrossStrategy
+        from strategies.vol_retrace import VolumeRetracementStrategy
+        from strategies.macro_gold import MacroGoldStrategy
+        from strategies.obv_divergence import OBVDivergenceStrategy
         
         strategy_classes = [
             GravityDipStrategy,
             DualMomentumStrategy,
             VolSqueezeStrategy,
-            DividendAlphaStrategy
+            DividendAlphaStrategy,
+            WeeklyRSIStrategy,
+            ZScoreBiasStrategy,
+            TripleCrossStrategy,
+            VolumeRetracementStrategy,
+            MacroGoldStrategy,
+            OBVDivergenceStrategy
         ]
         
         for cls in strategy_classes:

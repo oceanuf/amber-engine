@@ -1,6 +1,6 @@
 {
-  "version": "1.0.0",
-  "last_updated": "2026-03-29T15:30:00",
+  "version": "1.1.0",
+  "last_updated": "2026-03-29T15:47:00",
   "algorithm_weights": {
     "Gravity-Dip": {
       "weight": 1.0,
@@ -41,6 +41,16 @@
       "weight": 1.0,
       "enabled": true,
       "description": "缩量回踩策略，识别波动率萎缩至50%以下且回踩均线不破"
+    },
+    "Macro-Gold": {
+      "weight": 1.0,
+      "enabled": true,
+      "description": "宏观对冲锚定策略，剥离名义金价中的利率杂质，分析实际利率对黄金的宏观影响"
+    },
+    "OBV-Divergence": {
+      "weight": 1.0,
+      "enabled": true,
+      "description": "能量潮背离策略，监测OBV指标背离，捕捉主力资金潜伏吸筹信号"
     }
   },
   "resonance_rules": {
