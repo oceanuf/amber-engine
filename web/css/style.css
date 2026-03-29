@@ -1,0 +1,43 @@
+/* 主样式文件 - 琥珀引擎 Web 界面 */
+
+/* 基础重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.6;
+}
+
+.container {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Obsidian 深色主题适配 */
+.obsidian-theme {
+    --background-primary: #0d1117;
+    --background-secondary: #161b22;
+    --text-normal: #c9d1d9;
+    --text-muted: #8b949e;
+    --interactive-accent: #58a6ff;
+    --interactive-accent-hover: #79c0ff;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .header h1 {
+        font-size: 1.8rem !important;
+    }
+}

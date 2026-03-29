@@ -18,37 +18,11 @@ from typing import Dict, Any, List, Optional, Tuple
 # 模块常量
 MODULE_NAME = "synthesizer_resonance_engine"
 OUTPUT_FILE = "database/resonance_signal.json"
-RESONANCE_REPORT_FILE = "database/resonance_report_{date}.json"
 TMP_SUFFIX = ".tmp"
 SCHEMA_FILE = "config/schema_resonance.json"  # 共振信号专用Schema
 STRATEGIES_DIR = os.path.join(os.path.dirname(__file__), "strategies")
 MAX_RETRIES = 3
 RETRY_DELAY = 5  # 秒
-
-# 标的配置（支持多个ETF）
-TICKERS_CONFIG = {
-    "518880": {
-        "name": "黄金ETF",
-        "data_file": "database/tushare_gold.json",  # Tushare数据源
-        "history_file": "database/history_518880.json",  # 传统历史数据（备用）
-        "type": "etf",
-        "weight": 1.0
-    },
-    "510300": {
-        "name": "沪深300ETF",
-        "data_file": "database/tushare_hs300.json",
-        "history_file": "database/history_510300.json",
-        "type": "etf",
-        "weight": 1.0
-    },
-    "510500": {
-        "name": "中证500ETF",
-        "data_file": "database/tushare_zz500.json",
-        "history_file": "database/history_510500.json",
-        "type": "etf",
-        "weight": 1.0
-    }
-}
 
 # 导入策略基类
 sys.path.insert(0, os.path.dirname(__file__))
@@ -133,68 +107,6 @@ def load_analysis_data(ticker: str = "518880") -> Optional[Dict[str, Any]]:
     except Exception as e:
         log_warn(f"加载分析数据失败: {e}，将仅使用历史数据")
         return None
-
-def load_ticker_data(ticker: str) -> Optional[Dict[str, Any]]:
-    """加载标的的完整数据（优先Tushare，备用历史数据）"""
-    config = TICKERS_CONFIG.get(ticker)
-    if not config:
-        log_error("TICKER_NOT_CONFIGURED", f"标的未配置: {ticker}")
-        return None
-    
-    # 尝试加载Tushare数据
-    tushare_file = config.get("data_file")
-    if tushare_file and os.path.exists(tushare_file):
-        try:
-            with open(tushare_file, 'r', encoding='utf-8') as f:
-                tushare_data = json.load(f)
-            
-            log_info(f"加载Tushare数据成功: {ticker}, 文件: {tushare_file}")
-            
-            # 转换Tushare数据格式为历史数据格式
-            if "data" in tushare_data and isinstance(tushare_data["data"], list):
-                history = []
-                for item in tushare_data["data"]:
-                    history_point = {
-                        "date": item.get("date", ""),
-                        "price": item.get("close", 0.0),
-                        "open": item.get("open", 0.0),
-                        "high": item.get("high", 0.0),
-                        "low": item.get("low", 0.0),
-                        "volume": item.get("volume", 0),
-                        "change": item.get("change", 0.0),
-                        "pct_chg": item.get("pct_chg", 0.0)
-                    }
-                    history.append(history_point)
-                
-                return {
-                    "ticker": ticker,
-                    "name": config["name"],
-                    "type": config["type"],
-                    "history": history,
-                    "metadata": tushare_data.get("metadata", {}),
-                    "data_source": "tushare"
-                }
-        
-        except Exception as e:
-            log_warn(f"加载Tushare数据失败: {e}，尝试历史数据")
-    
-    # 备用：加载传统历史数据
-    history_file = config.get("history_file") or f"database/history_{ticker}.json"
-    if os.path.exists(history_file):
-        try:
-            with open(history_file, 'r', encoding='utf-8') as f:
-                history_data = json.load(f)
-            
-            log_info(f"加载历史数据成功: {ticker}, 文件: {history_file}")
-            history_data["data_source"] = "legacy"
-            return history_data
-        
-        except Exception as e:
-            log_error("HISTORY_LOAD_ERROR", f"加载历史数据失败: {e}")
-            return None
-    
-    log_error("NO_DATA_SOURCE", f"标的 {ticker} 无可用数据源")
-    return None
 
 def discover_strategies() -> List[BaseStrategy]:
     """发现所有可用策略"""
@@ -478,15 +390,6 @@ def generate_final_signal(ticker: str,
 
 def validate_with_schema(data: Dict[str, Any], schema_file: str) -> bool:
     """使用 jsonschema 验证数据"""
-    # 暂时跳过验证以加速开发
-    log_warn("Schema 验证暂时跳过（开发模式）")
-    return True
-    
-    # 检查Schema文件是否存在
-    if not os.path.exists(schema_file):
-        log_warn(f"Schema文件不存在: {schema_file}，跳过验证")
-        return True
-    
     try:
         import jsonschema
         with open(schema_file, 'r', encoding='utf-8') as f:
@@ -529,133 +432,9 @@ def write_with_atomic_protocol(data: Dict[str, Any], output_file: str) -> bool:
             os.remove(tmp_file)
         return False
 
-def run_single_ticker_analysis(ticker: str, config: Dict[str, Any], 
-                              strategies: List[BaseStrategy],
-                              global_params: Dict[str, Any],
-                              weights_config: Dict[str, Any]) -> Optional[Dict[str, Any]]:
-    """对单个标的进行完整共振分析"""
-    log_info(f"开始分析标的: {config['name']} ({ticker})")
-    
-    # 1. 加载数据
-    ticker_data = load_ticker_data(ticker)
-    if not ticker_data:
-        log_error("TICKER_DATA_LOAD_FAIL", f"加载标的 {ticker} 数据失败，跳过")
-        return None
-    
-    # 加载分析数据（可选）
-    analysis_data = load_analysis_data(ticker)
-    
-    # 2. 运行所有策略
-    strategy_results = run_strategies(
-        strategies=strategies,
-        ticker=ticker,
-        history_data=ticker_data,
-        analysis_data=analysis_data,
-        global_params=global_params
-    )
-    
-    # 3. 计算共振评分
-    resonance_result = calculate_resonance_score(
-        strategy_results=strategy_results,
-        weights_config=weights_config,
-        global_params=global_params
-    )
-    
-    log_info(f"共振评分计算完成 [{ticker}]: {resonance_result['resonance_score']}, 状态: {resonance_result['signal_status']}")
-    log_info(f"命中算法 [{ticker}]: {resonance_result['hit_count']}个 - {', '.join(resonance_result['hits'])}")
-    
-    # 4. 生成最终信号
-    final_signal = generate_final_signal(
-        ticker=ticker,
-        history_data=ticker_data,
-        resonance_result=resonance_result,
-        global_params=global_params
-    )
-    
-    # 添加标的配置信息
-    final_signal["weight"] = config.get("weight", 1.0)
-    final_signal["type"] = config.get("type", "etf")
-    
-    return final_signal
-
-def generate_resonance_report(all_signals: Dict[str, Dict[str, Any]], 
-                             global_params: Dict[str, Any],
-                             strategies: List[BaseStrategy]) -> Dict[str, Any]:
-    """生成完整的共振报告"""
-    report_date = datetime.datetime.now().strftime("%Y%m%d")
-    
-    # 计算总体共振矩阵
-    overall_analysis = {
-        "total_tickers": len(all_signals),
-        "avg_resonance_score": 0.0,
-        "signals_by_status": {},
-        "top_performers": [],
-        "strategy_hit_counts": {strategy.name: 0 for strategy in strategies}
-    }
-    
-    total_score = 0.0
-    ticker_count = 0
-    
-    for ticker, signal in all_signals.items():
-        if signal:
-            score = signal.get("resonance_score", 0)
-            total_score += score
-            ticker_count += 1
-            
-            # 按状态统计
-            status = signal.get("signal_status", "未知")
-            if status not in overall_analysis["signals_by_status"]:
-                overall_analysis["signals_by_status"][status] = 0
-            overall_analysis["signals_by_status"][status] += 1
-            
-            # 统计策略命中
-            hits = signal.get("hits", [])
-            for hit in hits:
-                if hit in overall_analysis["strategy_hit_counts"]:
-                    overall_analysis["strategy_hit_counts"][hit] += 1
-    
-    if ticker_count > 0:
-        overall_analysis["avg_resonance_score"] = round(total_score / ticker_count, 2)
-    
-    # 选择表现最佳的标的（按共振分排序）
-    valid_signals = [(ticker, signal) for ticker, signal in all_signals.items() if signal]
-    sorted_signals = sorted(valid_signals, key=lambda x: x[1].get("resonance_score", 0), reverse=True)
-    overall_analysis["top_performers"] = [
-        {
-            "ticker": ticker,
-            "name": signal.get("name", "未知"),
-            "resonance_score": signal.get("resonance_score", 0),
-            "signal_status": signal.get("signal_status", "未知"),
-            "action": signal.get("action", "未知")
-        }
-        for ticker, signal in sorted_signals[:5]  # 前5名
-    ]
-    
-    # 构建完整报告
-    report = {
-        "metadata": {
-            "report_id": f"resonance_report_{report_date}",
-            "generated_at": datetime.datetime.now().isoformat(),
-            "module": MODULE_NAME,
-            "strategies_count": len(strategies),
-            "tickers_count": len(all_signals)
-        },
-        "overall_analysis": overall_analysis,
-        "ticker_signals": all_signals,
-        "strategy_summary": {
-            strategy.name: {
-                "description": strategy.description if hasattr(strategy, 'description') else "无描述",
-                "category": strategy.category if hasattr(strategy, 'category') else "未知"
-            }
-            for strategy in strategies
-        }
-    }
-    
-    return report
-
 def main():
-    """主函数 - 多标的共振分析引擎"""
-    log_info(f"开始执行 {MODULE_NAME} - 十诫共振全量测试")
+    """主函数"""
+    log_info(f"开始执行 {MODULE_NAME} - 共振评分引擎")
     
     # 1. 加载配置
     global_params = load_global_params()
@@ -668,75 +447,57 @@ def main():
         log_error("WEIGHTS_LOAD_FAIL", "加载策略权重失败，模块退出")
         sys.exit(102)
     
-    # 2. 发现策略
+    # 2. 加载数据
+    ticker = "518880"  # 默认黄金ETF
+    history_data = load_history_data(ticker)
+    if not history_data:
+        log_error("DATA_LOAD_FAIL", "加载历史数据失败，模块退出")
+        sys.exit(103)
+    
+    analysis_data = load_analysis_data(ticker)  # 可选
+    
+    # 3. 发现并运行策略
     strategies = discover_strategies()
     if not strategies:
         log_error("NO_STRATEGIES", "未发现可用策略，模块退出")
         sys.exit(104)
     
-    log_info(f"发现 {len(strategies)} 个策略: {', '.join([s.name for s in strategies])}")
+    log_info(f"发现 {len(strategies)} 个策略")
     
-    # 3. 遍历所有标的进行分析
-    all_signals = {}
+    # 4. 运行所有策略
+    strategy_results = run_strategies(
+        strategies=strategies,
+        ticker=ticker,
+        history_data=history_data,
+        analysis_data=analysis_data,
+        global_params=global_params
+    )
     
-    for ticker, config in TICKERS_CONFIG.items():
-        signal = run_single_ticker_analysis(
-            ticker=ticker,
-            config=config,
-            strategies=strategies,
-            global_params=global_params,
-            weights_config=weights_config
-        )
-        all_signals[ticker] = signal
+    # 5. 计算共振评分
+    resonance_result = calculate_resonance_score(
+        strategy_results=strategy_results,
+        weights_config=weights_config,
+        global_params=global_params
+    )
     
-    # 4. 生成共振报告
-    resonance_report = generate_resonance_report(all_signals, global_params, strategies)
+    log_info(f"共振评分计算完成: {resonance_result['resonance_score']}, 状态: {resonance_result['signal_status']}")
+    log_info(f"命中算法: {resonance_result['hit_count']}个 - {', '.join(resonance_result['hits'])}")
     
-    # 5. 保存共振报告
-    report_date = datetime.datetime.now().strftime("%Y%m%d")
-    report_file = f"database/resonance_report_{report_date}.json"
+    # 6. 生成最终信号
+    final_signal = generate_final_signal(
+        ticker=ticker,
+        history_data=history_data,
+        resonance_result=resonance_result,
+        global_params=global_params
+    )
     
-    if not write_with_atomic_protocol(resonance_report, report_file):
-        log_error("REPORT_WRITE_FAIL", f"写入共振报告失败: {report_file}")
-        sys.exit(106)
+    # 7. 原子写入输出文件
+    if not write_with_atomic_protocol(final_signal, OUTPUT_FILE):
+        log_error("WRITE_FAIL", "写入输出文件失败，模块退出")
+        sys.exit(105)
     
-    log_info(f"共振报告生成成功: {report_file}")
-    
-    # 6. 保存主要标的的信号（向后兼容 - 黄金ETF）
-    main_ticker = "518880"
-    if main_ticker in all_signals and all_signals[main_ticker]:
-        main_signal = all_signals[main_ticker]
-        if not write_with_atomic_protocol(main_signal, OUTPUT_FILE):
-            log_error("SIGNAL_WRITE_FAIL", f"写入主信号失败: {OUTPUT_FILE}")
-            sys.exit(107)
-        log_info(f"主信号保存成功: {OUTPUT_FILE}")
-    
-    # 7. 输出摘要
-    valid_signals = [s for s in all_signals.values() if s]
-    log_info(f"共振分析完成: {len(valid_signals)}/{len(all_signals)} 个标的分析成功")
-    
-    # 检查紫色推荐（7/10算法命中且包含G9/G10）
-    purple_recommendations = []
-    for ticker, signal in all_signals.items():
-        if signal and signal.get("hit_count", 0) >= 7:
-            hits = signal.get("hits", [])
-            # 检查是否包含G9和G10
-            has_g9 = any("Macro-Gold" in hit or "G9" in hit for hit in hits)
-            has_g10 = any("OBV-Divergence" in hit or "G10" in hit for hit in hits)
-            if has_g9 and has_g10:
-                purple_recommendations.append(ticker)
-    
-    if purple_recommendations:
-        log_info(f"🎯 紫色推荐标的: {', '.join(purple_recommendations)}")
-    
-    # 检查红色预警（G5一票否决）
-    red_warnings = []
-    for ticker, signal in all_signals.items():
-        if signal and signal.get("veto_applied", False):
-            red_warnings.append(ticker)
-    
-    if red_warnings:
-        log_info(f"🚨 红色预警（一票否决）: {', '.join(red_warnings)}")
+    log_info(f"成功生成共振信号文件: {OUTPUT_FILE}")
+    log_info(f"最终信号: 共振分={final_signal['resonance_score']}, 操作={final_signal['action']}")
     
     sys.exit(0)  # 成功
 

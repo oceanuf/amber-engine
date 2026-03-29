@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Tushare Data Schema",
+  "description": "验证 Tushare Pro API 输出的 JSON 结构",
+  "type": "object",
+  "required": [
+    "data",
+    "metadata"
+  ],
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["date", "close"],
+        "properties": {
+          "date": {
+            "type": "string",
+            "pattern": "^\\d{8}$"
+          },
+          "close": {
+            "type": "number",
+            "minimum": 0
+          },
+          "open": {
+            "type": "number",
+            "minimum": 0
+          },
+          "high": {
+            "type": "number",
+            "minimum": 0
+          },
+          "low": {
+            "type": "number",
+            "minimum": 0
+          },
+          "volume": {
+            "type": "number",
+            "minimum": 0
+          },
+          "amount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "change": {
+            "type": "number"
+          },
+          "pct_chg": {
+            "type": "number"
+          },
+          "macd": {
+            "type": "object",
+            "properties": {
+              "dif": {"type": "number"},
+              "dea": {"type": "number"},
+              "macd": {"type": "number"}
+            }
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["fetch_time", "module"],
+      "properties": {
+        "fetch_time": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$"
+        },
+        "module": {
+          "type": "string"
+        },
+        "ticker_count": {
+          "type": "number"
+        },
+        "data_points": {
+          "type": ["number", "string"]
+        }
+      }
+    }
+  }
+}

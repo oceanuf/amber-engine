@@ -1,0 +1,45 @@
+{
+  "data": {
+    "tickers": {
+      "518880": {
+        "name": "黄金ETF",
+        "data_points": 1000,
+        "latest_date": "20260329",
+        "latest_price": 4.5044
+      },
+      "510300": {
+        "name": "沪深300ETF",
+        "data_points": 1000,
+        "latest_date": "20260329",
+        "latest_price": 3.7433
+      },
+      "510500": {
+        "name": "中证500ETF",
+        "data_points": 1000,
+        "latest_date": "20260329",
+        "latest_price": 3.7862
+      }
+    },
+    "macro": {
+      "shibor": {
+        "name": "上海银行间同业拆放利率",
+        "data_points": 60,
+        "latest_date": "2026-03-29"
+      },
+      "cpi": {
+        "name": "居民消费价格指数",
+        "data_points": 60,
+        "latest_date": "202603"
+      }
+    },
+    "fetch_time": "2026-03-29 16:32:39",
+    "sync_mode": "full",
+    "data_days": 1000
+  },
+  "metadata": {
+    "fetch_time": "2026-03-29 16:32:39",
+    "module": "ingest_tushare_adapter",
+    "ticker_count": 3,
+    "data_points": "object"
+  }
+}

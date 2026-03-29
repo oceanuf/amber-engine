@@ -1,56 +1,119 @@
 {
   "ticker": "518880",
-  "name": "华安黄金易ETF",
-  "signal_time": "2026-03-29T15:11:56.953964",
-  "resonance_score": 0.0,
-  "signal_status": "生存预警",
-  "action": "清仓",
-  "action_type": "EXIT",
+  "name": "黄金ETF",
+  "signal_time": "2026-03-29T16:33:34.623211",
+  "resonance_score": 45.02,
+  "signal_status": "中性",
+  "action": "减持",
+  "action_type": "REDUCE",
   "min_holding_days": 60,
-  "hit_count": 0,
-  "hits": [],
+  "hit_count": 4,
+  "hits": [
+    "Z-Score-Bias",
+    "Triple-Cross",
+    "Volume-Retracement",
+    "Macro-Gold"
+  ],
   "veto_applied": false,
   "latest_info": {
-    "date": "2026-03-29",
-    "price": 4.879,
-    "change": 0.0
+    "date": "20260329",
+    "price": 4.5044,
+    "change": 0.0353
   },
   "strategy_summary": {
     "Gravity-Dip": {
       "hit": false,
       "score": 0.0,
-      "confidence": 0.0,
+      "confidence": 0.5,
       "signals": [
-        "数据不足: 历史数据不足，需要250天，实际10天"
+        "无显著偏离信号"
       ],
-      "signal_type": "unknown"
+      "signal_type": "no_signal"
     },
     "Dual-Momentum": {
       "hit": false,
       "score": 0.0,
       "confidence": 0.0,
       "signals": [
-        "数据不足: 历史数据不足，需要250天，实际10天"
+        "无法计算动量"
       ],
       "signal_type": "unknown"
     },
     "Vol-Squeeze": {
       "hit": false,
       "score": 0.0,
-      "confidence": 0.0,
+      "confidence": 0.5,
       "signals": [
-        "数据不足: 历史数据不足，需要60天，实际10天"
+        "波动率信号中性"
       ],
-      "signal_type": "unknown"
+      "signal_type": "neutral"
     },
     "Dividend-Alpha": {
       "hit": false,
       "score": 0.0,
       "confidence": 0.0,
       "signals": [
-        "数据不足: 历史数据不足，需要60天，实际10天"
+        "分析失败: name 'prices' is not defined"
       ],
       "signal_type": "unknown"
+    },
+    "Weekly-RSI": {
+      "hit": false,
+      "score": 29.18,
+      "confidence": 0.3,
+      "signals": [
+        "偏弱: 周线RSI=30.8"
+      ],
+      "signal_type": "unknown"
+    },
+    "Z-Score-Bias": {
+      "hit": true,
+      "score": 15.3,
+      "confidence": 0.4,
+      "signals": [
+        "适度低估: Z分数=-1.76 < -1.5"
+      ],
+      "signal_type": "moderately_undervalued"
+    },
+    "Triple-Cross": {
+      "hit": true,
+      "score": 40.0,
+      "confidence": 0.6,
+      "signals": [
+        "中期空头排列：MA5<MA20<MA60"
+      ],
+      "signal_type": "medium_term_bearish"
+    },
+    "Volume-Retracement": {
+      "hit": true,
+      "score": 40.0,
+      "confidence": 0.6,
+      "signals": [
+        "良好缩量回踩：波动率萎缩0.55，价格回撤10.4%"
+      ],
+      "signal_type": "unknown"
+    },
+    "Macro-Gold": {
+      "hit": true,
+      "score": 71.5,
+      "confidence": 0.56,
+      "signals": [
+        "宏观利好: 实际利率-0.15%，黄金吸引力强",
+        "注意: 使用模拟利率数据，需接入真实宏观数据"
+      ],
+      "signal_type": "macro_bullish"
+    },
+    "OBV-Divergence": {
+      "hit": false,
+      "score": 50.0,
+      "confidence": 0.0,
+      "signals": [
+        "无显著背离: 价格up，OBVup",
+        "注意: 使用模拟成交量数据，需接入真实成交量"
+      ],
+      "signal_type": "no_divergence"
     }
-  }
+  },
+  "weight": 1.0,
+  "type": "etf"
 }

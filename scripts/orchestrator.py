@@ -76,6 +76,16 @@ MODULES = [
         "dependencies": []
     },
     {
+        "name": "ingest_tushare_adapter",
+        "path": "scripts/ingest/tushare_adapter.py",
+        "retry_on": ["NET_TIMEOUT", "TUSHARE_FETCH_FAIL", "TUSHARE_MACRO_FAIL"],  # 对这些错误码重试
+        "circuit_break_on": ["SCHEMA_MISMATCH", "TUSHARE_INIT_FAIL", "TUSHARE_IMPORT_FAIL"],  # 对这些错误码熔断
+        "max_retries": 3,
+        "timeout": 600,  # 秒（可能需要更多时间获取多个标的）
+        "frequency": "daily",
+        "dependencies": []  # 无依赖
+    },
+    {
         "name": "cleaner_etf_purify",
         "path": "scripts/cleaner/etf_purify.py",
         "retry_on": ["NET_TIMEOUT", "FILE_WRITE_FAIL"],  # 对这些错误码重试
