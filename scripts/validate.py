@@ -108,11 +108,59 @@ def file_integrity_check(filepath):
     
     return True
 
+def numeric_boundary_check(data):
+    """数值边界检查：检查单日波动是否异常"""
+    warnings = []
+    
+    # 检查 daily_change 字段
+    if "daily_change" in data:
+        daily_change_str = data["daily_change"]
+        try:
+            # 解析百分比字符串，如 "+1.23%" 或 "-0.45%"
+            daily_change = float(daily_change_str.rstrip('%'))
+            if abs(daily_change) > 15.0:
+                warnings.append(f"单日涨跌幅异常: {daily_change_str} (阈值: ±15%)")
+        except ValueError:
+            warnings.append(f"无法解析 daily_change 值: {daily_change_str}")
+    
+    # 检查 nav_history 中的 change 字段
+    if "nav_history" in data and isinstance(data["nav_history"], list):
+        for i, item in enumerate(data["nav_history"]):
+            if isinstance(item, dict) and "change" in item:
+                change_str = item["change"]
+                try:
+                    change = float(change_str.rstrip('%'))
+                    if abs(change) > 15.0:
+                        warnings.append(f"历史数据第{i}条涨跌幅异常: {change_str} (阈值: ±15%)")
+                except ValueError:
+                    warnings.append(f"无法解析 nav_history[{i}] 的 change 值: {change_str}")
+    
+    # 检查 ytd_return 字段
+    if "ytd_return" in data:
+        ytd_return_str = data["ytd_return"]
+        try:
+            ytd_return = float(ytd_return_str.rstrip('%'))
+            if abs(ytd_return) > 100.0:
+                warnings.append(f"年化回报异常: {ytd_return_str} (阈值: ±100%)")
+        except ValueError:
+            warnings.append(f"无法解析 ytd_return 值: {ytd_return_str}")
+    
+    # 输出警告
+    if warnings:
+        print(f"[VALIDATE:BOUNDARY_WARN] 数值边界检查发现 {len(warnings)} 个警告:", file=sys.stderr)
+        for warning in warnings:
+            print(f"[VALIDATE:BOUNDARY_WARN]   - {warning}", file=sys.stderr)
+        return False  # 如果有警告，返回False（在严格模式下）
+    
+    print(f"[VALIDATE:INFO] 数值边界检查通过", file=sys.stdout)
+    return True
+
 def main():
     parser = argparse.ArgumentParser(description="验证 JSON 文件格式和结构")
     parser.add_argument("--file", required=True, help="要验证的 JSON 文件路径")
     parser.add_argument("--schema", help="JSON Schema 文件路径（可选）")
     parser.add_argument("--strict", action="store_true", help="严格模式：所有警告视为错误")
+    parser.add_argument("--check-boundary", action="store_true", help="启用数值边界检查（如单日波动超过15%触发警告）")
     
     args = parser.parse_args()
     
@@ -144,7 +192,19 @@ def main():
         if not schema_validation(data, args.schema):
             sys.exit(5)
     
-    # 5. 额外检查：数据新鲜度（可选）
+    # 5. 数值边界检查（如果启用）
+    if args.check_boundary:
+        print(f"[VALIDATE:INFO] 执行数值边界检查...", file=sys.stdout)
+        boundary_ok = numeric_boundary_check(data)
+        
+        if not boundary_ok:
+            if args.strict:
+                print(f"[VALIDATE:ERROR] 严格模式下数值边界检查失败", file=sys.stderr)
+                sys.exit(6)
+            else:
+                print(f"[VALIDATE:WARN] 数值边界检查发现警告（非严格模式继续）", file=sys.stderr)
+    
+    # 6. 额外检查：数据新鲜度（可选）
     # 这里可以检查 last_updated 字段是否在最近 24 小时内
     # 但这是业务逻辑，不是结构验证
     

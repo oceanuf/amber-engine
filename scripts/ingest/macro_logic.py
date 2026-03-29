@@ -155,9 +155,9 @@ def call_validate(tmp_path):
     
     # 检查 schema 文件是否存在
     if os.path.exists(SCHEMA_FILE):
-        cmd = f"python3 {validate_script} --schema {SCHEMA_FILE} --file {tmp_path}"
+        cmd = f"python3 {validate_script} --schema {SCHEMA_FILE} --file {tmp_path} --check-boundary"
     else:
-        cmd = f"python3 {validate_script} --file {tmp_path}"
+        cmd = f"python3 {validate_script} --file {tmp_path} --check-boundary"
     
     log_info(f"执行验证: {cmd}")
     exit_code = os.system(cmd)

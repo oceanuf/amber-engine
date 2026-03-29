@@ -12,6 +12,7 @@
     "ytd_return",
     "risk_level",
     "asset_class",
+    "fetch_time",
     "last_updated"
   ],
   "properties": {
@@ -64,9 +65,15 @@
       "type": "string",
       "enum": ["股票", "债券", "商品", "货币", "混合"]
     },
+    "fetch_time": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$",
+      "description": "数据抓取时间戳，用于新鲜度检测"
+    },
     "last_updated": {
       "type": "string",
-      "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$"
+      "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$",
+      "description": "数据本身的时间戳（如基金净值更新时间）"
     }
   },
   "additionalProperties": false

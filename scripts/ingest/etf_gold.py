@@ -61,6 +61,7 @@ def fetch_gold_data():
     change_percent = (today_price - base_price) / base_price * 100
     
     # 构建与现有结构一致的数据
+    fetch_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     data = {
         "ticker": "518880",
         "name": "华安黄金易ETF",
@@ -70,7 +71,8 @@ def fetch_gold_data():
         "ytd_return": f"{random.uniform(5.0, 10.0):+.2f}%",
         "risk_level": "低",
         "asset_class": "商品",
-        "last_updated": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        "fetch_time": fetch_time,  # 数据抓取时间戳
+        "last_updated": fetch_time  # 数据更新时间戳（与fetch_time相同）
     }
     
     # 生成最近10天的历史数据
@@ -116,9 +118,10 @@ def call_validate(tmp_path):
     # 检查 schema 文件是否存在
     schema_file = "config/schema_ingest.json"
     if os.path.exists(schema_file):
-        cmd = f"python3 {validate_script} --schema {schema_file} --file {tmp_path}"
+        # 添加数值边界检查参数
+        cmd = f"python3 {validate_script} --schema {schema_file} --file {tmp_path} --check-boundary"
     else:
-        cmd = f"python3 {validate_script} --file {tmp_path}"
+        cmd = f"python3 {validate_script} --file {tmp_path} --check-boundary"
     
     log_info(f"执行验证: {cmd}")
     exit_code = os.system(cmd)
