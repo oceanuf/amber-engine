@@ -42,7 +42,8 @@ MODULES = [
         "circuit_break_on": ["SCHEMA_MISMATCH", "AUTH_FAIL"],  # 对这些错误码熔断
         "max_retries": 3,
         "timeout": 300,  # 秒
-        "frequency": "daily"
+        "frequency": "daily",
+        "dependencies": []  # 无依赖
     },
     {
         "name": "ingest_etf_index",
@@ -51,7 +52,8 @@ MODULES = [
         "circuit_break_on": ["SCHEMA_MISMATCH", "AUTH_FAIL"],  # 对这些错误码熔断
         "max_retries": 3,
         "timeout": 300,  # 秒
-        "frequency": "daily"
+        "frequency": "daily",
+        "dependencies": []
     },
     {
         "name": "ingest_macro_logic",
@@ -60,7 +62,8 @@ MODULES = [
         "circuit_break_on": ["SCHEMA_MISMATCH", "AUTH_FAIL"],  # 对这些错误码熔断
         "max_retries": 3,
         "timeout": 300,  # 秒
-        "frequency": "weekly"
+        "frequency": "weekly",
+        "dependencies": []
     },
     {
         "name": "ingest_sentiment_monitor",
@@ -69,9 +72,20 @@ MODULES = [
         "circuit_break_on": ["SCHEMA_MISMATCH", "AUTH_FAIL"],  # 对这些错误码熔断
         "max_retries": 3,
         "timeout": 300,  # 秒
-        "frequency": "daily"
+        "frequency": "daily",
+        "dependencies": []
+    },
+    {
+        "name": "cleaner_etf_purify",
+        "path": "scripts/cleaner/etf_purify.py",
+        "retry_on": ["NET_TIMEOUT", "FILE_WRITE_FAIL"],  # 对这些错误码重试
+        "circuit_break_on": ["SCHEMA_MISMATCH", "VALIDATE_FAIL"],  # 对这些错误码熔断
+        "max_retries": 2,
+        "timeout": 600,  # 清洗可能需要更长时间
+        "frequency": "daily",
+        "dependencies": ["ingest_etf_gold", "ingest_etf_index"]  # 依赖这两个 ingest 模块
     }
-    # 可以添加更多模块：Cleaner, Storer, Analyzer 等
+    # 可以添加更多模块：Storer, Analyzer, Synthesizer 等
 ]
 
 LOG_DIR = "logs"
@@ -304,8 +318,10 @@ def main():
     if "GOLD_API_KEY" not in os.environ:
         log("WARN", "orchestrator", "GOLD_API_KEY 环境变量未设置，模块可能使用模拟数据")
     
-    # 执行所有模块
+    # 执行所有模块（支持依赖关系）
     results = []
+    module_status = {}  # 记录模块执行状态: {name: (success, error_info)}
+    
     for module_config in MODULES:
         module_name = module_config["name"]
         
@@ -313,10 +329,36 @@ def main():
         if not os.path.exists(module_config["path"]):
             log("ERROR", "orchestrator", f"模块文件不存在: {module_config['path']}")
             results.append((False, module_name, "MODULE_FILE_MISSING"))
+            module_status[module_name] = (False, "MODULE_FILE_MISSING")
             continue
         
+        # 检查依赖关系
+        dependencies = module_config.get("dependencies", [])
+        missing_deps = []
+        failed_deps = []
+        
+        for dep in dependencies:
+            if dep not in module_status:
+                missing_deps.append(dep)
+            elif not module_status[dep][0]:  # 依赖模块失败
+                failed_deps.append(dep)
+        
+        if missing_deps:
+            log("ERROR", "orchestrator", f"模块 {module_name} 依赖的模块尚未执行: {missing_deps}")
+            results.append((False, module_name, f"DEPENDENCY_NOT_EXECUTED: {missing_deps}"))
+            module_status[module_name] = (False, f"DEPENDENCY_NOT_EXECUTED: {missing_deps}")
+            continue
+        
+        if failed_deps:
+            log("WARN", "orchestrator", f"模块 {module_name} 依赖的模块失败: {failed_deps}，跳过执行")
+            results.append((False, module_name, f"DEPENDENCY_FAILED: {failed_deps}"))
+            module_status[module_name] = (False, f"DEPENDENCY_FAILED: {failed_deps}")
+            continue
+        
+        # 执行模块
         success, error_info = run_module(module_config)
         results.append((success, module_name, error_info))
+        module_status[module_name] = (success, error_info)
     
     # 生成报告
     report = generate_execution_report(results)

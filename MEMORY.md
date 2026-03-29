@@ -188,6 +188,51 @@
 - ✅ 密钥安全隔离 (环境变量注入)
 - ✅ 调度器容错 (重试、熔断、持久化)
 
+### Task-20260330-C 成果 (2026-03-29)
+**任务**: 数据验伪与降噪 (Cleaner) - 标准链条第2节点
+
+**交付组件**:
+1. `scripts/cleaner/etf_purify.py`
+   - ETF数据净化与验伪模组
+   - 空值处理 (Forward Fill 前一日数据)
+   - 异常值拦截 (单日波动超过±10%触发警告)
+   - 格式对齐 (日期YYYY-MM-DD，价格小数点后四位)
+   - 原子写入协议遵循
+
+2. `config/schema_cleaned.json`
+   - 清洗后数据Schema验证模板
+   - 支持ETF指数数据与单个ETF数据
+   - 包含清洗元数据 (`cleaned_time`, `cleaned_by`)
+
+3. `scripts/validate.py` 增强
+   - 已支持清洗后数据Schema校验
+   - 数值边界检查集成 (单日波动±15%，年化回报±100%)
+
+4. `scripts/orchestrator.py` 升级
+   - 依赖关系支持 (`dependencies`字段)
+   - Cleaner模组调度 (依赖Ingest成功)
+   - 模块执行状态跟踪
+
+**核心清洗逻辑**:
+- **数据读取**: 自动扫描 `database/` 目录下的原始JSON文件
+- **降噪算法**: 
+  - 空值处理: 净值为0或null时，自动向前填充
+  - 异常值拦截: 单日波动率超过±10%标记为异常 (涨跌停情况特殊处理)
+  - 格式对齐: 统一日期格式为YYYY-MM-DD，统一数值精度至小数点后四位
+- **数据输出**: 清洗后文件保存至 `database/cleaned/` 目录，添加 `_cleaned` 后缀
+
+**工业规范遵循**:
+- ✅ 原子性写入协议: Temp-Write → Validate → Rename 闭环实现
+- ✅ 错误契约: 结构化错误码 (`[MISSING_DATA]`, `[INVALID_DATE_FORMAT]`等)
+- ✅ 调度器集成: 依赖Ingest模块，成功后才执行Cleaner
+- ✅ 验证中枢: 使用 `schema_cleaned.json` 进行严格校验
+- ✅ 日志分级: INFO/WARN/ERROR 三级日志，结构化stderr输出
+
+**架构师智慧锚点实现**:
+- "质量即生命线": Cleaner作为最"毒舌"的关卡，对数据烂得太厉害的情况直接报错拒绝输出
+- "宁愿模块因校验失败而熔断，也绝不允许任何一条格式错误的数据进入系统"
+- 为后续 Storer, Analyzer, Synthesizer 等节点提供净化后的高质量数据
+
 ### 架构师审计与工业强化 (2614-012号)
 **审计时间**: 2026-03-29 13:23  
 **审计结论**: 🟢 满分通过，生产线已具备大规模流水线作业条件
