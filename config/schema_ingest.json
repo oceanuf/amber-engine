@@ -1,0 +1,73 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Gold ETF Data Schema",
+  "description": "验证黄金 ETF 数据提取输出的 JSON 结构",
+  "type": "object",
+  "required": [
+    "ticker",
+    "name",
+    "nav_history",
+    "current_nav",
+    "daily_change",
+    "ytd_return",
+    "risk_level",
+    "asset_class",
+    "last_updated"
+  ],
+  "properties": {
+    "ticker": {
+      "type": "string",
+      "pattern": "^[0-9]{6}$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "nav_history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["date", "price", "change"],
+        "properties": {
+          "date": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "price": {
+            "type": "string",
+            "pattern": "^\\d+\\.\\d{3}$"
+          },
+          "change": {
+            "type": "string",
+            "pattern": "^[+-]\\d+\\.\\d{2}%$"
+          }
+        }
+      }
+    },
+    "current_nav": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d{3}$"
+    },
+    "daily_change": {
+      "type": "string",
+      "pattern": "^[+-]\\d+\\.\\d{2}%$"
+    },
+    "ytd_return": {
+      "type": "string",
+      "pattern": "^[+-]\\d+\\.\\d{2}%$"
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": ["低", "中", "高"]
+    },
+    "asset_class": {
+      "type": "string",
+      "enum": ["股票", "债券", "商品", "货币", "混合"]
+    },
+    "last_updated": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$"
+    }
+  },
+  "additionalProperties": false
+}
