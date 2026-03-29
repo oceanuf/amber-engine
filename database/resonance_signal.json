@@ -1,0 +1,56 @@
+{
+  "ticker": "518880",
+  "name": "华安黄金易ETF",
+  "signal_time": "2026-03-29T15:11:56.953964",
+  "resonance_score": 0.0,
+  "signal_status": "生存预警",
+  "action": "清仓",
+  "action_type": "EXIT",
+  "min_holding_days": 60,
+  "hit_count": 0,
+  "hits": [],
+  "veto_applied": false,
+  "latest_info": {
+    "date": "2026-03-29",
+    "price": 4.879,
+    "change": 0.0
+  },
+  "strategy_summary": {
+    "Gravity-Dip": {
+      "hit": false,
+      "score": 0.0,
+      "confidence": 0.0,
+      "signals": [
+        "数据不足: 历史数据不足，需要250天，实际10天"
+      ],
+      "signal_type": "unknown"
+    },
+    "Dual-Momentum": {
+      "hit": false,
+      "score": 0.0,
+      "confidence": 0.0,
+      "signals": [
+        "数据不足: 历史数据不足，需要250天，实际10天"
+      ],
+      "signal_type": "unknown"
+    },
+    "Vol-Squeeze": {
+      "hit": false,
+      "score": 0.0,
+      "confidence": 0.0,
+      "signals": [
+        "数据不足: 历史数据不足，需要60天，实际10天"
+      ],
+      "signal_type": "unknown"
+    },
+    "Dividend-Alpha": {
+      "hit": false,
+      "score": 0.0,
+      "confidence": 0.0,
+      "signals": [
+        "数据不足: 历史数据不足，需要60天，实际10天"
+      ],
+      "signal_type": "unknown"
+    }
+  }
+}

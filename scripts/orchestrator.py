@@ -114,8 +114,18 @@ MODULES = [
         "timeout": 600,
         "frequency": "daily",
         "dependencies": ["analyzer_indicator_engine"]
+    },
+    {
+        "name": "synthesizer_resonance_engine",
+        "path": "scripts/synthesizer/resonance_engine.py",
+        "retry_on": ["DATA_LOAD_FAIL", "CONFIG_LOAD_FAIL", "WEIGHTS_LOAD_FAIL", "SYNTHESIS_FAIL", "FILE_WRITE_FAIL"],
+        "circuit_break_on": ["SCHEMA_VALIDATE_FAIL", "ATOMIC_VALIDATE_FAIL", "NO_STRATEGIES"],
+        "max_retries": 2,
+        "timeout": 900,  # 需要更多时间运行多个算法
+        "frequency": "daily",
+        "dependencies": ["analyzer_indicator_engine"]  # 依赖分析数据
     }
-    # 可以添加更多模块：Synthesizer, Targeter 等
+    # 可以添加更多模块：Targeter, Advisor, Notary 等
 ]
 
 LOG_DIR = "logs"

@@ -1,0 +1,35 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2026-03-29T14:48:00",
+  "global_rules": {
+    "min_holding_days": 60,
+    "action_labels": {
+      "BUY_ZONE": "买入区间",
+      "HOLD": "持仓",
+      "REDUCE": "减持",
+      "EXIT": "清仓"
+    },
+    "score_thresholds": {
+      "extreme_comfort": 80,
+      "comfort": 60,
+      "neutral": 40,
+      "caution": 30,
+      "survival_warning": 30
+    },
+    "resonance_multiplier": 1.5,
+    "single_algorithm_score": 10,
+    "weekly_rsi_veto_threshold": 80,
+    "veto_penalty_score": 40
+  },
+  "algorithm_defaults": {
+    "lookback_periods": {
+      "short_term": 20,
+      "medium_term": 60,
+      "long_term": 120,
+      "very_long_term": 250
+    },
+    "volume_threshold_percent": 50,
+    "z_score_threshold": 2.0,
+    "momentum_rank_threshold_percent": 30
+  }
+}

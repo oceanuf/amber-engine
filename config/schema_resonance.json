@@ -1,0 +1,137 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Resonance Signal Schema",
+  "description": "验证共振信号输出的 JSON 结构 - 符合 V1.2.1 标准",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "ticker",
+    "name",
+    "signal_time",
+    "resonance_score",
+    "signal_status",
+    "action",
+    "action_type",
+    "min_holding_days",
+    "hit_count",
+    "hits",
+    "veto_applied",
+    "latest_info",
+    "strategy_summary"
+  ],
+  "properties": {
+    "ticker": {
+      "description": "标的代码",
+      "type": "string",
+      "pattern": "^[0-9]{6}$"
+    },
+    "name": {
+      "description": "标的名称",
+      "type": "string"
+    },
+    "signal_time": {
+      "description": "信号生成时间 (ISO 8601)",
+      "type": "string",
+      "format": "date-time"
+    },
+    "resonance_score": {
+      "description": "共振综合评分 (0-100)",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "signal_status": {
+      "description": "信号状态",
+      "type": "string",
+      "enum": ["极度舒适", "舒适", "中性", "谨慎", "生存预警"]
+    },
+    "action": {
+      "description": "操作建议 (中文字符)",
+      "type": "string"
+    },
+    "action_type": {
+      "description": "操作类型代码",
+      "type": "string",
+      "enum": ["BUY_ZONE", "HOLD", "REDUCE", "EXIT"]
+    },
+    "min_holding_days": {
+      "description": "最小持仓预期天数",
+      "type": "integer",
+      "minimum": 1
+    },
+    "hit_count": {
+      "description": "命中算法数量",
+      "type": "integer",
+      "minimum": 0
+    },
+    "hits": {
+      "description": "命中算法名称列表",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "veto_applied": {
+      "description": "是否应用了一票否决权",
+      "type": "boolean"
+    },
+    "latest_info": {
+      "description": "最新价格信息",
+      "type": "object",
+      "required": ["date", "price", "change"],
+      "properties": {
+        "date": {
+          "description": "最新数据日期",
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "price": {
+          "description": "最新价格",
+          "type": "number",
+          "minimum": 0
+        },
+        "change": {
+          "description": "最新涨跌幅",
+          "type": "number"
+        }
+      }
+    },
+    "strategy_summary": {
+      "description": "策略结果摘要",
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["hit", "score", "confidence", "signals", "signal_type"],
+        "properties": {
+          "hit": {
+            "description": "是否命中",
+            "type": "boolean"
+          },
+          "score": {
+            "description": "策略得分 (0-100)",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "confidence": {
+            "description": "置信度 (0-1)",
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "signals": {
+            "description": "信号列表",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "signal_type": {
+            "description": "信号类型",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

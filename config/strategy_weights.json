@@ -1,0 +1,38 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2026-03-29T14:50:00",
+  "algorithm_weights": {
+    "Gravity-Dip": {
+      "weight": 1.0,
+      "enabled": true,
+      "description": "橡皮筋阈值策略，捕捉价格回归机会"
+    },
+    "Dual-Momentum": {
+      "weight": 1.0,
+      "enabled": true,
+      "description": "双重动量策略，长期向上且短期强势"
+    },
+    "Vol-Squeeze": {
+      "weight": 1.0,
+      "enabled": true,
+      "description": "波动率挤压策略，识别低波动潜伏期"
+    },
+    "Dividend-Alpha": {
+      "weight": 1.0,
+      "enabled": true,
+      "description": "分红保护垫策略，评估股息收益保护"
+    }
+  },
+  "resonance_rules": {
+    "single_algorithm_score": 10,
+    "resonance_multiplier": 1.5,
+    "min_algorithms_for_resonance": 2,
+    "weekly_rsi_veto_threshold": 80,
+    "veto_penalty_score": 40
+  },
+  "scoring": {
+    "base_score_range": [0, 100],
+    "normalization_method": "min_max",
+    "confidence_weight": 0.3
+  }
+}
