@@ -1,0 +1,58 @@
+{
+  "timestamp": "2026-03-30T15:03:43.289949",
+  "total_modules": 10,
+  "successful": 5,
+  "failed": 5,
+  "details": [
+    {
+      "module": "ingest_etf_gold",
+      "success": true,
+      "error": null
+    },
+    {
+      "module": "ingest_etf_index",
+      "success": true,
+      "error": null
+    },
+    {
+      "module": "ingest_macro_logic",
+      "success": true,
+      "error": null
+    },
+    {
+      "module": "ingest_sentiment_monitor",
+      "success": true,
+      "error": null
+    },
+    {
+      "module": "ingest_tushare_adapter",
+      "success": true,
+      "error": null
+    },
+    {
+      "module": "cleaner_etf_purify",
+      "success": false,
+      "error": "CIRCUIT_BROKEN"
+    },
+    {
+      "module": "storer_vault_storer",
+      "success": false,
+      "error": "DEPENDENCY_FAILED: ['cleaner_etf_purify']"
+    },
+    {
+      "module": "analyzer_indicator_engine",
+      "success": false,
+      "error": "DEPENDENCY_FAILED: ['storer_vault_storer']"
+    },
+    {
+      "module": "synthesizer_score_engine",
+      "success": false,
+      "error": "DEPENDENCY_FAILED: ['analyzer_indicator_engine']"
+    },
+    {
+      "module": "synthesizer_resonance_engine",
+      "success": false,
+      "error": "DEPENDENCY_FAILED: ['analyzer_indicator_engine']"
+    }
+  ]
+}

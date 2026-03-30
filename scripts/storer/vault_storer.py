@@ -292,6 +292,9 @@ def identify_data_type(cleaned_data):
         return 'etf_index'
     elif 'ticker' in cleaned_data and 'nav_history' in cleaned_data:
         return 'single_etf'
+    elif 'cleaned_by' in cleaned_data and cleaned_data['cleaned_by'] == 'cleaner_etf_purify':
+        # 这是cleaner处理过的非ETF数据，跳过存储
+        return 'non_etf_skip'
     else:
         return 'unknown'
 
@@ -319,6 +322,11 @@ def process_cleaned_file(cleaned_path):
         ticker = cleaned_data.get('ticker', 'unknown')
         history_path = os.path.join(HISTORY_DIR, f"history_{ticker}.json")
         return process_single_etf(cleaned_data, history_path)
+    
+    elif data_type == 'non_etf_skip':
+        # 非ETF数据，跳过存储
+        log_info(f"非ETF数据，跳过存储: {cleaned_path}")
+        return True
     
     else:
         log_error("UNSUPPORTED_DATA_TYPE", f"不支持的数据类型: {data_type}")

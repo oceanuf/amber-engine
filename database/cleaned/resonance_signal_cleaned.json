@@ -1,33 +1,34 @@
 {
   "ticker": "518880",
   "name": "黄金ETF",
-  "signal_time": "2026-03-30T18:00:20.430363",
-  "resonance_score": 50.84,
+  "signal_time": "2026-03-30T15:30:15.452486",
+  "resonance_score": 44.07,
   "signal_status": "中性",
-  "action": "持仓",
-  "action_type": "HOLD",
+  "action": "减持",
+  "action_type": "REDUCE",
   "min_holding_days": 60,
-  "hit_count": 3,
+  "hit_count": 4,
   "hits": [
     "Gravity-Dip",
+    "Vol-Squeeze",
     "Weekly-RSI",
     "Macro-Gold"
   ],
   "veto_applied": false,
   "latest_info": {
-    "date": "20260330",
-    "price": 9.656,
-    "change": 0.162
+    "date": "20260327",
+    "price": 9.494,
+    "change": 0.044
   },
   "strategy_summary": {
     "Gravity-Dip": {
       "hit": true,
-      "score": 93.74,
-      "confidence": 0.78,
+      "score": 52.72,
+      "confidence": 0.73,
       "signals": [
-        "历史性低位: 偏离处于历史最低10%区间"
+        "极度超卖: 价格显著低于均线"
       ],
-      "signal_type": "historical_low"
+      "signal_type": "oversold"
     },
     "Dual-Momentum": {
       "hit": false,
@@ -39,13 +40,13 @@
       "signal_type": "unknown"
     },
     "Vol-Squeeze": {
-      "hit": false,
-      "score": 0.0,
+      "hit": true,
+      "score": 10.0,
       "confidence": 0.5,
       "signals": [
-        "波动率信号中性"
+        "价格接近布林带下轨"
       ],
-      "signal_type": "neutral"
+      "signal_type": "unknown"
     },
     "Dividend-Alpha": {
       "hit": false,
@@ -58,10 +59,10 @@
     },
     "Weekly-RSI": {
       "hit": true,
-      "score": 21.73,
-      "confidence": 0.51,
+      "score": 26.26,
+      "confidence": 0.53,
       "signals": [
-        "超卖: 周线RSI=29.4 < 30"
+        "超卖: 周线RSI=27.7 < 30"
       ],
       "signal_type": "unknown"
     },
@@ -70,7 +71,7 @@
       "score": 0.0,
       "confidence": 0.5,
       "signals": [
-        "Z分数正常: -1.01"
+        "Z分数正常: -1.25"
       ],
       "signal_type": "normal"
     },
@@ -80,7 +81,7 @@
       "confidence": 0.5,
       "signals": [
         "MA5 ≤ MA20 (短期偏空)",
-        "价格显著低于MA20 (-6.7%)"
+        "价格显著低于MA20 (-9.1%)"
       ],
       "signal_type": "neutral"
     },
@@ -89,7 +90,7 @@
       "score": 0.0,
       "confidence": 0.5,
       "signals": [
-        "状态：波动率比率1.26，MA20偏离-6.7%",
+        "状态：波动率比率1.97，MA20偏离-9.1%",
         "短期下跌趋势"
       ],
       "signal_type": "unknown"
@@ -116,5 +117,7 @@
     }
   },
   "weight": 1.0,
-  "type": "etf"
+  "type": "etf",
+  "cleaned_time": "2026-03-30 18:00:19",
+  "cleaned_by": "cleaner_etf_purify"
 }

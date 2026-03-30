@@ -280,21 +280,26 @@ def write_temp_file(data, tmp_path):
         log_error("FILE_WRITE_FAIL", f"写入临时文件失败: {e}")
         return False
 
-def call_validate(tmp_path):
+def call_validate(tmp_path, data_type='etf_index'):
     """调用验证脚本（如果存在）"""
     validate_script = "scripts/validate.py"
     if not os.path.exists(validate_script):
         log_warn(f"验证脚本不存在: {validate_script}，跳过验证")
         return True
     
-    # 检查 schema 文件是否存在
-    schema_file = SCHEMA_FILE
-    if os.path.exists(schema_file):
-        # 添加数值边界检查参数
-        cmd = f"python3 {validate_script} --schema {schema_file} --file {tmp_path} --check-boundary"
+    # 非ETF数据跳过schema验证，只进行基本验证
+    if data_type == 'non_etf':
+        log_info(f"非ETF数据，跳过schema验证: {tmp_path}")
+        cmd = f"python3 {validate_script} --file {tmp_path}"
     else:
-        log_warn(f"清洗后数据 Schema 不存在: {schema_file}，使用基本验证")
-        cmd = f"python3 {validate_script} --file {tmp_path} --check-boundary"
+        # 检查 schema 文件是否存在
+        schema_file = SCHEMA_FILE
+        if os.path.exists(schema_file):
+            # 添加数值边界检查参数
+            cmd = f"python3 {validate_script} --schema {schema_file} --file {tmp_path} --check-boundary"
+        else:
+            log_warn(f"清洗后数据 Schema 不存在: {schema_file}，使用基本验证")
+            cmd = f"python3 {validate_script} --file {tmp_path} --check-boundary"
     
     log_info(f"执行验证: {cmd}")
     exit_code = os.system(cmd)
@@ -368,7 +373,7 @@ def clean_single_file(input_path):
         return False
     
     # 2. 验证数据
-    if not call_validate(tmp_path):
+    if not call_validate(tmp_path, data_type):
         # 验证失败，删除临时文件
         try:
             os.unlink(tmp_path)

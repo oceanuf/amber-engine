@@ -5451,5 +5451,7 @@
     "module": "ingest_tushare_adapter",
     "ticker_count": 1,
     "data_points": 495
-  }
+  },
+  "cleaned_time": "2026-03-30 18:00:19",
+  "cleaned_by": "cleaner_etf_purify"
 }
