@@ -1,33 +1,32 @@
 {
   "metadata": {
     "report_id": "resonance_report_20260330",
-    "generated_at": "2026-03-30T18:00:20.442387",
+    "generated_at": "2026-03-30T21:21:55.937565",
     "module": "synthesizer_resonance_engine",
     "strategies_count": 10,
     "tickers_count": 3
   },
   "overall_analysis": {
     "total_tickers": 3,
-    "avg_resonance_score": 36.76,
+    "avg_resonance_score": 34.07,
     "signals_by_status": {
       "中性": 1,
-      "谨慎": 1,
-      "生存预警": 1
+      "生存预警": 2
     },
     "top_performers": [
       {
         "ticker": "518880",
         "name": "黄金ETF",
-        "resonance_score": 50.84,
+        "resonance_score": 49.11,
         "signal_status": "中性",
-        "action": "持仓"
+        "action": "减持"
       },
       {
         "ticker": "510300",
         "name": "沪深300ETF",
-        "resonance_score": 34.45,
-        "signal_status": "谨慎",
-        "action": "减持"
+        "resonance_score": 28.1,
+        "signal_status": "生存预警",
+        "action": "清仓"
       },
       {
         "ticker": "510500",
@@ -47,18 +46,18 @@
       "Triple-Cross": 2,
       "Volume-Retracement": 0,
       "Macro-Gold": 1,
-      "OBV-Divergence": 1
+      "OBV-Divergence": 0
     }
   },
   "ticker_signals": {
     "518880": {
       "ticker": "518880",
       "name": "黄金ETF",
-      "signal_time": "2026-03-30T18:00:20.430363",
-      "resonance_score": 50.84,
+      "signal_time": "2026-03-30T21:21:55.926176",
+      "resonance_score": 49.11,
       "signal_status": "中性",
-      "action": "持仓",
-      "action_type": "HOLD",
+      "action": "减持",
+      "action_type": "REDUCE",
       "min_holding_days": 60,
       "hit_count": 3,
       "hits": [
@@ -149,13 +148,14 @@
         },
         "Macro-Gold": {
           "hit": true,
-          "score": 71.5,
-          "confidence": 0.56,
+          "score": 62.5,
+          "confidence": 0.54,
           "signals": [
-            "宏观利好: 实际利率-0.15%，黄金吸引力强",
-            "注意: 使用模拟利率数据，需接入真实宏观数据"
+            "宏观偏多: 实际利率0.75%，黄金有吸引力",
+            "数据来源: 静态历史数据 (static_backup)",
+            "计算说明: 实际利率计算: 2.15% - 1.4% = 0.75%"
           ],
-          "signal_type": "macro_bullish"
+          "signal_type": "macro_mild_bullish"
         },
         "OBV-Divergence": {
           "hit": false,
@@ -174,18 +174,17 @@
     "510300": {
       "ticker": "510300",
       "name": "沪深300ETF",
-      "signal_time": "2026-03-30T18:00:20.436327",
-      "resonance_score": 34.45,
-      "signal_status": "谨慎",
-      "action": "减持",
-      "action_type": "REDUCE",
+      "signal_time": "2026-03-30T21:21:55.931926",
+      "resonance_score": 28.1,
+      "signal_status": "生存预警",
+      "action": "清仓",
+      "action_type": "EXIT",
       "min_holding_days": 60,
-      "hit_count": 4,
+      "hit_count": 3,
       "hits": [
         "Vol-Squeeze",
         "Z-Score-Bias",
-        "Triple-Cross",
-        "OBV-Divergence"
+        "Triple-Cross"
       ],
       "veto_applied": false,
       "latest_info": {
@@ -277,14 +276,14 @@
           "signal_type": "unknown"
         },
         "OBV-Divergence": {
-          "hit": true,
-          "score": 28.02,
-          "confidence": 0.48,
+          "hit": false,
+          "score": 50.0,
+          "confidence": 0.0,
           "signals": [
-            "看跌背离: 价格up，OBVdown，强度0.30",
+            "无显著背离: 价格up，OBVup",
             "注意: 使用模拟成交量数据，需接入真实成交量"
           ],
-          "signal_type": "bearish_divergence"
+          "signal_type": "no_divergence"
         }
       },
       "weight": 1.0,
@@ -293,7 +292,7 @@
     "510500": {
       "ticker": "510500",
       "name": "中证500ETF",
-      "signal_time": "2026-03-30T18:00:20.442341",
+      "signal_time": "2026-03-30T21:21:55.937521",
       "resonance_score": 25.0,
       "signal_status": "生存预警",
       "action": "清仓",
@@ -441,7 +440,7 @@
       "category": "未知"
     },
     "Macro-Gold": {
-      "description": "剥离名义金价中的利率杂质，分析实际利率对黄金的宏观影响",
+      "description": "剥离名义金价中的利率杂质，分析实际利率对黄金的宏观影响（支持数据软降级）",
       "category": "未知"
     },
     "OBV-Divergence": {

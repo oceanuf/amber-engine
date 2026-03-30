@@ -1,11 +1,11 @@
 {
   "ticker": "518880",
   "name": "黄金ETF",
-  "signal_time": "2026-03-30T18:00:20.430363",
-  "resonance_score": 50.84,
+  "signal_time": "2026-03-30T21:21:55.926176",
+  "resonance_score": 49.11,
   "signal_status": "中性",
-  "action": "持仓",
-  "action_type": "HOLD",
+  "action": "减持",
+  "action_type": "REDUCE",
   "min_holding_days": 60,
   "hit_count": 3,
   "hits": [
@@ -96,13 +96,14 @@
     },
     "Macro-Gold": {
       "hit": true,
-      "score": 71.5,
-      "confidence": 0.56,
+      "score": 62.5,
+      "confidence": 0.54,
       "signals": [
-        "宏观利好: 实际利率-0.15%，黄金吸引力强",
-        "注意: 使用模拟利率数据，需接入真实宏观数据"
+        "宏观偏多: 实际利率0.75%，黄金有吸引力",
+        "数据来源: 静态历史数据 (static_backup)",
+        "计算说明: 实际利率计算: 2.15% - 1.4% = 0.75%"
       ],
-      "signal_type": "macro_bullish"
+      "signal_type": "macro_mild_bullish"
     },
     "OBV-Divergence": {
       "hit": false,

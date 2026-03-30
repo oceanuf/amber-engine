@@ -1,14 +1,14 @@
 {
   "metadata": {
     "report_id": "resonance_report_20260330",
-    "generated_at": "2026-03-30T15:30:15.464377",
+    "generated_at": "2026-03-30T21:15:00.447144",
     "module": "synthesizer_resonance_engine",
     "strategies_count": 10,
     "tickers_count": 3
   },
   "overall_analysis": {
     "total_tickers": 3,
-    "avg_resonance_score": 32.42,
+    "avg_resonance_score": 34.65,
     "signals_by_status": {
       "中性": 1,
       "生存预警": 2
@@ -17,14 +17,14 @@
       {
         "ticker": "518880",
         "name": "黄金ETF",
-        "resonance_score": 44.07,
+        "resonance_score": 50.84,
         "signal_status": "中性",
-        "action": "减持"
+        "action": "持仓"
       },
       {
         "ticker": "510300",
         "name": "沪深300ETF",
-        "resonance_score": 28.19,
+        "resonance_score": 28.1,
         "signal_status": "生存预警",
         "action": "清仓"
       },
@@ -39,7 +39,7 @@
     "strategy_hit_counts": {
       "Gravity-Dip": 1,
       "Dual-Momentum": 0,
-      "Vol-Squeeze": 2,
+      "Vol-Squeeze": 1,
       "Dividend-Alpha": 0,
       "Weekly-RSI": 1,
       "Z-Score-Bias": 1,
@@ -53,34 +53,33 @@
     "518880": {
       "ticker": "518880",
       "name": "黄金ETF",
-      "signal_time": "2026-03-30T15:30:15.452486",
-      "resonance_score": 44.07,
+      "signal_time": "2026-03-30T21:15:00.435197",
+      "resonance_score": 50.84,
       "signal_status": "中性",
-      "action": "减持",
-      "action_type": "REDUCE",
+      "action": "持仓",
+      "action_type": "HOLD",
       "min_holding_days": 60,
-      "hit_count": 4,
+      "hit_count": 3,
       "hits": [
         "Gravity-Dip",
-        "Vol-Squeeze",
         "Weekly-RSI",
         "Macro-Gold"
       ],
       "veto_applied": false,
       "latest_info": {
-        "date": "20260327",
-        "price": 9.494,
-        "change": 0.044
+        "date": "20260330",
+        "price": 9.656,
+        "change": 0.162
       },
       "strategy_summary": {
         "Gravity-Dip": {
           "hit": true,
-          "score": 52.72,
-          "confidence": 0.73,
+          "score": 93.74,
+          "confidence": 0.78,
           "signals": [
-            "极度超卖: 价格显著低于均线"
+            "历史性低位: 偏离处于历史最低10%区间"
           ],
-          "signal_type": "oversold"
+          "signal_type": "historical_low"
         },
         "Dual-Momentum": {
           "hit": false,
@@ -92,13 +91,13 @@
           "signal_type": "unknown"
         },
         "Vol-Squeeze": {
-          "hit": true,
-          "score": 10.0,
+          "hit": false,
+          "score": 0.0,
           "confidence": 0.5,
           "signals": [
-            "价格接近布林带下轨"
+            "波动率信号中性"
           ],
-          "signal_type": "unknown"
+          "signal_type": "neutral"
         },
         "Dividend-Alpha": {
           "hit": false,
@@ -111,10 +110,10 @@
         },
         "Weekly-RSI": {
           "hit": true,
-          "score": 26.26,
-          "confidence": 0.53,
+          "score": 21.73,
+          "confidence": 0.51,
           "signals": [
-            "超卖: 周线RSI=27.7 < 30"
+            "超卖: 周线RSI=29.4 < 30"
           ],
           "signal_type": "unknown"
         },
@@ -123,7 +122,7 @@
           "score": 0.0,
           "confidence": 0.5,
           "signals": [
-            "Z分数正常: -1.25"
+            "Z分数正常: -1.01"
           ],
           "signal_type": "normal"
         },
@@ -133,7 +132,7 @@
           "confidence": 0.5,
           "signals": [
             "MA5 ≤ MA20 (短期偏空)",
-            "价格显著低于MA20 (-9.1%)"
+            "价格显著低于MA20 (-6.7%)"
           ],
           "signal_type": "neutral"
         },
@@ -142,7 +141,7 @@
           "score": 0.0,
           "confidence": 0.5,
           "signals": [
-            "状态：波动率比率1.97，MA20偏离-9.1%",
+            "状态：波动率比率1.26，MA20偏离-6.7%",
             "短期下跌趋势"
           ],
           "signal_type": "unknown"
@@ -174,8 +173,8 @@
     "510300": {
       "ticker": "510300",
       "name": "沪深300ETF",
-      "signal_time": "2026-03-30T15:30:15.458374",
-      "resonance_score": 28.19,
+      "signal_time": "2026-03-30T21:15:00.441308",
+      "resonance_score": 28.1,
       "signal_status": "生存预警",
       "action": "清仓",
       "action_type": "EXIT",
@@ -188,9 +187,9 @@
       ],
       "veto_applied": false,
       "latest_info": {
-        "date": "20260327",
-        "price": 4.508,
-        "change": 0.02
+        "date": "20260330",
+        "price": 4.5,
+        "change": -0.008
       },
       "strategy_summary": {
         "Gravity-Dip": {
@@ -231,19 +230,19 @@
         },
         "Weekly-RSI": {
           "hit": false,
-          "score": 20.24,
+          "score": 26.79,
           "confidence": 0.3,
           "signals": [
-            "偏弱: 周线RSI=39.8"
+            "偏弱: 周线RSI=33.2"
           ],
           "signal_type": "unknown"
         },
         "Z-Score-Bias": {
           "hit": true,
-          "score": 18.84,
+          "score": 18.33,
           "confidence": 0.4,
           "signals": [
-            "适度低估: Z分数=-1.94 < -1.5"
+            "适度低估: Z分数=-1.92 < -1.5"
           ],
           "signal_type": "moderately_undervalued"
         },
@@ -261,7 +260,7 @@
           "score": 0.0,
           "confidence": 0.5,
           "signals": [
-            "状态：波动率比率1.65，MA20偏离-2.4%",
+            "状态：波动率比率0.99，MA20偏离-2.3%",
             "短期下跌趋势"
           ],
           "signal_type": "unknown"
@@ -292,7 +291,7 @@
     "510500": {
       "ticker": "510500",
       "name": "中证500ETF",
-      "signal_time": "2026-03-30T15:30:15.464331",
+      "signal_time": "2026-03-30T21:15:00.447101",
       "resonance_score": 25.0,
       "signal_status": "生存预警",
       "action": "清仓",
@@ -304,9 +303,9 @@
       ],
       "veto_applied": false,
       "latest_info": {
-        "date": "20260327",
-        "price": 7.803,
-        "change": 0.103
+        "date": "20260330",
+        "price": 7.818,
+        "change": 0.015
       },
       "strategy_summary": {
         "Gravity-Dip": {
@@ -347,10 +346,10 @@
         },
         "Weekly-RSI": {
           "hit": false,
-          "score": 25.42,
+          "score": 29.7,
           "confidence": 0.3,
           "signals": [
-            "偏弱: 周线RSI=34.6"
+            "偏弱: 周线RSI=30.3"
           ],
           "signal_type": "unknown"
         },
@@ -377,7 +376,7 @@
           "score": 0.0,
           "confidence": 0.5,
           "signals": [
-            "状态：波动率比率1.49，MA20偏离-4.3%",
+            "状态：波动率比率0.99，MA20偏离-3.5%",
             "短期下跌趋势"
           ],
           "signal_type": "unknown"
@@ -448,6 +447,6 @@
       "category": "未知"
     }
   },
-  "cleaned_time": "2026-03-30 18:00:19",
+  "cleaned_time": "2026-03-30 21:15:09",
   "cleaned_by": "cleaner_etf_purify"
 }

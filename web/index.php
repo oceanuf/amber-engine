@@ -267,35 +267,81 @@
         </div>
     </div>
 
+    <?php
+    // 读取真实的共振报告数据
+    $reportFile = __DIR__ . '/../database/resonance_report_20260330.json';
+    $resonanceData = null;
+    
+    if (file_exists($reportFile)) {
+        $jsonContent = file_get_contents($reportFile);
+        $reportData = json_decode($jsonContent, true);
+        
+        // 提取黄金ETF的数据
+        if (isset($reportData['ticker_signals']['518880'])) {
+            $goldData = $reportData['ticker_signals']['518880'];
+            
+            // 构建前端需要的数据结构
+            $resonanceData = [
+                'ticker' => $goldData['ticker'],
+                'name' => $goldData['name'],
+                'resonance_score' => $goldData['resonance_score'],
+                'signal_status' => $goldData['signal_status'],
+                'action' => $goldData['action'],
+                'hit_count' => $goldData['hit_count'],
+                'hits' => $goldData['hits'],
+                'veto_applied' => $goldData['veto_applied'],
+                'latest_info' => $goldData['latest_info'],
+                'report_time' => $goldData['signal_time']
+            ];
+            
+            // 提取策略得分
+            $strategyScores = [];
+            foreach ($goldData['strategy_summary'] as $strategyName => $strategyData) {
+                $strategyScores[$strategyName] = $strategyData['score'];
+            }
+            $resonanceData['strategy_scores'] = $strategyScores;
+        }
+    }
+    
+    // 如果没有找到数据，使用模拟数据作为降级
+    if (!$resonanceData) {
+        $resonanceData = [
+            'ticker' => "518880",
+            'name' => "黄金ETF",
+            'resonance_score' => 50.84,
+            'signal_status' => "中性",
+            'action' => "持仓",
+            'hit_count' => 3,
+            'hits' => ["Gravity-Dip", "Weekly-RSI", "Macro-Gold"],
+            'strategy_scores' => [
+                "Gravity-Dip" => 93.74,
+                "Dual-Momentum" => 0.0,
+                "Vol-Squeeze" => 0.0,
+                "Dividend-Alpha" => 0.0,
+                "Weekly-RSI" => 21.73,
+                "Z-Score-Bias" => 0.0,
+                "Triple-Cross" => 0.0,
+                "Volume-Retracement" => 0.0,
+                "Macro-Gold" => 71.5,
+                "OBV-Divergence" => 50.0
+            ],
+            'veto_applied' => false,
+            'latest_info' => [
+                'date' => '20260330',
+                'price' => 9.656,
+                'change' => 0.162
+            ],
+            'report_time' => "2026-03-30 18:00:20"
+        ];
+    }
+    ?>
+    
     <script>
         // 当前时间
         document.getElementById('currentTime').textContent = new Date().toLocaleString('zh-CN');
         
-        // 模拟数据（实际应从后端API获取）
-        const resonanceData = {
-            ticker: "518880",
-            name: "黄金ETF",
-            resonance_score: 85.5,
-            signal_status: "极度舒适",
-            action: "买入区间",
-            hit_count: 7,
-            hits: ["Gravity-Dip", "Dual-Momentum", "Vol-Squeeze", "Weekly-RSI", "Triple-Cross", "Macro-Gold", "OBV-Divergence"],
-            strategy_scores: {
-                "Gravity-Dip": 75,
-                "Dual-Momentum": 82,
-                "Vol-Squeeze": 68,
-                "Dividend-Alpha": 45,
-                "Weekly-RSI": 72,
-                "Z-Score-Bias": 60,
-                "Triple-Cross": 88,
-                "Volume-Retracement": 55,
-                "Macro-Gold": 90,
-                "OBV-Divergence": 85
-            },
-            veto_applied: false,
-            purple_recommendation: true,
-            report_time: "2026-03-29 16:20:00"
-        };
+        // 真实数据从PHP传递
+        const resonanceData = <?php echo json_encode($resonanceData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE); ?>;
         
         // 策略元数据
         const strategies = [
@@ -452,16 +498,63 @@
             }, 1000);
         });
         
-        // 模拟从后端API获取数据
+        // 从后端API获取最新数据
         function fetchResonanceData() {
-            // 实际应用中应使用fetch API
-            // fetch('/api/resonance_report_latest.json')
-            //   .then(response => response.json())
-            //   .then(data => {
-            //       updateUIWithRealData(data);
-            //   });
+            fetch('get_latest_data.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        updateUIWithRealData(data.resonanceData);
+                        console.log('数据更新成功:', new Date().toLocaleString('zh-CN'));
+                    } else {
+                        console.warn('数据更新失败，使用当前数据:', data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('获取数据失败:', error);
+                    // 保持当前数据显示
+                });
+        }
+        
+        // 使用真实数据更新UI
+        function updateUIWithRealData(data) {
+            // 更新共振评分
+            document.getElementById('resonanceScore').textContent = data.resonance_score.toFixed(2);
+            document.getElementById('signalStatus').textContent = data.signal_status;
+            document.getElementById('actionRecommendation').textContent = data.action;
+            document.getElementById('hitCount').textContent = data.hit_count;
             
-            console.log('从后端API获取共振数据...');
+            // 更新最新价格
+            if (data.latest_info) {
+                document.getElementById('latestPrice').textContent = data.latest_info.price.toFixed(3);
+                document.getElementById('priceChange').textContent = data.latest_info.change.toFixed(3);
+                document.getElementById('priceDate').textContent = formatDate(data.latest_info.date);
+            }
+            
+            // 更新报告时间
+            document.getElementById('reportTime').textContent = formatDateTime(data.report_time);
+            
+            // 更新雷达图
+            updateRadarChart(data.strategy_scores);
+        }
+        
+        // 日期格式化函数
+        function formatDate(dateStr) {
+            if (!dateStr) return '未知日期';
+            const year = dateStr.substring(0, 4);
+            const month = dateStr.substring(4, 6);
+            const day = dateStr.substring(6, 8);
+            return `${year}-${month}-${day}`;
+        }
+        
+        function formatDateTime(dateTimeStr) {
+            if (!dateTimeStr) return '未知时间';
+            try {
+                const date = new Date(dateTimeStr);
+                return date.toLocaleString('zh-CN');
+            } catch (e) {
+                return dateTimeStr;
+            }
         }
         
         // 每30秒更新一次数据

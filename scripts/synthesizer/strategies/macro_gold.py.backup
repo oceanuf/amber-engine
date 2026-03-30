@@ -1,31 +1,22 @@
 #!/usr/bin/env python3
 """
-Macro Gold Strategy (G9) - 宏观对冲锚定策略 (增强版)
+Macro Gold Strategy (G9) - 宏观对冲锚定策略
 剥离名义金价中的利率杂质，寻找黄金真正的"隐性引力点"
-[2614-027] 架构师指令 - 宏观数据"软降级"配置实现
-
 公式：黄金价格 - f(10年期美债实际利率)
-实际利率 = 名义利率 - 通胀率
-
-数据源优先级：
-1. Tushare API实时数据（未来接入）
-2. config/macro_base.json静态历史数据（当前使用）
-3. database/macro_indicators.json模拟数据（降级）
 """
 
 import statistics
 from typing import Dict, Any, List, Optional
 from .base_strategy import BaseStrategy
-from .macro_data_helper import MacroDataHelper
 
 
 class MacroGoldStrategy(BaseStrategy):
-    """宏观对冲锚定策略（增强版）"""
+    """宏观对冲锚定策略"""
     
     def __init__(self):
         super().__init__(
             name="Macro-Gold",
-            description="剥离名义金价中的利率杂质，分析实际利率对黄金的宏观影响（支持数据软降级）"
+            description="剥离名义金价中的利率杂质，分析实际利率对黄金的宏观影响"
         )
     
     def get_required_history_days(self) -> int:
@@ -34,89 +25,43 @@ class MacroGoldStrategy(BaseStrategy):
     
     def get_treasury_yield_data(self, global_params: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """
-        获取美债收益率数据（支持多级降级）
+        获取美债收益率数据（模拟/待接入真实数据）
         
-        数据源优先级：
-        1. global_params中的实时数据
-        2. MacroDataHelper提供的降级数据
-        3. 模拟数据（最后手段）
+        目前使用模拟数据，后续需要从宏观数据API获取真实的10年期美债实际利率
+        实际利率 = 名义利率 - 预期通胀率
         
         Args:
-            global_params: 全局参数配置，可能包含实时利率数据
+            global_params: 全局参数配置，可能包含利率数据
             
         Returns:
             美债收益率数据字典
         """
-        # 如果global_params中包含实时利率数据，优先使用
+        # 模拟数据 - 10年期美债实际利率（单位：%）
+        # 实际数据应从宏观数据API获取
+        simulated_yields = {
+            "2026-03-29": 2.15,  # 2.15%
+            "2026-03-28": 2.18,
+            "2026-03-27": 2.12,
+            "2026-03-26": 2.20,
+            "2026-03-25": 2.22,
+            "2026-03-24": 2.19,
+            "2026-03-23": 2.16,
+            "2026-03-22": 2.14,
+            "2026-03-21": 2.10,
+            "2026-03-20": 2.08,
+            # 历史数据（简化模拟）
+            "long_term_average": 2.0,
+            "current_yield": 2.15,
+            "yield_trend": "stable",  # rising, falling, stable
+            "inflation_expectation": 2.3,  # 预期通胀率
+            "real_yield": -0.15,  # 实际利率 = 名义利率 - 通胀预期
+        }
+        
+        # 如果global_params中包含利率数据，优先使用
         if global_params and "treasury_yields" in global_params:
-            yield_data = global_params["treasury_yields"]
-            yield_data["data_source"] = "real_time_api"
-            yield_data["data_quality"] = "real"
-            return yield_data
+            return global_params["treasury_yields"]
         
-        # 使用MacroDataHelper获取降级数据
-        try:
-            macro_analysis = MacroDataHelper.get_gold_macro_analysis(0)  # 价格参数暂时不需要
-            
-            # 构建收益率数据结构
-            yield_data = {
-                "nominal_yield": macro_analysis["nominal_yield"],
-                "inflation_rate": macro_analysis["inflation_rate"],
-                "real_yield": macro_analysis["real_yield"],
-                "gold_attractiveness": macro_analysis["gold_attractiveness"],
-                "data_source": macro_analysis["data_source"],
-                "data_quality": macro_analysis["data_quality"],
-                "calculation_time": macro_analysis.get("calculation_time", ""),
-                "notes": macro_analysis.get("calculation_notes", "使用降级数据计算")
-            }
-            
-            # 添加历史数据模拟（简化）
-            current_real_yield = macro_analysis["real_yield"]
-            yield_data["historical_real_yields"] = [
-                current_real_yield * 0.9,  # 前1天
-                current_real_yield * 0.95, # 前2天
-                current_real_yield,        # 当前
-                current_real_yield * 1.05, # 后1天（预测）
-                current_real_yield * 1.1,  # 后2天（预测）
-            ]
-            
-            yield_data["yield_trend"] = self._analyze_yield_trend(yield_data["historical_real_yields"])
-            yield_data["long_term_average"] = statistics.mean(yield_data["historical_real_yields"]) if len(yield_data["historical_real_yields"]) > 0 else current_real_yield
-            
-            return yield_data
-            
-        except Exception as e:
-            print(f"[MacroGoldStrategy:WARN] 获取降级利率数据失败，使用模拟数据: {e}")
-            
-            # 最后手段：使用模拟数据
-            simulated_yields = {
-                "nominal_yield": 2.15,
-                "inflation_rate": 2.3,
-                "real_yield": -0.15,
-                "data_source": "simulated_fallback",
-                "data_quality": "simulated",
-                "notes": "降级数据获取失败，使用硬编码模拟数据",
-                "historical_real_yields": [-0.12, -0.14, -0.15, -0.16, -0.17],
-                "yield_trend": "stable",
-                "long_term_average": -0.15
-            }
-            
-            return simulated_yields
-    
-    def _analyze_yield_trend(self, historical_yields: List[float]) -> str:
-        """分析利率趋势"""
-        if len(historical_yields) < 3:
-            return "unknown"
-        
-        # 简单趋势分析
-        recent_change = historical_yields[-1] - historical_yields[0]
-        
-        if recent_change > 0.1:
-            return "rising"
-        elif recent_change < -0.1:
-            return "falling"
-        else:
-            return "stable"
+        return simulated_yields
     
     def calculate_gold_attractiveness(self, 
                                     gold_price: float,
@@ -301,21 +246,19 @@ class MacroGoldStrategy(BaseStrategy):
             
             current_price = prices[0]
             
-            # 获取美债收益率数据（支持多级降级）
+            # 获取美债收益率数据
             treasury_data = self.get_treasury_yield_data(global_params)
             
-            # 提取实际利率和数据源信息
+            # 提取实际利率（模拟数据）
             real_yield = treasury_data.get("real_yield", 2.15)  # 默认值
-            data_source = treasury_data.get("data_source", "unknown")
-            data_quality = treasury_data.get("data_quality", "simulated")
             
-            # 创建历史实际利率序列
-            # 优先使用提供的历史数据，否则使用简化模拟
-            historical_yields = treasury_data.get("historical_real_yields", [
+            # 创建历史实际利率序列（模拟）
+            # 实际中应从历史数据库中获取
+            historical_yields = [
                 2.15, 2.18, 2.12, 2.20, 2.22, 2.19, 2.16, 2.14, 2.10, 2.08,
                 2.05, 2.03, 2.00, 1.98, 1.95, 1.93, 1.90, 1.88, 1.85, 1.83,
                 1.80, 1.78, 1.75, 1.73, 1.70
-            ])
+            ]
             
             # 确保历史数据长度与价格匹配
             historical_yields = historical_yields[:min(len(prices), len(historical_yields))]
@@ -335,12 +278,7 @@ class MacroGoldStrategy(BaseStrategy):
                 "yield_percentile": attractiveness["yield_percentile"],
                 "signal_strength": attractiveness["signal_strength"],
                 "price_yield_ratio": attractiveness.get("price_yield_ratio", 0.0),
-                "data_source": data_source,
-                "data_quality": data_quality,
-                "nominal_yield": treasury_data.get("nominal_yield", 2.15),
-                "inflation_rate": treasury_data.get("inflation_rate", 2.3),
-                "yield_trend": treasury_data.get("yield_trend", "unknown"),
-                "calculation_notes": treasury_data.get("notes", "")
+                "data_source": "simulated"  # 标记为模拟数据
             }
             
             # 判断是否命中
@@ -354,51 +292,32 @@ class MacroGoldStrategy(BaseStrategy):
             if signal_strength in ["very_strong_bullish", "strong_bullish"]:
                 hit = True
                 confidence = 0.8
-                signals.append(f"宏观利好: 实际利率{real_yield:.2f}%，黄金吸引力强")
+                signals.append(f"宏观利好: 实际利率{real_yield}%，黄金吸引力强")
                 metadata["signal_type"] = "macro_bullish"
                 
             elif signal_strength in ["bullish", "trend_bullish"]:
                 hit = True
                 confidence = 0.6
-                signals.append(f"宏观偏多: 实际利率{real_yield:.2f}%，黄金有吸引力")
+                signals.append(f"宏观偏多: 实际利率{real_yield}%，黄金有吸引力")
                 metadata["signal_type"] = "macro_mild_bullish"
                 
             elif signal_strength in ["bearish", "trend_bearish"]:
                 hit = True
                 confidence = 0.6
-                signals.append(f"宏观压制: 实际利率{real_yield:.2f}%偏高，压制黄金")
+                signals.append(f"宏观压制: 实际利率{real_yield}%偏高，压制黄金")
                 metadata["signal_type"] = "macro_bearish"
                 
             else:  # neutral
                 hit = False
                 confidence = 0.4
-                signals.append(f"宏观中性: 实际利率{real_yield:.2f}%，黄金无显著吸引力")
+                signals.append(f"宏观中性: 实际利率{real_yield}%，黄金无显著吸引力")
                 metadata["signal_type"] = "macro_neutral"
             
-            # 添加数据质量说明和置信度调整
-            data_source = metadata["data_source"]
-            data_quality = metadata["data_quality"]
-            
-            if data_quality == "real":
-                # 真实数据，保持置信度
-                signals.append(f"数据来源: 实时API ({data_source})")
-                confidence = confidence * 1.0
-            elif data_quality == "historical":
-                # 历史静态数据，轻微降低置信度
-                signals.append(f"数据来源: 静态历史数据 ({data_source})")
-                confidence = confidence * 0.9
-            elif data_quality == "simulated":
-                # 模拟数据，显著降低置信度
-                signals.append(f"数据来源: 模拟数据 ({data_source})")
-                confidence = confidence * 0.7
-            else:
-                # 未知数据质量
-                signals.append(f"数据来源: {data_source} (质量: {data_quality})")
-                confidence = confidence * 0.6
-            
-            # 添加计算说明
-            if "calculation_notes" in metadata and metadata["calculation_notes"]:
-                signals.append(f"计算说明: {metadata['calculation_notes']}")
+            # 添加数据质量说明
+            if metadata["data_source"] == "simulated":
+                signals.append("注意: 使用模拟利率数据，需接入真实宏观数据")
+                metadata["data_quality"] = "simulated"
+                confidence = confidence * 0.7  # 模拟数据降低置信度
             
             return self.create_result(
                 hit=hit,
