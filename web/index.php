@@ -222,7 +222,12 @@
         <div class="header">
             <h1>琥珀引擎 · 十诫共振雷达图</h1>
             <div class="subtitle">深蓝十诫算法库全量共振 · 民主投票制量化决策矩阵</div>
-            <div class="status-badge status-active">🟢 实时运行中 - 第14周备战就绪</div>
+            <div class="status-badge status-active">🟢 生产环境运行中 - 真实数据版本 v1.3.0</div>
+            <div style="margin-top: 10px; font-size: 0.9rem; color: #8b949e;">
+                数据更新时间: <span id="dataUpdateTime">2026-03-30 21:15:00</span> | 
+                共振评分: <span id="headerResonanceScore">50.84</span> | 
+                状态: <span id="headerSignalStatus">中性</span>
+            </div>
         </div>
         
         <div class="panels">
@@ -517,11 +522,15 @@
         
         // 页面加载完成后初始化
         document.addEventListener('DOMContentLoaded', function() {
+            // 立即获取真实数据
+            fetchResonanceData();
+            
+            // 初始化图表（使用PHP传递的初始数据）
             initRadarChart();
             updateSignalSummary();
             updateStrategyGrid();
             
-            // 模拟实时更新
+            // 移除加载提示
             setTimeout(() => {
                 document.querySelector('.loading')?.remove();
             }, 1000);
@@ -547,6 +556,11 @@
         
         // 使用真实数据更新UI
         function updateUIWithRealData(data) {
+            // 更新header信息
+            document.getElementById('headerResonanceScore').textContent = data.resonance_score.toFixed(2);
+            document.getElementById('headerSignalStatus').textContent = data.signal_status;
+            document.getElementById('dataUpdateTime').textContent = formatDateTime(data.report_time);
+            
             // 更新共振评分
             document.getElementById('resonanceScore').textContent = data.resonance_score.toFixed(2);
             document.getElementById('signalStatus').textContent = data.signal_status;
