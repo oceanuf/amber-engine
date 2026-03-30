@@ -268,11 +268,40 @@
     </div>
 
     <?php
-    // 读取真实的共振报告数据
+    // 读取真实的共振数据（优先使用cleaned版本）
+    $cleanedSignalFile = __DIR__ . '/../database/cleaned/resonance_signal_cleaned.json';
     $reportFile = __DIR__ . '/../database/resonance_report_20260330.json';
     $resonanceData = null;
     
-    if (file_exists($reportFile)) {
+    // 优先使用cleaned信号文件
+    if (file_exists($cleanedSignalFile)) {
+        $jsonContent = file_get_contents($cleanedSignalFile);
+        $signalData = json_decode($jsonContent, true);
+        
+        if ($signalData && isset($signalData['ticker']) && $signalData['ticker'] === '518880') {
+            $resonanceData = [
+                'ticker' => $signalData['ticker'],
+                'name' => $signalData['name'],
+                'resonance_score' => $signalData['resonance_score'],
+                'signal_status' => $signalData['signal_status'],
+                'action' => $signalData['action'],
+                'hit_count' => $signalData['hit_count'],
+                'hits' => $signalData['hits'],
+                'veto_applied' => $signalData['veto_applied'],
+                'latest_info' => $signalData['latest_info'],
+                'report_time' => $signalData['signal_time']
+            ];
+            
+            // 提取策略得分
+            $strategyScores = [];
+            foreach ($signalData['strategy_summary'] as $strategyName => $strategyData) {
+                $strategyScores[$strategyName] = $strategyData['score'];
+            }
+            $resonanceData['strategy_scores'] = $strategyScores;
+        }
+    }
+    // 降级使用报告文件
+    elseif (file_exists($reportFile)) {
         $jsonContent = file_get_contents($reportFile);
         $reportData = json_decode($jsonContent, true);
         

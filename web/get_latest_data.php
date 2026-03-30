@@ -29,10 +29,18 @@ function findLatestResonanceReport() {
 
 // 获取最新的共振信号文件
 function findLatestResonanceSignal() {
+    // 优先使用cleaned版本（更稳定，经过清洗）
+    $cleanedSignalFile = __DIR__ . '/../database/cleaned/resonance_signal_cleaned.json';
+    if (file_exists($cleanedSignalFile)) {
+        return $cleanedSignalFile;
+    }
+    
+    // 降级使用原始版本
     $signalFile = __DIR__ . '/../database/resonance_signal.json';
     if (file_exists($signalFile)) {
         return $signalFile;
     }
+    
     return null;
 }
 
@@ -113,11 +121,21 @@ try {
     }
     
     // 返回成功响应
+    $dataSource = 'unknown';
+    if ($signalFile) {
+        $dataSource = basename($signalFile);
+        if (strpos($signalFile, 'cleaned/') !== false) {
+            $dataSource = 'cleaned/' . $dataSource;
+        }
+    } elseif ($reportFile) {
+        $dataSource = basename($reportFile);
+    }
+    
     echo json_encode([
         'success' => true,
         'resonanceData' => $data,
         'timestamp' => date('Y-m-d H:i:s'),
-        'data_source' => $signalFile ? 'resonance_signal.json' : ($reportFile ?? 'unknown')
+        'data_source' => $dataSource
     ]);
     
 } catch (Exception $e) {
