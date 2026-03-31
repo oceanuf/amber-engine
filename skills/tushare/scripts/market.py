@@ -8,6 +8,7 @@ import os
 import sys
 import json
 import argparse
+import pandas as pd
 from datetime import datetime, timedelta
 from typing import Optional, Dict, List
 
@@ -506,7 +507,30 @@ def main():
         data = get_gdp()
         print(f"\n📈 GDP数据 ({len(data)} 条):\n")
         for item in data[:10]:
-            print(f"{item.get('year')}年{item.get('quarter')}季度: GDP {item.get('gdp')}亿元, 增速 {item.get('gdp_yoy')}%")
+            # 修复年份和季度显示问题
+            year = item.get('year', '')
+            quarter = item.get('quarter', '')
+            
+            # 处理可能的NaN或None值
+            if pd.isna(year) or year is None:
+                year = ''
+            if pd.isna(quarter) or quarter is None:
+                quarter = ''
+            
+            # 转换为字符串并清理
+            year_str = str(year).replace('nan', '').replace('None', '').strip()
+            quarter_str = str(quarter).replace('nan', '').replace('None', '').strip()
+            
+            gdp_value = item.get('gdp', 0)
+            gdp_yoy = item.get('gdp_yoy', 0)
+            
+            # 格式化显示
+            if year_str and quarter_str:
+                print(f"{year_str}年{quarter_str}季度: GDP {gdp_value}亿元, 增速 {gdp_yoy}%")
+            elif quarter_str:
+                print(f"{quarter_str}季度: GDP {gdp_value}亿元, 增速 {gdp_yoy}%")
+            else:
+                print(f"GDP {gdp_value}亿元, 增速 {gdp_yoy}%")
     
     elif args.command == 'cpi':
         data = get_cpi()
