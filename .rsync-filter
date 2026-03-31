@@ -1,0 +1,76 @@
+# 琥珀引擎 · Rsync排除过滤器
+# 依据: AE-Web-Sync-001-V1.0 开发/生产隔离与强制同步法典
+# 功能: 自动排除敏感文件和开发环境特定文件
+
+# Git相关
+- .git/
+- .gitignore
+- .gitmodules
+
+# 开发环境配置
+- .env
+- .env.*
+- config_dev.json
+- config_local.json
+
+# 敏感数据目录
+- _PRIVATE_DATA/
+- secrets/
+- keys/
+
+# 临时文件
+- *.tmp
+- *.bak
+- *.swp
+- *.swo
+- *.log
+
+# 缓存文件
+- __pycache__/
+- *.pyc
+- *.pyo
+- .pytest_cache/
+- .coverage
+
+# 构建产物
+- dist/
+- build/
+- node_modules/
+- venv/
+- env/
+- .venv
+
+# IDE配置文件
+- .vscode/
+- .idea/
+- *.iml
+
+# 文档生成文件
+- docs/_build/
+- site/
+
+# 测试数据
+- test_data/
+- fixtures/
+
+# 同步脚本自身（避免循环）
+- scripts/sync/.sync_fingerprint
+
+# 保留以下文件（显式包含）
++ *.php
++ *.html
++ *.css
++ *.js
++ *.json
++ *.md
++ *.txt
++ *.png
++ *.jpg
++ *.jpeg
++ *.gif
++ *.ico
++ robots.txt
++ favicon.ico
+
+# 最后排除所有其他文件
+- *

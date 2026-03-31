@@ -88,12 +88,50 @@ function loadResonanceData() {
     ];
 }
 
+// ============================================
+// 第二步: 数据指纹生成 (依据法典 AE-Web-Sync-001-V1.0)
+// ============================================
+
+/**
+ * 获取数据指纹
+ * 依据法典第3.1节: 显式特征码，允许主编通过浏览器肉眼瞬间判定版本
+ */
+function getDataFingerprint() {
+    $fingerprintFile = __DIR__ . '/../.sync_fingerprint';
+    $gitHeadFile = __DIR__ . '/../.git/HEAD';
+    
+    // 优先读取同步指纹文件
+    if (file_exists($fingerprintFile)) {
+        $fingerprint = trim(file_get_contents($fingerprintFile));
+        if (!empty($fingerprint)) {
+            return $fingerprint;
+        }
+    }
+    
+    // 其次尝试获取Git Commit ID
+    if (file_exists($gitHeadFile)) {
+        $headContent = file_get_contents($gitHeadFile);
+        if (preg_match('/ref: refs\/heads\/(.+)/', $headContent, $matches)) {
+            $branch = $matches[1];
+            $refFile = __DIR__ . '/../.git/refs/heads/' . $branch;
+            if (file_exists($refFile)) {
+                $commitHash = trim(file_get_contents($refFile));
+                return substr($commitHash, 0, 7);
+            }
+        }
+    }
+    
+    // 最后使用时间戳
+    return date('YmdHis');
+}
+
 // 执行PHP原生注入
 $resonanceInfo = loadResonanceData();
 $resonanceData = $resonanceInfo['data'];
 $dataSource = $resonanceInfo['source'];
 $fileHash = $resonanceInfo['hash'];
 $loadTime = $resonanceInfo['load_time'];
+$dataFingerprint = getDataFingerprint();
 
 // 提取策略得分
 $strategyScores = [];
@@ -603,6 +641,53 @@ $versionStamp = time();
                 // 可以在这里添加数据刷新逻辑
             }
         }, 1000);
+        
+        // 显示数据指纹（依据法典 AE-Web-Sync-001-V1.0 第3.1节）
+        function displayDataFingerprint() {
+            const fingerprintContainer = document.createElement('div');
+            fingerprintContainer.id = 'data-fingerprint';
+            fingerprintContainer.style.cssText = `
+                position: fixed;
+                bottom: 10px;
+                right: 10px;
+                font-size: 11px;
+                color: #8b949e;
+                background-color: rgba(13, 17, 23, 0.9);
+                padding: 4px 8px;
+                border-radius: 4px;
+                border: 1px solid #30363d;
+                font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+                z-index: 1000;
+                opacity: 0.8;
+                transition: opacity 0.3s;
+            `;
+            fingerprintContainer.innerHTML = `
+                <span id="fingerprint-text">v1.3.x | Build: <?php echo getDataFingerprint(); ?></span>
+                <br>
+                <span id="data-time" style="font-size: 10px;">数据时间: <?php echo date('Y-m-d H:i:s'); ?></span>
+            `;
+            
+            // 悬停效果
+            fingerprintContainer.addEventListener('mouseenter', () => {
+                fingerprintContainer.style.opacity = '1';
+            });
+            fingerprintContainer.addEventListener('mouseleave', () => {
+                fingerprintContainer.style.opacity = '0.8';
+            });
+            
+            document.body.appendChild(fingerprintContainer);
+        }
+        
+        // 页面加载完成后显示指纹
+        document.addEventListener('DOMContentLoaded', function() {
+            initRadarChart();
+            displayDataFingerprint();
+            
+            // 移除加载提示（如果有）
+            setTimeout(() => {
+                document.querySelector('.loading')?.remove();
+            }, 500);
+        });
     </script>
 </body>
 </html>
