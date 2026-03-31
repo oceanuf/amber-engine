@@ -1,0 +1,31 @@
+{
+  "module": "intelligent_reporter",
+  "timestamp": "2026-03-31T15:30:58.724934",
+  "resonance_score": 49.11,
+  "signal_status": "中性",
+  "action": "减持",
+  "consensus_analysis": {
+    "total_algorithms": 10,
+    "average_score": 57.9,
+    "signal_distribution": {
+      "买入": 5,
+      "中性": 2,
+      "持仓": 2,
+      "减仓": 1
+    },
+    "dominant_signal": "买入",
+    "dominant_percentage": 50.0,
+    "buy_count": 5,
+    "sell_count": 1,
+    "logic_commonality": [
+      "技术面普遍看多"
+    ],
+    "analysis_time": "2026-03-31T15:30:58.609768"
+  },
+  "report_generated": false,
+  "ai_summary_used": false,
+  "output_files": [
+    "docs/reports/daily/琥珀引擎_作战指令_20260331.docx",
+    "docs/reports/daily/琥珀引擎_作战指令_20260331.pdf"
+  ]
+}

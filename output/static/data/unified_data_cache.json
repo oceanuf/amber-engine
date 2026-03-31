@@ -1,0 +1,42 @@
+{
+  "indices": {
+    "沪深300": {
+      "ts_code": "000300.SH",
+      "trade_date": "20260330",
+      "close": 4491.95,
+      "pct_chg": -0.2359,
+      "pre_close": 4502.5698,
+      "change": -10.6198,
+      "vol": 209293092.0,
+      "amount": 444629519.711,
+      "data_source": "Tushare Pro",
+      "status": "verified",
+      "market": "A股",
+      "weight": 0.5,
+      "update_time": "2026-03-31 15:08:37"
+    },
+    "创业板指": {
+      "ts_code": "399006.SZ",
+      "trade_date": "20260330",
+      "close": 3273.3551,
+      "pct_chg": -0.6834,
+      "pre_close": 3295.8804,
+      "change": -22.5253,
+      "vol": 172193857.0,
+      "amount": 453981833.0,
+      "data_source": "Tushare Pro",
+      "status": "verified",
+      "market": "A股",
+      "weight": 0.5,
+      "update_time": "2026-03-31 15:08:37"
+    }
+  },
+  "update_time": "2026-03-31 15:08:37",
+  "today": "20260331",
+  "version": "v3.2.7",
+  "config": {
+    "deviation_threshold": 5.0,
+    "color_scheme": "china_red_up_green_down",
+    "data_source": "Tushare Pro (Single Source of Truth)"
+  }
+}

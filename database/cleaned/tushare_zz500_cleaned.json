@@ -1,6 +1,19 @@
 {
   "data": [
     {
+      "date": "20260331",
+      "close": 7.683,
+      "open": 7.805,
+      "high": 7.86,
+      "low": 7.68,
+      "pre_close": 7.818,
+      "change": -0.135,
+      "pct_chg": -1.7268,
+      "volume": 3683999.19,
+      "amount": 2860807.126,
+      "nav": 7.683
+    },
+    {
       "date": "20260330",
       "close": 7.818,
       "open": 7.706,
@@ -6486,27 +6499,14 @@
       "volume": 2502329.01,
       "amount": 1355027.777,
       "nav": 5.363
-    },
-    {
-      "date": "20240306",
-      "close": 5.433,
-      "open": 5.43,
-      "high": 5.496,
-      "low": 5.382,
-      "pre_close": 5.438,
-      "change": -0.005,
-      "pct_chg": -0.0919,
-      "volume": 3197713.39,
-      "amount": 1739577.363,
-      "nav": 5.433
     }
   ],
   "metadata": {
-    "fetch_time": "2026-03-31 08:42:24",
+    "fetch_time": "2026-03-31 18:02:06",
     "module": "ingest_tushare_adapter",
     "ticker_count": 1,
     "data_points": 500
   },
-  "cleaned_time": "2026-03-31 08:42:26",
+  "cleaned_time": "2026-03-31 18:02:08",
   "cleaned_by": "cleaner_etf_purify"
 }

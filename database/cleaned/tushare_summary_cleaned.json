@@ -4,30 +4,30 @@
       "518880": {
         "name": "黄金ETF",
         "data_points": 500,
-        "latest_date": "20260330",
-        "latest_price": 9.656,
+        "latest_date": "20260331",
+        "latest_price": 9.699,
         "data_gap": true
       },
       "510300": {
         "name": "沪深300ETF",
         "data_points": 500,
-        "latest_date": "20260330",
-        "latest_price": 4.5,
+        "latest_date": "20260331",
+        "latest_price": 4.463,
         "data_gap": true
       },
       "510500": {
         "name": "中证500ETF",
         "data_points": 500,
-        "latest_date": "20260330",
-        "latest_price": 7.818,
+        "latest_date": "20260331",
+        "latest_price": 7.683,
         "data_gap": true
       }
     },
     "macro": {
       "shibor": {
         "name": "上海银行间同业拆放利率",
-        "data_points": 495,
-        "latest_date": "20260327",
+        "data_points": 497,
+        "latest_date": "20260331",
         "data_fresh": true
       },
       "cpi": {
@@ -37,16 +37,16 @@
         "data_fresh": true
       }
     },
-    "fetch_time": "2026-03-31 08:42:21",
+    "fetch_time": "2026-03-31 18:02:03",
     "sync_mode": "daily",
     "data_days": 500
   },
   "metadata": {
-    "fetch_time": "2026-03-31 08:42:26",
+    "fetch_time": "2026-03-31 18:02:08",
     "module": "ingest_tushare_adapter",
     "ticker_count": 3,
     "data_points": "object"
   },
-  "cleaned_time": "2026-03-31 08:42:26",
+  "cleaned_time": "2026-03-31 18:02:08",
   "cleaned_by": "cleaner_etf_purify"
 }

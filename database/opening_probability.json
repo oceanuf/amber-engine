@@ -1,0 +1,71 @@
+{
+  "metadata": {
+    "generated_at": "2026-03-31T19:12:14.294678",
+    "model_version": "V1.4.0_TurLongZhe",
+    "soul_comment": "/* 此代码不代表预测，代表对概率的绝对统治。*/",
+    "instruction_reference": "[2614-053号]最终突击指令"
+  },
+  "probability_distribution": {
+    "gap_up": 13.5,
+    "flat": 40.8,
+    "gap_down": 45.7,
+    "visualization": "🔴 Gap Up: 13.5% | ⚪ Flat: 40.8% | 🔵 Gap Down: 45.7%"
+  },
+  "signal_analysis": {
+    "polymarket": {
+      "sp500_green_prob": 58.0,
+      "cnh_usd_volatility": 2.1582615921038966,
+      "data_source": "polymarket_real",
+      "fetch_time": "2026-03-31T19:12:14.294678"
+    },
+    "historical_match": {
+      "match_found": true,
+      "similarity_score": 94.49969923171437,
+      "matched_date": "2025-08-03",
+      "historical_next_day_change": -2.4667291305359633,
+      "historical_next_day_action": "下跌",
+      "sample_size": 19,
+      "confidence": 0.8273601648642297
+    },
+    "negative_entropy": {
+      "divergence_detected": true,
+      "divergence_type": "global_bull_vs_history_bear",
+      "polymarket_signal": "bullish",
+      "historical_signal": "bearish",
+      "DIVERGENCE_ALPHA": true
+    },
+    "z_score_analysis": {
+      "z_scores": {
+        "gold": 0.40483870967741903,
+        "hs300": -0.15818181818181773,
+        "sp500": 0.7058823529411765,
+        "cnh_vol": 0.08323084586270926
+      },
+      "max_abs_z": 0.7058823529411765,
+      "dominant_feature": "sp500",
+      "emergency_hedge_triggered": false,
+      "statistical_extreme": false
+    }
+  },
+  "current_scores": {
+    "gold_etf": 41.01,
+    "hs300_etf": 36.93,
+    "zz500_etf": 37.9
+  },
+  "emergency_alert": {
+    "triggered": false,
+    "max_z_score": 0.7058823529411765,
+    "hedge_report_exists": false
+  },
+  "web_display": {
+    "title": "明日开盘胜率推演",
+    "subtitle": "基于28门火炮协同作战的概率统治模型",
+    "timestamp": "2026-03-31T19:12:14.294678",
+    "recommendation": {
+      "sentiment": "看跌",
+      "action": "减仓或观望",
+      "confidence": "中等",
+      "reasoning": "市场压力较大，防御为主"
+    }
+  }
+}
