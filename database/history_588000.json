@@ -3,6 +3,11 @@
   "name": "华夏上证科创板50ETF",
   "history": [
     {
+      "date": "2026-03-31",
+      "price": "0.9630",
+      "change": "-0.45%"
+    },
+    {
       "date": "2026-03-30",
       "price": "0.9690",
       "change": "+0.31%"
@@ -33,8 +38,8 @@
       "change": "-0.39%"
     }
   ],
-  "last_updated": "2026-03-30 21:15:09",
+  "last_updated": "2026-03-31 08:42:27",
   "created_time": "2026-03-29 13:56:25",
   "source_module": "storer_vault_storer",
-  "update_count": 10
+  "update_count": 11
 }

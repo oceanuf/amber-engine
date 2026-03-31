@@ -3,63 +3,63 @@
   "name": "华安黄金易ETF",
   "nav_history": [
     {
+      "date": "2026-03-31",
+      "price": "4.8620",
+      "change": "-0.08%"
+    },
+    {
       "date": "2026-03-30",
-      "price": "4.8100",
-      "change": "-0.26%"
+      "price": "4.8660",
+      "change": "-0.12%"
     },
     {
       "date": "2026-03-29",
-      "price": "4.8500",
-      "change": "+0.45%"
+      "price": "4.8200",
+      "change": "-0.14%"
     },
     {
       "date": "2026-03-28",
-      "price": "4.8360",
-      "change": "-0.30%"
+      "price": "4.8860",
+      "change": "+0.33%"
     },
     {
       "date": "2026-03-27",
-      "price": "4.8810",
-      "change": "-0.31%"
+      "price": "4.8870",
+      "change": "+0.29%"
     },
     {
       "date": "2026-03-26",
-      "price": "4.8660",
-      "change": "-0.40%"
+      "price": "4.8260",
+      "change": "+0.40%"
     },
     {
       "date": "2026-03-25",
-      "price": "4.8060",
-      "change": "+0.18%"
+      "price": "4.8860",
+      "change": "-0.05%"
     },
     {
       "date": "2026-03-24",
-      "price": "4.8670",
-      "change": "-0.06%"
+      "price": "4.8190",
+      "change": "+0.33%"
     },
     {
       "date": "2026-03-23",
-      "price": "4.8800",
-      "change": "-0.30%"
+      "price": "4.8520",
+      "change": "+0.28%"
     },
     {
       "date": "2026-03-22",
-      "price": "4.8010",
-      "change": "-0.39%"
-    },
-    {
-      "date": "2026-03-21",
-      "price": "4.8420",
-      "change": "-0.01%"
+      "price": "4.8780",
+      "change": "+0.41%"
     }
   ],
-  "current_nav": "4.8620",
-  "daily_change": "+0.24%",
-  "ytd_return": "+9.76%",
+  "current_nav": "4.8580",
+  "daily_change": "+0.16%",
+  "ytd_return": "+6.69%",
   "risk_level": "低",
   "asset_class": "商品",
-  "fetch_time": "2026-03-30 21:15:02",
-  "last_updated": "2026-03-30 21:15:02",
-  "cleaned_time": "2026-03-30 21:15:09",
+  "fetch_time": "2026-03-31 08:42:19",
+  "last_updated": "2026-03-31 08:42:19",
+  "cleaned_time": "2026-03-31 08:42:26",
   "cleaned_by": "cleaner_etf_purify"
 }

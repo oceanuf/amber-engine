@@ -1,5 +1,5 @@
 {
-  "fetch_time": "2026-03-30 21:15:03",
+  "fetch_time": "2026-03-31 08:42:20",
   "data_period": {
     "latest_month": "2026-03",
     "latest_quarter": "2026-Q1",
@@ -8,126 +8,126 @@
   "monthly_indicators": [
     {
       "month": "2026-03",
-      "m2_growth": "8.2%",
-      "cpi": "2.2%",
-      "ppi": "1.0%",
-      "pmi": "52.4",
-      "industrial_growth": "7.1%",
-      "retail_sales_growth": "9.7%"
-    },
-    {
-      "month": "2026-02",
-      "m2_growth": "9.3%",
-      "cpi": "2.1%",
-      "ppi": "-0.7%",
-      "pmi": "48.6",
-      "industrial_growth": "5.4%",
-      "retail_sales_growth": "9.0%"
-    },
-    {
-      "month": "2026-01",
-      "m2_growth": "9.0%",
-      "cpi": "1.8%",
-      "ppi": "-1.2%",
-      "pmi": "51.3",
-      "industrial_growth": "7.6%",
-      "retail_sales_growth": "9.7%"
-    },
-    {
-      "month": "2025-12",
-      "m2_growth": "8.1%",
-      "cpi": "2.2%",
-      "ppi": "1.9%",
-      "pmi": "49.5",
-      "industrial_growth": "8.1%",
-      "retail_sales_growth": "5.6%"
-    },
-    {
-      "month": "2025-11",
-      "m2_growth": "8.3%",
+      "m2_growth": "8.7%",
       "cpi": "2.5%",
-      "ppi": "0.1%",
-      "pmi": "49.3",
-      "industrial_growth": "8.2%",
-      "retail_sales_growth": "6.3%"
+      "ppi": "-0.4%",
+      "pmi": "50.9",
+      "industrial_growth": "6.0%",
+      "retail_sales_growth": "7.8%"
     },
     {
-      "month": "2025-10",
-      "m2_growth": "10.0%",
-      "cpi": "2.6%",
-      "ppi": "1.8%",
-      "pmi": "51.8",
-      "industrial_growth": "7.8%",
+      "month": "2026-03",
+      "m2_growth": "9.6%",
+      "cpi": "3.0%",
+      "ppi": "0.5%",
+      "pmi": "49.5",
+      "industrial_growth": "4.3%",
       "retail_sales_growth": "9.2%"
     },
     {
-      "month": "2025-10",
-      "m2_growth": "9.1%",
-      "cpi": "2.4%",
-      "ppi": "0.7%",
-      "pmi": "49.0",
-      "industrial_growth": "6.8%",
-      "retail_sales_growth": "9.4%"
+      "month": "2026-01",
+      "m2_growth": "10.2%",
+      "cpi": "2.2%",
+      "ppi": "1.3%",
+      "pmi": "49.5",
+      "industrial_growth": "6.3%",
+      "retail_sales_growth": "9.9%"
     },
     {
-      "month": "2025-09",
-      "m2_growth": "9.4%",
-      "cpi": "2.5%",
-      "ppi": "0.3%",
-      "pmi": "50.7",
-      "industrial_growth": "8.2%",
-      "retail_sales_growth": "7.6%"
-    },
-    {
-      "month": "2025-08",
-      "m2_growth": "8.3%",
-      "cpi": "2.5%",
-      "ppi": "1.2%",
-      "pmi": "52.1",
-      "industrial_growth": "6.9%",
-      "retail_sales_growth": "8.7%"
-    },
-    {
-      "month": "2025-07",
-      "m2_growth": "9.8%",
-      "cpi": "2.4%",
-      "ppi": "-0.7%",
-      "pmi": "51.4",
-      "industrial_growth": "4.6%",
-      "retail_sales_growth": "6.9%"
-    },
-    {
-      "month": "2025-06",
-      "m2_growth": "10.3%",
-      "cpi": "2.8%",
-      "ppi": "0.1%",
-      "pmi": "49.1",
-      "industrial_growth": "6.8%",
+      "month": "2025-12",
+      "m2_growth": "9.9%",
+      "cpi": "2.1%",
+      "ppi": "-1.2%",
+      "pmi": "49.5",
+      "industrial_growth": "5.0%",
       "retail_sales_growth": "8.8%"
     },
     {
-      "month": "2025-05",
+      "month": "2025-12",
+      "m2_growth": "9.8%",
+      "cpi": "3.2%",
+      "ppi": "0.6%",
+      "pmi": "51.4",
+      "industrial_growth": "4.1%",
+      "retail_sales_growth": "6.4%"
+    },
+    {
+      "month": "2025-11",
       "m2_growth": "8.4%",
-      "cpi": "2.7%",
-      "ppi": "1.4%",
-      "pmi": "51.1",
-      "industrial_growth": "6.9%",
+      "cpi": "1.7%",
+      "ppi": "2.4%",
+      "pmi": "49.4",
+      "industrial_growth": "7.7%",
       "retail_sales_growth": "8.0%"
+    },
+    {
+      "month": "2025-10",
+      "m2_growth": "9.6%",
+      "cpi": "2.2%",
+      "ppi": "1.6%",
+      "pmi": "51.8",
+      "industrial_growth": "5.9%",
+      "retail_sales_growth": "7.3%"
+    },
+    {
+      "month": "2025-09",
+      "m2_growth": "9.8%",
+      "cpi": "2.8%",
+      "ppi": "1.9%",
+      "pmi": "50.9",
+      "industrial_growth": "6.9%",
+      "retail_sales_growth": "8.1%"
+    },
+    {
+      "month": "2025-08",
+      "m2_growth": "8.0%",
+      "cpi": "2.2%",
+      "ppi": "-1.1%",
+      "pmi": "51.6",
+      "industrial_growth": "8.2%",
+      "retail_sales_growth": "5.5%"
+    },
+    {
+      "month": "2025-07",
+      "m2_growth": "9.1%",
+      "cpi": "2.4%",
+      "ppi": "1.3%",
+      "pmi": "49.2",
+      "industrial_growth": "5.9%",
+      "retail_sales_growth": "9.0%"
+    },
+    {
+      "month": "2025-06",
+      "m2_growth": "9.1%",
+      "cpi": "2.8%",
+      "ppi": "0.3%",
+      "pmi": "51.7",
+      "industrial_growth": "5.1%",
+      "retail_sales_growth": "5.4%"
+    },
+    {
+      "month": "2025-05",
+      "m2_growth": "8.2%",
+      "cpi": "1.8%",
+      "ppi": "2.0%",
+      "pmi": "51.4",
+      "industrial_growth": "4.7%",
+      "retail_sales_growth": "7.9%"
     }
   ],
   "quarterly_indicators": {
     "quarter": "2026-Q1",
-    "gdp_growth": "5.3%",
-    "gdp_size": "124.9万亿元",
-    "investment_growth": "6.2%",
-    "export_growth": "5.2%",
-    "import_growth": "6.9%"
+    "gdp_growth": "4.8%",
+    "gdp_size": "128.8万亿元",
+    "investment_growth": "3.9%",
+    "export_growth": "5.9%",
+    "import_growth": "2.3%"
   },
   "liquidity_indicators": {
-    "shibor_overnight": "2.128%",
-    "shibor_1w": "2.690%",
-    "shibor_1m": "2.194%",
-    "dr007": "2.354%",
+    "shibor_overnight": "2.090%",
+    "shibor_1w": "2.064%",
+    "shibor_1m": "2.453%",
+    "dr007": "2.030%",
     "lpr_1y": "3.45%",
     "lpr_5y": "4.20%",
     "reserve_ratio": "7.0%"
@@ -135,13 +135,13 @@
   "policy_indicators": {
     "monetary_policy_stance": "稳健中性",
     "fiscal_policy_stance": "积极有为",
-    "risk_appetite": "低",
-    "liquidity_condition": "适度",
-    "inflation_outlook": "可控"
+    "risk_appetite": "中",
+    "liquidity_condition": "偏紧",
+    "inflation_outlook": "压力上升"
   },
   "data_source": "模拟数据 - 待接入国家统计局、央行数据",
   "data_quality": "模拟",
   "notes": "实际数据需从官方统计机构获取，此处为演示数据",
-  "cleaned_time": "2026-03-30 21:15:09",
+  "cleaned_time": "2026-03-31 08:42:26",
   "cleaned_by": "cleaner_etf_purify"
 }

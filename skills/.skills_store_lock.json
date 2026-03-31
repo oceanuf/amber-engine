@@ -1,0 +1,185 @@
+{
+  "version": 1,
+  "skills": {
+    "stock-market-pro": {
+      "name": "Stock Market Pro",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=stock-market-pro",
+      "source": "skillhub",
+      "version": "1.2.12"
+    },
+    "us-stock-analysis": {
+      "name": "Us Stock Analysis",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=us-stock-analysis",
+      "source": "skillhub",
+      "version": "0.1.1"
+    },
+    "akshare-stock": {
+      "name": "A股量化 AkShare",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=akshare-stock",
+      "source": "skillhub",
+      "version": "1.0.1"
+    },
+    "a-stock-analysis": {
+      "name": "A股分时量能分析",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=a-stock-analysis",
+      "source": "skillhub",
+      "version": "1.0.0"
+    },
+    "tushare": {
+      "name": "Tushare Pro",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=tushare",
+      "source": "skillhub",
+      "version": "1.0.9"
+    },
+    "stock-watcher": {
+      "name": "Stock Watcher",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=stock-watcher",
+      "source": "skillhub",
+      "version": "1.0.0"
+    },
+    "technical-analyst": {
+      "name": "Technical Analyst",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=technical-analyst",
+      "source": "skillhub",
+      "version": "0.1.0"
+    },
+    "backtest-expert": {
+      "name": "Backtest Expert",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=backtest-expert",
+      "source": "skillhub",
+      "version": "0.1.0"
+    },
+    "market-environment-analysis": {
+      "name": "Market Environment Analysis",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=market-environment-analysis",
+      "source": "skillhub",
+      "version": "0.1.0"
+    },
+    "market-news-analyst": {
+      "name": "Market News Analyst",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=market-news-analyst",
+      "source": "skillhub",
+      "version": "0.1.0"
+    },
+    "market-research": {
+      "name": "Market Research",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=market-research",
+      "source": "skillhub",
+      "version": "1.0.1"
+    },
+    "academic-deep-research": {
+      "name": "Academic Deep Research",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=academic-deep-research",
+      "source": "skillhub",
+      "version": "1.0.0"
+    },
+    "polymarket-odds": {
+      "name": "Polymarket Odds",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=polymarket-odds",
+      "source": "skillhub",
+      "version": "1.0.0"
+    },
+    "financial-calculator": {
+      "name": "Financial Calculator Pro",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=financial-calculator",
+      "source": "skillhub",
+      "version": "1.0.0"
+    },
+    "microsoft-excel": {
+      "name": "Microsoft Excel",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=microsoft-excel",
+      "source": "skillhub",
+      "version": "1.0.3"
+    },
+    "data-analysis": {
+      "name": "Data Analysis",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=data-analysis",
+      "source": "skillhub",
+      "version": "1.0.2"
+    },
+    "sql-toolkit": {
+      "name": "SQL Toolkit",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=sql-toolkit",
+      "source": "skillhub",
+      "version": "1.0.0"
+    },
+    "word-docx": {
+      "name": "Word / DOCX",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=word-docx",
+      "source": "skillhub",
+      "version": "1.0.2"
+    },
+    "research-paper-writer": {
+      "name": "Research Paper Writer",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=research-paper-writer",
+      "source": "skillhub",
+      "version": "0.1.0"
+    },
+    "powerpoint-pptx": {
+      "name": "Powerpoint / PPTX",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=powerpoint-pptx",
+      "source": "skillhub",
+      "version": "1.0.1"
+    },
+    "multi-search-engine": {
+      "name": "Multi Search Engine",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=multi-search-engine",
+      "source": "skillhub",
+      "version": "2.0.1"
+    },
+    "baidu-search": {
+      "name": "baidu web search",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=baidu-search",
+      "source": "skillhub",
+      "version": "1.1.0"
+    },
+    "perplexity": {
+      "name": "Perplexity",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=perplexity",
+      "source": "skillhub",
+      "version": "1.0.0"
+    },
+    "summarize": {
+      "name": "Summarize",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=summarize",
+      "source": "skillhub",
+      "version": "1.0.0"
+    },
+    "pdf-extract": {
+      "name": "Pdf Extract",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=pdf-extract",
+      "source": "skillhub",
+      "version": "1.0.0"
+    },
+    "image-ocr": {
+      "name": "Image Ocr",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=image-ocr",
+      "source": "skillhub",
+      "version": "1.0.0"
+    },
+    "cctv-news-fetcher": {
+      "name": "CCTV News Fetcher",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=cctv-news-fetcher",
+      "source": "skillhub",
+      "version": "1.0.0"
+    },
+    "automation-workflows": {
+      "name": "Automation Workflows",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=automation-workflows",
+      "source": "skillhub",
+      "version": "0.1.0"
+    },
+    "topic-monitor": {
+      "name": "Topic Monitor",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=topic-monitor",
+      "source": "skillhub",
+      "version": "1.5.0"
+    },
+    "playwright-mcp": {
+      "name": "Playwright MCP",
+      "zip_url": "https://lightmake.site/api/v1/download?slug=playwright-mcp",
+      "source": "skillhub",
+      "version": "1.0.0"
+    }
+  }
+}
