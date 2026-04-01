@@ -1,31 +1,31 @@
 {
   "metadata": {
-    "generated_at": "2026-04-01T18:47:54.562088",
+    "generated_at": "2026-03-31T19:12:14.294678",
     "model_version": "V1.4.0_TurLongZhe",
     "soul_comment": "/* 此代码不代表预测，代表对概率的绝对统治。*/",
     "instruction_reference": "[2614-053号]最终突击指令"
   },
   "probability_distribution": {
-    "gap_up": 19.3,
-    "flat": 43.9,
-    "gap_down": 36.8,
-    "visualization": "🔴 Gap Up: 19.3% | ⚪ Flat: 43.9% | 🔵 Gap Down: 36.8%"
+    "gap_up": 13.5,
+    "flat": 40.8,
+    "gap_down": 45.7,
+    "visualization": "🔴 Gap Up: 13.5% | ⚪ Flat: 40.8% | 🔵 Gap Down: 45.7%"
   },
   "signal_analysis": {
     "polymarket": {
-      "sp500_green_prob": 90.5,
-      "cnh_usd_volatility": 2.6775926133234225,
+      "sp500_green_prob": 58.0,
+      "cnh_usd_volatility": 2.1582615921038966,
       "data_source": "polymarket_real",
-      "fetch_time": "2026-04-01T18:47:54.562088"
+      "fetch_time": "2026-03-31T19:12:14.294678"
     },
     "historical_match": {
       "match_found": true,
-      "similarity_score": 77.16800490539647,
-      "matched_date": "2024-08-15",
-      "historical_next_day_change": -1.2,
+      "similarity_score": 94.49969923171437,
+      "matched_date": "2025-08-03",
+      "historical_next_day_change": -2.4667291305359633,
       "historical_next_day_action": "下跌",
-      "sample_size": 12,
-      "confidence": 0.65
+      "sample_size": 19,
+      "confidence": 0.8273601648642297
     },
     "negative_entropy": {
       "divergence_detected": true,
@@ -38,13 +38,13 @@
       "z_scores": {
         "gold": 0.40483870967741903,
         "hs300": -0.15818181818181773,
-        "sp500": 4.529411764705882,
-        "cnh_vol": 0.8251323047477463
+        "sp500": 0.7058823529411765,
+        "cnh_vol": 0.08323084586270926
       },
-      "max_abs_z": 4.529411764705882,
+      "max_abs_z": 0.7058823529411765,
       "dominant_feature": "sp500",
-      "emergency_hedge_triggered": true,
-      "statistical_extreme": true
+      "emergency_hedge_triggered": false,
+      "statistical_extreme": false
     }
   },
   "current_scores": {
@@ -53,19 +53,21 @@
     "zz500_etf": 37.9
   },
   "emergency_alert": {
-    "triggered": true,
-    "max_z_score": 4.529411764705882,
-    "hedge_report_exists": true
+    "triggered": false,
+    "max_z_score": 0.7058823529411765,
+    "hedge_report_exists": false
   },
   "web_display": {
     "title": "明日开盘胜率推演",
     "subtitle": "基于28门火炮协同作战的概率统治模型",
-    "timestamp": "2026-04-01T18:47:54.562088",
+    "timestamp": "2026-03-31T19:12:14.294678",
     "recommendation": {
       "sentiment": "看跌",
       "action": "减仓或观望",
       "confidence": "中等",
       "reasoning": "市场压力较大，防御为主"
     }
-  }
+  },
+  "cleaned_time": "2026-04-01 18:42:25",
+  "cleaned_by": "cleaner_etf_purify"
 }

@@ -317,7 +317,7 @@
     }
   ],
   "metadata": {
-    "fetch_time": "2026-03-31 18:02:08",
+    "fetch_time": "2026-04-01 18:02:13",
     "module": "ingest_tushare_adapter",
     "ticker_count": 1,
     "data_points": 63

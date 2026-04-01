@@ -1,49 +1,49 @@
 {
   "metadata": {
-    "report_id": "resonance_report_20260330",
-    "generated_at": "2026-03-30T21:21:55.937565",
+    "report_id": "resonance_report_20260401",
+    "generated_at": "2026-04-01T18:02:14.980367",
     "module": "synthesizer_resonance_engine",
     "strategies_count": 10,
     "tickers_count": 3
   },
   "overall_analysis": {
     "total_tickers": 3,
-    "avg_resonance_score": 34.07,
+    "avg_resonance_score": 35.37,
     "signals_by_status": {
       "中性": 1,
-      "生存预警": 2
+      "谨慎": 2
     },
     "top_performers": [
       {
         "ticker": "518880",
         "name": "黄金ETF",
-        "resonance_score": 49.11,
+        "resonance_score": 41.99,
         "signal_status": "中性",
+        "action": "减持"
+      },
+      {
+        "ticker": "510500",
+        "name": "中证500ETF",
+        "resonance_score": 32.37,
+        "signal_status": "谨慎",
         "action": "减持"
       },
       {
         "ticker": "510300",
         "name": "沪深300ETF",
-        "resonance_score": 28.1,
-        "signal_status": "生存预警",
-        "action": "清仓"
-      },
-      {
-        "ticker": "510500",
-        "name": "中证500ETF",
-        "resonance_score": 25.0,
-        "signal_status": "生存预警",
-        "action": "清仓"
+        "resonance_score": 31.75,
+        "signal_status": "谨慎",
+        "action": "减持"
       }
     ],
     "strategy_hit_counts": {
-      "Gravity-Dip": 1,
+      "Gravity-Dip": 0,
       "Dual-Momentum": 0,
-      "Vol-Squeeze": 1,
-      "Dividend-Alpha": 0,
-      "Weekly-RSI": 1,
-      "Z-Score-Bias": 1,
-      "Triple-Cross": 2,
+      "Vol-Squeeze": 0,
+      "Dividend-Alpha": 3,
+      "Weekly-RSI": 0,
+      "Z-Score-Bias": 0,
+      "Triple-Cross": 3,
       "Volume-Retracement": 0,
       "Macro-Gold": 1,
       "OBV-Divergence": 0
@@ -53,33 +53,33 @@
     "518880": {
       "ticker": "518880",
       "name": "黄金ETF",
-      "signal_time": "2026-03-30T21:21:55.926176",
-      "resonance_score": 49.11,
+      "signal_time": "2026-04-01T18:02:14.967941",
+      "resonance_score": 41.99,
       "signal_status": "中性",
       "action": "减持",
       "action_type": "REDUCE",
       "min_holding_days": 60,
       "hit_count": 3,
       "hits": [
-        "Gravity-Dip",
-        "Weekly-RSI",
+        "Dividend-Alpha",
+        "Triple-Cross",
         "Macro-Gold"
       ],
       "veto_applied": false,
       "latest_info": {
-        "date": "20260330",
-        "price": 9.656,
-        "change": 0.162
+        "date": "20260401",
+        "price": 10.024,
+        "change": 0.325
       },
       "strategy_summary": {
         "Gravity-Dip": {
-          "hit": true,
-          "score": 93.74,
-          "confidence": 0.78,
+          "hit": false,
+          "score": 0.0,
+          "confidence": 0.5,
           "signals": [
-            "历史性低位: 偏离处于历史最低10%区间"
+            "无显著偏离信号"
           ],
-          "signal_type": "historical_low"
+          "signal_type": "no_signal"
         },
         "Dual-Momentum": {
           "hit": false,
@@ -100,20 +100,23 @@
           "signal_type": "neutral"
         },
         "Dividend-Alpha": {
-          "hit": false,
-          "score": 0.0,
-          "confidence": 0.0,
+          "hit": true,
+          "score": 38.32,
+          "confidence": 0.56,
           "signals": [
-            "分析失败: name 'prices' is not defined"
+            "基础股息保护: 净股息率超过1%",
+            "中等价格稳定性",
+            "价格适中: 接近60日均线",
+            "中等分红保护垫: 提供基础保护"
           ],
-          "signal_type": "unknown"
+          "signal_type": "medium_dividend_protection"
         },
         "Weekly-RSI": {
-          "hit": true,
-          "score": 21.73,
-          "confidence": 0.51,
+          "hit": false,
+          "score": 23.2,
+          "confidence": 0.3,
           "signals": [
-            "超卖: 周线RSI=29.4 < 30"
+            "偏弱: 周线RSI=36.8"
           ],
           "signal_type": "unknown"
         },
@@ -122,27 +125,25 @@
           "score": 0.0,
           "confidence": 0.5,
           "signals": [
-            "Z分数正常: -1.01"
+            "Z分数正常: -0.47"
           ],
           "signal_type": "normal"
         },
         "Triple-Cross": {
-          "hit": false,
-          "score": 0.0,
-          "confidence": 0.5,
+          "hit": true,
+          "score": 40.0,
+          "confidence": 0.6,
           "signals": [
-            "MA5 ≤ MA20 (短期偏空)",
-            "价格显著低于MA20 (-6.7%)"
+            "中期空头排列：MA5<MA20<MA60"
           ],
-          "signal_type": "neutral"
+          "signal_type": "medium_term_bearish"
         },
         "Volume-Retracement": {
           "hit": false,
           "score": 0.0,
           "confidence": 0.5,
           "signals": [
-            "状态：波动率比率1.26，MA20偏离-6.7%",
-            "短期下跌趋势"
+            "状态：波动率比率0.85，MA20偏离-2.0%"
           ],
           "signal_type": "unknown"
         },
@@ -174,139 +175,22 @@
     "510300": {
       "ticker": "510300",
       "name": "沪深300ETF",
-      "signal_time": "2026-03-30T21:21:55.931926",
-      "resonance_score": 28.1,
-      "signal_status": "生存预警",
-      "action": "清仓",
-      "action_type": "EXIT",
+      "signal_time": "2026-04-01T18:02:14.974397",
+      "resonance_score": 31.75,
+      "signal_status": "谨慎",
+      "action": "减持",
+      "action_type": "REDUCE",
       "min_holding_days": 60,
-      "hit_count": 3,
+      "hit_count": 2,
       "hits": [
-        "Vol-Squeeze",
-        "Z-Score-Bias",
+        "Dividend-Alpha",
         "Triple-Cross"
       ],
       "veto_applied": false,
       "latest_info": {
-        "date": "20260330",
-        "price": 4.5,
-        "change": -0.008
-      },
-      "strategy_summary": {
-        "Gravity-Dip": {
-          "hit": false,
-          "score": 0.0,
-          "confidence": 0.5,
-          "signals": [
-            "无显著偏离信号"
-          ],
-          "signal_type": "no_signal"
-        },
-        "Dual-Momentum": {
-          "hit": false,
-          "score": 0.0,
-          "confidence": 0.0,
-          "signals": [
-            "无法计算动量"
-          ],
-          "signal_type": "unknown"
-        },
-        "Vol-Squeeze": {
-          "hit": true,
-          "score": 10.0,
-          "confidence": 0.5,
-          "signals": [
-            "价格接近布林带下轨"
-          ],
-          "signal_type": "unknown"
-        },
-        "Dividend-Alpha": {
-          "hit": false,
-          "score": 0.0,
-          "confidence": 0.0,
-          "signals": [
-            "分析失败: name 'prices' is not defined"
-          ],
-          "signal_type": "unknown"
-        },
-        "Weekly-RSI": {
-          "hit": false,
-          "score": 26.79,
-          "confidence": 0.3,
-          "signals": [
-            "偏弱: 周线RSI=33.2"
-          ],
-          "signal_type": "unknown"
-        },
-        "Z-Score-Bias": {
-          "hit": true,
-          "score": 18.33,
-          "confidence": 0.4,
-          "signals": [
-            "适度低估: Z分数=-1.92 < -1.5"
-          ],
-          "signal_type": "moderately_undervalued"
-        },
-        "Triple-Cross": {
-          "hit": true,
-          "score": 40.0,
-          "confidence": 0.6,
-          "signals": [
-            "中期空头排列：MA5<MA20<MA60"
-          ],
-          "signal_type": "medium_term_bearish"
-        },
-        "Volume-Retracement": {
-          "hit": false,
-          "score": 0.0,
-          "confidence": 0.5,
-          "signals": [
-            "状态：波动率比率0.99，MA20偏离-2.3%",
-            "短期下跌趋势"
-          ],
-          "signal_type": "unknown"
-        },
-        "Macro-Gold": {
-          "hit": false,
-          "score": 50.0,
-          "confidence": 0.3,
-          "signals": [
-            "本策略仅适用于黄金资产"
-          ],
-          "signal_type": "unknown"
-        },
-        "OBV-Divergence": {
-          "hit": false,
-          "score": 50.0,
-          "confidence": 0.0,
-          "signals": [
-            "无显著背离: 价格up，OBVup",
-            "注意: 使用模拟成交量数据，需接入真实成交量"
-          ],
-          "signal_type": "no_divergence"
-        }
-      },
-      "weight": 1.0,
-      "type": "etf"
-    },
-    "510500": {
-      "ticker": "510500",
-      "name": "中证500ETF",
-      "signal_time": "2026-03-30T21:21:55.937521",
-      "resonance_score": 25.0,
-      "signal_status": "生存预警",
-      "action": "清仓",
-      "action_type": "EXIT",
-      "min_holding_days": 60,
-      "hit_count": 1,
-      "hits": [
-        "Triple-Cross"
-      ],
-      "veto_applied": false,
-      "latest_info": {
-        "date": "20260330",
-        "price": 7.818,
-        "change": 0.015
+        "date": "20260401",
+        "price": 4.534,
+        "change": 0.071
       },
       "strategy_summary": {
         "Gravity-Dip": {
@@ -337,20 +221,23 @@
           "signal_type": "neutral"
         },
         "Dividend-Alpha": {
-          "hit": false,
-          "score": 0.0,
-          "confidence": 0.0,
+          "hit": true,
+          "score": 59.1,
+          "confidence": 0.68,
           "signals": [
-            "分析失败: name 'prices' is not defined"
+            "中等股息保护: 净股息率超过2%",
+            "高价格稳定性: 低波动环境",
+            "价格适中: 接近60日均线",
+            "强分红保护垫: 高股息率且价格稳定"
           ],
-          "signal_type": "unknown"
+          "signal_type": "strong_dividend_protection"
         },
         "Weekly-RSI": {
           "hit": false,
-          "score": 29.7,
+          "score": 23.16,
           "confidence": 0.3,
           "signals": [
-            "偏弱: 周线RSI=30.3"
+            "偏弱: 周线RSI=36.8"
           ],
           "signal_type": "unknown"
         },
@@ -359,7 +246,126 @@
           "score": 0.0,
           "confidence": 0.5,
           "signals": [
-            "Z分数正常: -1.17"
+            "Z分数正常: -1.44"
+          ],
+          "signal_type": "normal"
+        },
+        "Triple-Cross": {
+          "hit": true,
+          "score": 20.0,
+          "confidence": 0.6,
+          "signals": [
+            "完美空头排列：趋势向下"
+          ],
+          "signal_type": "perfect_bearish_alignment"
+        },
+        "Volume-Retracement": {
+          "hit": false,
+          "score": 0.0,
+          "confidence": 0.5,
+          "signals": [
+            "状态：波动率比率0.97，MA20偏离-1.2%"
+          ],
+          "signal_type": "unknown"
+        },
+        "Macro-Gold": {
+          "hit": false,
+          "score": 50.0,
+          "confidence": 0.3,
+          "signals": [
+            "本策略仅适用于黄金资产"
+          ],
+          "signal_type": "unknown"
+        },
+        "OBV-Divergence": {
+          "hit": false,
+          "score": 50.0,
+          "confidence": 0.0,
+          "signals": [
+            "无显著背离: 价格up，OBVup",
+            "注意: 使用模拟成交量数据，需接入真实成交量"
+          ],
+          "signal_type": "no_divergence"
+        }
+      },
+      "weight": 1.0,
+      "type": "etf"
+    },
+    "510500": {
+      "ticker": "510500",
+      "name": "中证500ETF",
+      "signal_time": "2026-04-01T18:02:14.980304",
+      "resonance_score": 32.37,
+      "signal_status": "谨慎",
+      "action": "减持",
+      "action_type": "REDUCE",
+      "min_holding_days": 60,
+      "hit_count": 2,
+      "hits": [
+        "Dividend-Alpha",
+        "Triple-Cross"
+      ],
+      "veto_applied": false,
+      "latest_info": {
+        "date": "20260401",
+        "price": 7.809,
+        "change": 0.126
+      },
+      "strategy_summary": {
+        "Gravity-Dip": {
+          "hit": false,
+          "score": 0.0,
+          "confidence": 0.5,
+          "signals": [
+            "无显著偏离信号"
+          ],
+          "signal_type": "no_signal"
+        },
+        "Dual-Momentum": {
+          "hit": false,
+          "score": 0.0,
+          "confidence": 0.0,
+          "signals": [
+            "无法计算动量"
+          ],
+          "signal_type": "unknown"
+        },
+        "Vol-Squeeze": {
+          "hit": false,
+          "score": 0.0,
+          "confidence": 0.5,
+          "signals": [
+            "波动率信号中性"
+          ],
+          "signal_type": "neutral"
+        },
+        "Dividend-Alpha": {
+          "hit": true,
+          "score": 41.36,
+          "confidence": 0.57,
+          "signals": [
+            "基础股息保护: 净股息率超过1%",
+            "中等价格稳定性",
+            "价格适中: 接近60日均线",
+            "中等分红保护垫: 提供基础保护"
+          ],
+          "signal_type": "medium_dividend_protection"
+        },
+        "Weekly-RSI": {
+          "hit": false,
+          "score": 26.33,
+          "confidence": 0.3,
+          "signals": [
+            "偏弱: 周线RSI=33.7"
+          ],
+          "signal_type": "unknown"
+        },
+        "Z-Score-Bias": {
+          "hit": false,
+          "score": 0.0,
+          "confidence": 0.5,
+          "signals": [
+            "Z分数正常: -1.26"
           ],
           "signal_type": "normal"
         },
@@ -377,8 +383,7 @@
           "score": 0.0,
           "confidence": 0.5,
           "signals": [
-            "状态：波动率比率0.99，MA20偏离-3.5%",
-            "短期下跌趋势"
+            "状态：波动率比率0.93，MA20偏离-2.9%"
           ],
           "signal_type": "unknown"
         },
