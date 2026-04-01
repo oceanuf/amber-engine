@@ -77,7 +77,8 @@ class DividendAlphaStrategy(BaseStrategy):
                                           net_dividend_yield: float,
                                           price_stability: float,
                                           current_price: float,
-                                          ma60: Optional[float]) -> Dict[str, Any]:
+                                          ma60: Optional[float],
+                                          prices: List[float]) -> Dict[str, Any]:
         """计算分红保护垫评分"""
         
         score = 0.0
@@ -231,7 +232,8 @@ class DividendAlphaStrategy(BaseStrategy):
                 net_dividend_yield=net_dividend_yield,
                 price_stability=price_stability,
                 current_price=current_price,
-                ma60=ma60
+                ma60=ma60,
+                prices=prices
             )
             
             # 合并信号和元数据
