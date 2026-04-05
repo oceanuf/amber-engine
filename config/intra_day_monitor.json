@@ -1,0 +1,56 @@
+{
+  "version": "1.0.0",
+  "name": "盘中监控点火配置",
+  "description": "V1.7.0 '智库并网'专项行动 - 专项二配置",
+  "poll_interval_minutes": 15,
+  "market_hours": {
+    "open_hour": 9,
+    "close_hour": 15,
+    "trading_days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+  },
+  "stk_mins_config": {
+    "frequency": "15min",
+    "fields": "ts_code,trade_time,open,high,low,close,vol,amount",
+    "data_source": "tushare",
+    "cache_duration_minutes": 30
+  },
+  "alert_rules": {
+    "price_change_threshold": 0.05,
+    "volume_spike_threshold": 3.0,
+    "intraday_high_break": true,
+    "intraday_low_break": true,
+    "stop_loss_daily": -0.10,
+    "stop_loss_total": -0.15,
+    "profit_target": 0.10
+  },
+  "integration": {
+    "arena_engine": true,
+    "stop_profit_hook": true,
+    "synthesizer_signals": true,
+    "notification_channels": ["log", "file"]
+  },
+  "notification": {
+    "critical_alerts": {
+      "enabled": true,
+      "channels": ["log", "file"],
+      "retry_attempts": 3,
+      "cooldown_minutes": 5
+    },
+    "daily_summary": {
+      "enabled": true,
+      "time": "16:00",
+      "channels": ["log", "file"]
+    }
+  },
+  "performance_monitoring": {
+    "enabled": true,
+    "metrics": ["response_time", "alert_accuracy", "false_positive_rate"],
+    "report_frequency": "daily"
+  },
+  "metadata": {
+    "created_date": "2026-04-05",
+    "created_by": "工程师 Cheese 🧀",
+    "mission": "V1.7.0 '智库并网'专项行动 - 专项二",
+    "last_updated": "2026-04-05T16:40:00+08:00"
+  }
+}
