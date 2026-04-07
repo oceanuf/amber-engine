@@ -1,23 +1,23 @@
 {
   "ticker": "518880",
   "name": "华安黄金易ETF",
-  "analysis_time": "2026-04-01T18:02:14.794970",
-  "synthesis_time": "2026-04-01T18:02:14.869914",
-  "latest_date": "2026-04-01",
-  "latest_price": 4.88,
-  "latest_change": 0.07,
+  "analysis_time": "2026-04-07T18:00:38.815308",
+  "synthesis_time": "2026-04-07T18:00:38.888792",
+  "latest_date": "2026-04-07",
+  "latest_price": 4.867,
+  "latest_change": 0.22,
   "latest_ma20": null,
   "latest_bias_20": null,
-  "latest_roc_5": -0.3268,
-  "total_score": 0.0,
+  "latest_roc_5": 1.101,
+  "total_score": 9.0,
   "signal_status": "生存预警",
   "dimension_scores": {
     "safety": 0.0,
     "trend": 0.0,
-    "momentum": 0.0,
+    "momentum": 30.0,
     "weighted_safety": 0.0,
     "weighted_trend": 0.0,
-    "weighted_momentum": 0.0
+    "weighted_momentum": 9.0
   },
   "strategy_params_version": "1.0.0",
   "source_module": "synthesizer_score_engine"

@@ -1,0 +1,129 @@
+{
+  "report_id": "basis_analysis_20260402_180001",
+  "generation_time": "2026-04-02T18:00:01.513270",
+  "data_sources": {
+    "futures": {
+      "symbol": "AU.SHF",
+      "date": "20260402",
+      "open": 1014.5,
+      "close": 1014.88,
+      "high": 1019.5,
+      "low": 988.1,
+      "open_interest": 180953,
+      "data_source": "simulated",
+      "fetch_time": "2026-04-02T18:00:01.499215",
+      "note": "模拟数据（Tushare解析失败）"
+    },
+    "etf": {
+      "symbol": "518880.SH",
+      "date": "20260402",
+      "open": 5.142,
+      "close": 5.156,
+      "high": 5.168,
+      "low": 5.138,
+      "volume": 1256000,
+      "data_source": "simulated",
+      "fetch_time": "2026-04-02T18:00:01.512944",
+      "note": "模拟数据（Tushare返回空）"
+    }
+  },
+  "basis_analysis": {
+    "futures_price": 1014.88,
+    "etf_price": 5.156,
+    "absolute_basis": 1009.724,
+    "relative_basis": 19583.476,
+    "basis_status": "extreme_contango",
+    "basis_description": "极端升水",
+    "weight_adjustment": 0.15,
+    "signal": "看涨现货",
+    "signal_strength": "强",
+    "calculation_time": "2026-04-02T18:00:01.513007"
+  },
+  "historical_context": {
+    "statistics": {
+      "count": 30,
+      "mean": 19583.459,
+      "median": 19583.476,
+      "stdev": 0.207,
+      "min": 19583.176,
+      "max": 19583.776,
+      "current_zscore": -0.884
+    },
+    "trend": "平稳",
+    "conclusion": [
+      "基差处于正常波动范围"
+    ],
+    "analysis_period": "30个数据点",
+    "analysis_time": "2026-04-02T18:00:01.513250"
+  },
+  "g11_algorithm": {
+    "algorithm_name": "G11_基差因子",
+    "algorithm_version": "v1.0.0",
+    "calculation_time": "2026-04-02T18:00:01.513257",
+    "basis_input": {
+      "futures_symbol": "AU.SHF",
+      "etf_symbol": "518880.SH",
+      "futures_price": 1014.88,
+      "etf_price": 5.156,
+      "relative_basis": 19583.476,
+      "basis_status": "extreme_contango"
+    },
+    "historical_context": {
+      "statistics": {
+        "count": 30,
+        "mean": 19583.459,
+        "median": 19583.476,
+        "stdev": 0.207,
+        "min": 19583.176,
+        "max": 19583.776,
+        "current_zscore": -0.884
+      },
+      "trend": "平稳",
+      "conclusion": [
+        "基差处于正常波动范围"
+      ],
+      "analysis_period": "30个数据点",
+      "analysis_time": "2026-04-02T18:00:01.513250"
+    },
+    "output": {
+      "score": 65.0,
+      "signal_status": "舒适",
+      "weight_adjustment": 0.15,
+      "recommendation": "期货大幅升水，强烈建议增持现货ETF",
+      "confidence": 0.85
+    },
+    "metadata": {
+      "config_used": {
+        "futures_symbol": "AU.SHF",
+        "etf_symbol": "518880.SH",
+        "lookback_days": 30,
+        "basis_thresholds": {
+          "extreme_contango": 2.0,
+          "strong_contango": 1.0,
+          "normal": 0.5,
+          "strong_backwardation": -1.0,
+          "extreme_backwardation": -2.0
+        },
+        "weight_adjustments": {
+          "extreme_contango": 0.15,
+          "strong_contango": 0.08,
+          "normal": 0.0,
+          "strong_backwardation": -0.08,
+          "extreme_backwardation": -0.15
+        }
+      },
+      "data_sources": [
+        "tushare",
+        "simulated"
+      ],
+      "generator": "BasisCalculator v1.0.0"
+    }
+  },
+  "summary": {
+    "basis_level": "极端升水",
+    "signal": "看涨现货",
+    "g11_score": 65.0,
+    "recommendation": "期货大幅升水，强烈建议增持现货ETF",
+    "confidence": 0.85
+  }
+}

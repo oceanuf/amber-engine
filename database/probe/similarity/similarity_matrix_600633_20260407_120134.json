@@ -1,0 +1,284 @@
+{
+  "target_ticker": "600633",
+  "target_name": "公司_600633",
+  "target_keywords": [
+    "主营业务"
+  ],
+  "analysis_time": "2026-04-07T12:01:34.502279",
+  "total_candidates_searched": 20,
+  "similarity_threshold": 0.1,
+  "similar_companies": [
+    {
+      "ticker": "000002",
+      "name": "万科A",
+      "similarity_score": 1.0,
+      "target_keywords_count": 1,
+      "candidate_keywords_count": 1,
+      "matched_keywords": [
+        "主营业务"
+      ],
+      "analysis_time": "2026-04-07T12:01:34.501881"
+    },
+    {
+      "ticker": "000858",
+      "name": "五粮液",
+      "similarity_score": 1.0,
+      "target_keywords_count": 1,
+      "candidate_keywords_count": 1,
+      "matched_keywords": [
+        "主营业务"
+      ],
+      "analysis_time": "2026-04-07T12:01:34.501913"
+    },
+    {
+      "ticker": "000333",
+      "name": "美的集团",
+      "similarity_score": 1.0,
+      "target_keywords_count": 1,
+      "candidate_keywords_count": 1,
+      "matched_keywords": [
+        "主营业务"
+      ],
+      "analysis_time": "2026-04-07T12:01:34.501934"
+    },
+    {
+      "ticker": "000001",
+      "name": "平安银行",
+      "similarity_score": 1.0,
+      "target_keywords_count": 1,
+      "candidate_keywords_count": 1,
+      "matched_keywords": [
+        "主营业务"
+      ],
+      "analysis_time": "2026-04-07T12:01:34.501953"
+    },
+    {
+      "ticker": "000063",
+      "name": "中兴通讯",
+      "similarity_score": 1.0,
+      "target_keywords_count": 1,
+      "candidate_keywords_count": 1,
+      "matched_keywords": [
+        "主营业务"
+      ],
+      "analysis_time": "2026-04-07T12:01:34.501972"
+    },
+    {
+      "ticker": "000725",
+      "name": "京东方A",
+      "similarity_score": 1.0,
+      "target_keywords_count": 1,
+      "candidate_keywords_count": 1,
+      "matched_keywords": [
+        "主营业务"
+      ],
+      "analysis_time": "2026-04-07T12:01:34.501989"
+    },
+    {
+      "ticker": "002415",
+      "name": "海康威视",
+      "similarity_score": 1.0,
+      "target_keywords_count": 1,
+      "candidate_keywords_count": 1,
+      "matched_keywords": [
+        "主营业务"
+      ],
+      "analysis_time": "2026-04-07T12:01:34.502007"
+    },
+    {
+      "ticker": "002475",
+      "name": "立讯精密",
+      "similarity_score": 1.0,
+      "target_keywords_count": 1,
+      "candidate_keywords_count": 1,
+      "matched_keywords": [
+        "主营业务"
+      ],
+      "analysis_time": "2026-04-07T12:01:34.502024"
+    },
+    {
+      "ticker": "300059",
+      "name": "东方财富",
+      "similarity_score": 1.0,
+      "target_keywords_count": 1,
+      "candidate_keywords_count": 1,
+      "matched_keywords": [
+        "主营业务"
+      ],
+      "analysis_time": "2026-04-07T12:01:34.502041"
+    },
+    {
+      "ticker": "600519",
+      "name": "贵州茅台",
+      "similarity_score": 1.0,
+      "target_keywords_count": 1,
+      "candidate_keywords_count": 1,
+      "matched_keywords": [
+        "主营业务"
+      ],
+      "analysis_time": "2026-04-07T12:01:34.502058"
+    },
+    {
+      "ticker": "600036",
+      "name": "招商银行",
+      "similarity_score": 1.0,
+      "target_keywords_count": 1,
+      "candidate_keywords_count": 1,
+      "matched_keywords": [
+        "主营业务"
+      ],
+      "analysis_time": "2026-04-07T12:01:34.502074"
+    },
+    {
+      "ticker": "600276",
+      "name": "恒瑞医药",
+      "similarity_score": 1.0,
+      "target_keywords_count": 1,
+      "candidate_keywords_count": 1,
+      "matched_keywords": [
+        "主营业务"
+      ],
+      "analysis_time": "2026-04-07T12:01:34.502092"
+    },
+    {
+      "ticker": "600887",
+      "name": "伊利股份",
+      "similarity_score": 1.0,
+      "target_keywords_count": 1,
+      "candidate_keywords_count": 1,
+      "matched_keywords": [
+        "主营业务"
+      ],
+      "analysis_time": "2026-04-07T12:01:34.502111"
+    },
+    {
+      "ticker": "601318",
+      "name": "中国平安",
+      "similarity_score": 1.0,
+      "target_keywords_count": 1,
+      "candidate_keywords_count": 1,
+      "matched_keywords": [
+        "主营业务"
+      ],
+      "analysis_time": "2026-04-07T12:01:34.502129"
+    },
+    {
+      "ticker": "601857",
+      "name": "中国石油",
+      "similarity_score": 1.0,
+      "target_keywords_count": 1,
+      "candidate_keywords_count": 1,
+      "matched_keywords": [
+        "主营业务"
+      ],
+      "analysis_time": "2026-04-07T12:01:34.502146"
+    },
+    {
+      "ticker": "601888",
+      "name": "中国中免",
+      "similarity_score": 1.0,
+      "target_keywords_count": 1,
+      "candidate_keywords_count": 1,
+      "matched_keywords": [
+        "主营业务"
+      ],
+      "analysis_time": "2026-04-07T12:01:34.502162"
+    },
+    {
+      "ticker": "603288",
+      "name": "海天味业",
+      "similarity_score": 1.0,
+      "target_keywords_count": 1,
+      "candidate_keywords_count": 1,
+      "matched_keywords": [
+        "主营业务"
+      ],
+      "analysis_time": "2026-04-07T12:01:34.502179"
+    },
+    {
+      "ticker": "300498",
+      "name": "温氏股份",
+      "similarity_score": 1.0,
+      "target_keywords_count": 1,
+      "candidate_keywords_count": 1,
+      "matched_keywords": [
+        "主营业务"
+      ],
+      "analysis_time": "2026-04-07T12:01:34.502204"
+    },
+    {
+      "ticker": "002714",
+      "name": "牧原股份",
+      "similarity_score": 1.0,
+      "target_keywords_count": 1,
+      "candidate_keywords_count": 1,
+      "matched_keywords": [
+        "主营业务"
+      ],
+      "analysis_time": "2026-04-07T12:01:34.502221"
+    },
+    {
+      "ticker": "300750",
+      "name": "宁德时代",
+      "similarity_score": 1.0,
+      "target_keywords_count": 1,
+      "candidate_keywords_count": 1,
+      "matched_keywords": [
+        "主营业务"
+      ],
+      "analysis_time": "2026-04-07T12:01:34.502270"
+    }
+  ],
+  "top_similarities": [
+    {
+      "rank": 1,
+      "ticker": "000002",
+      "name": "万科A",
+      "similarity": 1.0,
+      "matched_keywords": [
+        "主营业务"
+      ]
+    },
+    {
+      "rank": 2,
+      "ticker": "000858",
+      "name": "五粮液",
+      "similarity": 1.0,
+      "matched_keywords": [
+        "主营业务"
+      ]
+    },
+    {
+      "rank": 3,
+      "ticker": "000333",
+      "name": "美的集团",
+      "similarity": 1.0,
+      "matched_keywords": [
+        "主营业务"
+      ]
+    },
+    {
+      "rank": 4,
+      "ticker": "000001",
+      "name": "平安银行",
+      "similarity": 1.0,
+      "matched_keywords": [
+        "主营业务"
+      ]
+    },
+    {
+      "rank": 5,
+      "ticker": "000063",
+      "name": "中兴通讯",
+      "similarity": 1.0,
+      "matched_keywords": [
+        "主营业务"
+      ]
+    }
+  ],
+  "clustering_insights": [
+    "核心匹配关键词: 主营业务(20)",
+    "平均相似度: 1.000, 最高相似度: 1.000",
+    "主要市场分布: 深市(9/10)"
+  ]
+}

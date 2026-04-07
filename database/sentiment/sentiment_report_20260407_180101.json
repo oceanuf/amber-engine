@@ -1,0 +1,13 @@
+{
+  "fetch_time": "2026-04-07T18:01:01.898334",
+  "sentiment_factor": 0.0,
+  "sentiment_level": "中性",
+  "news_sources": {
+    "cctv": 0,
+    "perplexity": 0,
+    "market_news": 0,
+    "total": 0
+  },
+  "description": "舆情情感分析: 中性 (0.000)",
+  "impact": "将对G9宏观因子进行情感对冲修正"
+}

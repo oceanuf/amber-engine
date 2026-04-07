@@ -1,0 +1,42 @@
+{
+  "bridge_name": "哨兵-探针数据桥接",
+  "version": "1.0.0",
+  "created_date": "2026-04-03",
+  "description": "全球资讯哨兵到深蓝探针的数据桥接文件，实现实时新闻线索到投资标的发现的自动化流转",
+  "update_mechanism": {
+    "trigger": "news_stream_update",
+    "frequency": "realtime",
+    "retention_days": 7,
+    "auto_cleanup": true
+  },
+  "current_clues": [],
+  "historical_clues": [],
+  "probe_instructions": {
+    "priority_levels": {
+      "critical": "立即扫描，最高优先级",
+      "high": "1小时内扫描",
+      "medium": "4小时内扫描",
+      "low": "24小时内扫描"
+    },
+    "scan_parameters": {
+      "industry_depth": 3,
+      "similarity_threshold": 0.7,
+      "max_candidates": 10,
+      "time_window_days": 30
+    }
+  },
+  "performance_metrics": {
+    "total_clues_generated": 0,
+    "clues_converted_to_targets": 0,
+    "conversion_rate": 0.0,
+    "avg_processing_time_seconds": 0.0,
+    "last_successful_update": null
+  },
+  "metadata": {
+    "created_by": "Engineer Cheese 🧀",
+    "authorization": "[最高执行指令] 专项二",
+    "engine_version": "V1.5.0",
+    "last_updated": "2026-04-03T20:06:00+08:00",
+    "notes": "自动更新机制激活后，此文件将由哨兵模块实时更新"
+  }
+}

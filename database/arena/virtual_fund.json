@@ -1,0 +1,33 @@
+{
+  "fund_id": "VIRTUAL_FUND_001",
+  "fund_name": "琥珀引擎演武场虚拟基金",
+  "currency": "CNY",
+  "initial_capital": 1000000.00,
+  "current_capital": 1000000.00,
+  "locked_period": 30,
+  "created_time": "2026-04-03T11:30:00+08:00",
+  "last_updated": "2026-04-03T11:30:00+08:00",
+  "status": "active",
+  "rules": {
+    "lock_period_rule": "任何非强制止损的卖出动作必须在建仓30天后执行",
+    "stop_loss_rule": "强制止损条件：单日亏损超过10%或累计亏损超过15%",
+    "position_limit": "单只股票仓位不超过总资本的20%",
+    "diversification": "至少持有3只不同行业的股票",
+    "rebalance_frequency": "每30天重新评估和调整仓位"
+  },
+  "positions": [],
+  "transaction_history": [],
+  "performance_metrics": {
+    "total_return": 0.0,
+    "annualized_return": 0.0,
+    "sharpe_ratio": 0.0,
+    "max_drawdown": 0.0,
+    "win_rate": 0.0
+  },
+  "metadata": {
+    "version": "1.0.0",
+    "engine_version": "V1.4.1",
+    "created_by": "Engineer Cheese 🧀",
+    "authorization": "[最高作战指令] 专项二"
+  }
+}

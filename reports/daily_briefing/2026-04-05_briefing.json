@@ -1,0 +1,300 @@
+{
+  "report_id": "briefing_2026-04-05_1775379331",
+  "generation_date": "2026-04-05",
+  "generation_time": "2026-04-05T16:55:31.680094",
+  "title": "琥珀引擎每日投资简报 - 2026-04-05",
+  "executive_summary": {
+    "total_clues_analyzed": 5,
+    "top_clues_count": 5,
+    "insights_generated": 5,
+    "avg_clue_weight": 67.6,
+    "generation_duration": "待计算"
+  },
+  "data_sources": {
+    "sentry_bridge_file": "database/sentry/sentry_to_probe_bridge.json",
+    "clues_directory": "database/sentry/clues",
+    "data_freshness": "unknown"
+  },
+  "top_clues": [
+    {
+      "id": "mock_003",
+      "title": "人工智能芯片出口管制升级，多家公司受影响",
+      "content": "美国商务部升级对华人工智能芯片出口管制措施，将影响包括英伟达、AMD在内的多家芯片制造商对华出口，可能加速国产替代进程。",
+      "source": "bloomberg",
+      "urgency": "critical",
+      "scope": "global",
+      "timestamp": "2026-04-05T13:55:31.679905",
+      "related_targets": [
+        "688981.SH",
+        "002049.SZ"
+      ],
+      "related_industries": [
+        "semiconductor",
+        "ai_chip"
+      ],
+      "weight_score": 89.0
+    },
+    {
+      "id": "mock_001",
+      "title": "央行宣布降准0.5个百分点，释放长期资金约1万亿元",
+      "content": "中国人民银行决定下调金融机构存款准备金率0.5个百分点，此次降准将释放长期资金约1万亿元，旨在支持实体经济发展，保持流动性合理充裕。",
+      "source": "tushare_vip",
+      "urgency": "high",
+      "scope": "national",
+      "timestamp": "2026-04-05T16:55:31.679881",
+      "related_targets": [
+        "000001.SH",
+        "399001.SZ"
+      ],
+      "related_industries": [
+        "banking",
+        "finance"
+      ],
+      "weight_score": 84.0
+    },
+    {
+      "id": "mock_002",
+      "title": "新能源汽车购置税减免政策延续至2027年底",
+      "content": "财政部等三部门联合发布公告，明确新能源汽车车辆购置税减免政策将延续至2027年12月31日，政策延续将利好新能源汽车产业链。",
+      "source": "reuters",
+      "urgency": "medium",
+      "scope": "industry",
+      "timestamp": "2026-04-04T16:55:31.679900",
+      "related_targets": [
+        "002594.SZ",
+        "300750.SZ"
+      ],
+      "related_industries": [
+        "new_energy_vehicles",
+        "battery"
+      ],
+      "weight_score": 64.0
+    },
+    {
+      "id": "mock_005",
+      "title": "医疗设备国产化替代加速，政策支持力度加大",
+      "content": "国家卫健委发文要求各级医疗机构优先采购国产医疗设备，政策推动下，国产医疗设备企业迎来发展机遇。",
+      "source": "eastmoney",
+      "urgency": "medium",
+      "scope": "industry",
+      "timestamp": "2026-04-04T16:55:31.679909",
+      "related_targets": [
+        "300003.SZ",
+        "002223.SZ"
+      ],
+      "related_industries": [
+        "medical_devices",
+        "healthcare"
+      ],
+      "weight_score": 54.0
+    },
+    {
+      "id": "mock_004",
+      "title": "光伏组件价格连续三周上涨，行业景气度回升",
+      "content": "根据行业数据，光伏组件价格已连续三周上涨，主要受原材料成本上升和需求回暖影响，行业龙头公司有望受益。",
+      "source": "sina_finance",
+      "urgency": "medium",
+      "scope": "sector",
+      "timestamp": "2026-04-03T16:55:31.679908",
+      "related_targets": [
+        "601012.SH",
+        "300274.SZ"
+      ],
+      "related_industries": [
+        "photovoltaic",
+        "renewable_energy"
+      ],
+      "weight_score": 47.0
+    }
+  ],
+  "llm_insights": {
+    "total_insights": 5,
+    "generation_time": "2026-04-05T16:55:31.680077",
+    "insights": [
+      {
+        "clue_index": 1,
+        "clue_title": "人工智能芯片出口管制升级，多家公司受影响",
+        "clue_summary": {
+          "title": "人工智能芯片出口管制升级，多家公司受影响",
+          "content": "美国商务部升级对华人工智能芯片出口管制措施，将影响包括英伟达、AMD在内的多家芯片制造商对华出口，可能加速国产替代进程。",
+          "source": "bloomberg",
+          "urgency": "critical",
+          "scope": "global",
+          "related_targets": [
+            "688981.SH",
+            "002049.SZ"
+          ],
+          "weight_score": 89.0
+        },
+        "insight": "这是对线索'人工智能芯片出口管制升级，多家公司受影响'的模拟洞察。基于来源bloomberg和紧急程度critical，该信息可能对global层面产生影响。",
+        "investment_implication": "模拟投资启示：建议关注相关标的，等待市场消化信息。",
+        "confidence": 0.85,
+        "probe_suggestions": [
+          "建议深蓝探针扫描相关行业",
+          "建议监控相关概念板块"
+        ],
+        "generated_at": "2026-04-05T16:55:31.680000"
+      },
+      {
+        "clue_index": 2,
+        "clue_title": "央行宣布降准0.5个百分点，释放长期资金约1万亿元",
+        "clue_summary": {
+          "title": "央行宣布降准0.5个百分点，释放长期资金约1万亿元",
+          "content": "中国人民银行决定下调金融机构存款准备金率0.5个百分点，此次降准将释放长期资金约1万亿元，旨在支持实体经济发展，保持流动性合理充裕。",
+          "source": "tushare_vip",
+          "urgency": "high",
+          "scope": "national",
+          "related_targets": [
+            "000001.SH",
+            "399001.SZ"
+          ],
+          "weight_score": 84.0
+        },
+        "insight": "这是对线索'央行宣布降准0.5个百分点，释放长期资金约1万亿元'的模拟洞察。基于来源tushare_vip和紧急程度high，该信息可能对national层面产生影响。",
+        "investment_implication": "模拟投资启示：建议关注相关标的，等待市场消化信息。",
+        "confidence": 0.85,
+        "probe_suggestions": [
+          "建议深蓝探针扫描相关行业",
+          "建议监控相关概念板块"
+        ],
+        "generated_at": "2026-04-05T16:55:31.680020"
+      },
+      {
+        "clue_index": 3,
+        "clue_title": "新能源汽车购置税减免政策延续至2027年底",
+        "clue_summary": {
+          "title": "新能源汽车购置税减免政策延续至2027年底",
+          "content": "财政部等三部门联合发布公告，明确新能源汽车车辆购置税减免政策将延续至2027年12月31日，政策延续将利好新能源汽车产业链。",
+          "source": "reuters",
+          "urgency": "medium",
+          "scope": "industry",
+          "related_targets": [
+            "002594.SZ",
+            "300750.SZ"
+          ],
+          "weight_score": 64.0
+        },
+        "insight": "这是对线索'新能源汽车购置税减免政策延续至2027年底'的模拟洞察。基于来源reuters和紧急程度medium，该信息可能对industry层面产生影响。",
+        "investment_implication": "模拟投资启示：建议关注相关标的，等待市场消化信息。",
+        "confidence": 0.85,
+        "probe_suggestions": [
+          "建议深蓝探针扫描相关行业",
+          "建议监控相关概念板块"
+        ],
+        "generated_at": "2026-04-05T16:55:31.680037"
+      },
+      {
+        "clue_index": 4,
+        "clue_title": "医疗设备国产化替代加速，政策支持力度加大",
+        "clue_summary": {
+          "title": "医疗设备国产化替代加速，政策支持力度加大",
+          "content": "国家卫健委发文要求各级医疗机构优先采购国产医疗设备，政策推动下，国产医疗设备企业迎来发展机遇。",
+          "source": "eastmoney",
+          "urgency": "medium",
+          "scope": "industry",
+          "related_targets": [
+            "300003.SZ",
+            "002223.SZ"
+          ],
+          "weight_score": 54.0
+        },
+        "insight": "这是对线索'医疗设备国产化替代加速，政策支持力度加大'的模拟洞察。基于来源eastmoney和紧急程度medium，该信息可能对industry层面产生影响。",
+        "investment_implication": "模拟投资启示：建议关注相关标的，等待市场消化信息。",
+        "confidence": 0.85,
+        "probe_suggestions": [
+          "建议深蓝探针扫描相关行业",
+          "建议监控相关概念板块"
+        ],
+        "generated_at": "2026-04-05T16:55:31.680052"
+      },
+      {
+        "clue_index": 5,
+        "clue_title": "光伏组件价格连续三周上涨，行业景气度回升",
+        "clue_summary": {
+          "title": "光伏组件价格连续三周上涨，行业景气度回升",
+          "content": "根据行业数据，光伏组件价格已连续三周上涨，主要受原材料成本上升和需求回暖影响，行业龙头公司有望受益。",
+          "source": "sina_finance",
+          "urgency": "medium",
+          "scope": "sector",
+          "related_targets": [
+            "601012.SH",
+            "300274.SZ"
+          ],
+          "weight_score": 47.0
+        },
+        "insight": "这是对线索'光伏组件价格连续三周上涨，行业景气度回升'的模拟洞察。基于来源sina_finance和紧急程度medium，该信息可能对sector层面产生影响。",
+        "investment_implication": "模拟投资启示：建议关注相关标的，等待市场消化信息。",
+        "confidence": 0.85,
+        "probe_suggestions": [
+          "建议深蓝探针扫描相关行业",
+          "建议监控相关概念板块"
+        ],
+        "generated_at": "2026-04-05T16:55:31.680065"
+      }
+    ],
+    "llm_provider": "mock"
+  },
+  "probe_integration": {
+    "status": "pending",
+    "suggested_scans": [
+      {
+        "clue_title": "人工智能芯片出口管制升级，多家公司受影响",
+        "scan_priority": "critical",
+        "suggested_industries": [
+          "semiconductor",
+          "ai_chip"
+        ],
+        "reason": "权重分数: 89.00, 紧急程度: critical",
+        "expected_output": "发现3-5个相关投资标的"
+      },
+      {
+        "clue_title": "央行宣布降准0.5个百分点，释放长期资金约1万亿元",
+        "scan_priority": "high",
+        "suggested_industries": [
+          "banking",
+          "finance"
+        ],
+        "reason": "权重分数: 84.00, 紧急程度: high",
+        "expected_output": "发现3-5个相关投资标的"
+      },
+      {
+        "clue_title": "新能源汽车购置税减免政策延续至2027年底",
+        "scan_priority": "medium",
+        "suggested_industries": [
+          "new_energy_vehicles",
+          "battery"
+        ],
+        "reason": "权重分数: 64.00, 紧急程度: medium",
+        "expected_output": "发现3-5个相关投资标的"
+      },
+      {
+        "clue_title": "医疗设备国产化替代加速，政策支持力度加大",
+        "scan_priority": "medium",
+        "suggested_industries": [
+          "medical_devices",
+          "healthcare"
+        ],
+        "reason": "权重分数: 54.00, 紧急程度: medium",
+        "expected_output": "发现3-5个相关投资标的"
+      },
+      {
+        "clue_title": "光伏组件价格连续三周上涨，行业景气度回升",
+        "scan_priority": "medium",
+        "suggested_industries": [
+          "photovoltaic",
+          "renewable_energy"
+        ],
+        "reason": "权重分数: 47.00, 紧急程度: medium",
+        "expected_output": "发现3-5个相关投资标的"
+      }
+    ],
+    "integration_note": "深蓝探针将根据这些线索进行标的发现扫描"
+  },
+  "metadata": {
+    "version": "1.0.0",
+    "author": "工程师 Cheese 🧀",
+    "mission": "V1.7.0 '智库并网'专项行动 - 专项一",
+    "llm_used": "mock",
+    "notes": "每日18:00自动生成"
+  }
+}

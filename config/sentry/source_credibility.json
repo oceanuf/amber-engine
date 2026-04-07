@@ -1,0 +1,146 @@
+{
+  "name": "新闻源头信任度矩阵",
+  "version": "1.0.0",
+  "created_date": "2026-04-04",
+  "description": "全球资讯哨兵源头加权系统，根据权威性和相关性对新闻源头进行权重分配",
+  "authorization": "[2614-090号] 最高指挥官战术指令",
+  "created_by": "工程师 Cheese 🧀",
+  
+  "core_keyword_matrices": {
+    "地缘政治": {
+      "keywords": ["红海", "能源禁运", "台海局势", "制裁名单", "OPEC+"],
+      "weight": 5.0,
+      "priority": "critical",
+      "related_sectors": ["国防军工", "有色金属", "石油石化", "银行", "保险"]
+    },
+    "美联储": {
+      "keywords": ["非农", "降息预期", "点阵图", "缩表", "流动性拐点"],
+      "weight": 5.0,
+      "priority": "high",
+      "related_sectors": ["银行", "保险", "证券", "房地产", "有色金属", "贵金属"]
+    },
+    "国产替代": {
+      "keywords": ["自主可控", "光刻机", "核心算法", "供应链重构", "先进制程"],
+      "weight": 5.0,
+      "priority": "high",
+      "related_sectors": ["电子", "计算机", "通信", "机械设备", "电气设备"]
+    },
+    "十五五规划": {
+      "keywords": ["新质生产力", "低空经济", "数字底座", "绿色能源", "新型工业化"],
+      "weight": 5.0,
+      "priority": "high",
+      "related_sectors": ["计算机", "通信", "电力设备", "机械设备", "国防军工", "环保"]
+    }
+  },
+  
+  "source_credibility_weights": {
+    "国家统计局": {
+      "weight": 5.0,
+      "country": "CN",
+      "type": "official",
+      "reliability": 0.95,
+      "notes": "国家级官方统计数据，最高权威性"
+    },
+    "新华网": {
+      "weight": 4.5,
+      "country": "CN",
+      "type": "state_media",
+      "reliability": 0.90,
+      "notes": "国家级官方媒体，权威性高"
+    },
+    "路透社": {
+      "weight": 4.0,
+      "country": "UK",
+      "type": "international",
+      "reliability": 0.85,
+      "notes": "国际权威财经媒体，全球影响力"
+    },
+    "半岛电视台": {
+      "weight": 3.5,
+      "country": "QA",
+      "type": "regional",
+      "reliability": 0.80,
+      "notes": "中东地区权威媒体，地缘政治分析强"
+    },
+    "新浪财经": {
+      "weight": 2.0,
+      "country": "CN",
+      "type": "commercial",
+      "reliability": 0.70,
+      "notes": "主流商业财经媒体，时效性好"
+    },
+    "东方财富": {
+      "weight": 2.0,
+      "country": "CN",
+      "type": "commercial",
+      "reliability": 0.70,
+      "notes": "主流财经信息平台，数据丰富"
+    },
+    "华尔街见闻": {
+      "weight": 3.0,
+      "country": "CN",
+      "type": "specialized",
+      "reliability": 0.75,
+      "notes": "专业财经媒体，深度分析较好"
+    },
+    "一般财经媒体": {
+      "weight": 1.0,
+      "country": "global",
+      "type": "commercial",
+      "reliability": 0.60,
+      "notes": "通用财经媒体，需交叉验证"
+    },
+    "自媒体/社交媒体": {
+      "weight": 0.5,
+      "country": "global",
+      "type": "social",
+      "reliability": 0.30,
+      "notes": "权威性低，需严格验证"
+    }
+  },
+  
+  "relevance_scoring": {
+    "financial_news": {
+      "weight": 1.0,
+      "description": "纯财经类新闻，直接相关"
+    },
+    "policy_news": {
+      "weight": 0.9,
+      "description": "政策类新闻，间接影响"
+    },
+    "political_news": {
+      "weight": 0.7,
+      "description": "政治类新闻，需提取财经影响"
+    },
+    "social_news": {
+      "weight": 0.5,
+      "description": "社会新闻，相关性低"
+    },
+    "entertainment_news": {
+      "weight": 0.1,
+      "description": "娱乐新闻，基本无关"
+    }
+  },
+  
+  "weight_calculation_formula": "final_weight = source_weight * relevance_weight * keyword_weight",
+  "processing_rules": {
+    "minimum_weight_threshold": 2.0,
+    "high_priority_threshold": 4.0,
+    "critical_threshold": 4.5,
+    "auto_filter_below": 1.0
+  },
+  
+  "implementation_notes": {
+    "integration": "需集成到 scripts/sentry/global_news_stream.py 的 analyze_news_to_clue 方法",
+    "update_frequency": "每月评审一次，根据实际表现调整权重",
+    "testing_method": "使用 sandbox/ 环境测试，避免影响生产数据",
+    "backup_strategy": "保留历史版本，支持回滚"
+  },
+  
+  "metadata": {
+    "last_updated": "2026-04-04T12:15:00+08:00",
+    "next_review": "2026-05-04",
+    "status": "active",
+    "compliance": "[最高作战指令] 专项二 + [2614-090号] 战术指令"
+  }
+}

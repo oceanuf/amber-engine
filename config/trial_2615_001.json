@@ -1,0 +1,168 @@
+{
+  "version": "1.0.0",
+  "name": "Trial_2615_001",
+  "description": "[2615-001号] '琥珀战车'试金石专项行动虚拟组合",
+  "created_date": "2026-04-07",
+  "created_by": "工程师 Cheese 🧀",
+  "mission": "G1-G11全逻辑并网实战测试 - 30/60/90天分层观测",
+  
+  "observation_groups": {
+    "进攻组": {
+      "description": "Beta捕获 - 数据交易与算力核心",
+      "test_logic": "验证G11因子在政策落地初期的'攻击性'",
+      "observation_metric": "20日相对强度(RS)是否跑赢大数据ETF(515400)",
+      "tickers": [
+        {
+          "code": "600633",
+          "name": "浙数文化",
+          "weight": 0.40,
+          "category": "数据交易平台",
+          "policy_relation": "浙江大数据交易中心参股方，直接受益于'数据要素×'政策"
+        },
+        {
+          "code": "000938", 
+          "name": "紫光股份",
+          "weight": 0.35,
+          "category": "云计算基础设施",
+          "policy_relation": "紫光云、服务器业务，受益于算力基础设施建设"
+        },
+        {
+          "code": "688256",
+          "name": "寒武纪", 
+          "weight": 0.25,
+          "category": "AI算力芯片",
+          "policy_relation": "AI芯片国产替代核心，受益于人工智能政策支持"
+        }
+      ]
+    },
+    
+    "防守组": {
+      "description": "Alpha沉淀 - IDC与国资基建",
+      "test_logic": "验证G1-G5（量价/筹码因子）在震荡市中的'抗跌性'",
+      "observation_metric": "最大回撤(MaxDD)是否显著小于同类宽基",
+      "tickers": [
+        {
+          "code": "603881",
+          "name": "数据港",
+          "weight": 0.35,
+          "category": "数据中心",
+          "policy_relation": "定制化数据中心服务，受益于IDC基建投资"
+        },
+        {
+          "code": "000032",
+          "name": "深桑达A",
+          "weight": 0.35,
+          "category": "国资云",
+          "policy_relation": "深圳国资云平台，受益于国资数字化转型"
+        },
+        {
+          "code": "002368",
+          "name": "太极股份",
+          "weight": 0.30,
+          "category": "基础软件",
+          "policy_relation": "操作系统等基础软件，受益于信创政策"
+        }
+      ]
+    },
+    
+    "核心锚点": {
+      "description": "逻辑基准 - 验证产业链相关性",
+      "test_logic": "作为琥珀引擎的'逻辑原点'，测试其在产业链波动中的相关性(Correlation)",
+      "observation_metric": "与数据基础设施板块的相关性系数变化",
+      "tickers": [
+        {
+          "code": "000681",
+          "name": "视觉中国",
+          "weight": 1.00,
+          "category": "数字版权",
+          "policy_relation": "作为琥珀引擎原始逻辑起点，验证逻辑一致性"
+        }
+      ]
+    }
+  },
+  
+  "observation_periods": {
+    "short_term": {
+      "days": 30,
+      "description": "验证'哨兵'的反应速度",
+      "rebalancing_schedule": "每周五收盘后"
+    },
+    "medium_term": {
+      "days": 60, 
+      "description": "验证'探针'对伪逻辑的识别能力（剔除蹭热点的公司）",
+      "rebalancing_schedule": "每两周周五收盘后"
+    },
+    "long_term": {
+      "days": 90,
+      "description": "验证'合成算法'对超额收益(Alpha)的提取能力",
+      "rebalancing_schedule": "每月最后一个交易日"
+    }
+  },
+  
+  "reporting_schedule": {
+    "daily": {
+      "time": "18:00",
+      "report": "《试金石日度观察简报》",
+      "content": ["价格表现", "相对强度", "政策事件"]
+    },
+    "weekly": {
+      "day": "Friday",
+      "time": "20:00", 
+      "report": "《因子贡献度分析周报》",
+      "content": ["因子表现分解", "策略命中率", "权重调整建议"]
+    },
+    "milestone": {
+      "days": [30, 60, 90],
+      "report": "《阶段深度评估报告》",
+      "content": ["综合表现评估", "逻辑验证结论", "系统优化建议"]
+    }
+  },
+  
+  "g11_policy_parameters": {
+    "policy_match_threshold": 0.85,
+    "momentum_multiplier": 1.2,
+    "policy_keywords": [
+      "数据要素", "数据交易", "数据交易所", "中国数谷", "杭州",
+      "三年行动计划", "十亿基金", "公共数据授权", "算力", "人工智能",
+      "云计算", "数据中心", "网络安全", "芯片", "国产替代"
+    ],
+    "sentry_integration": {
+      "enabled": true,
+      "weight_update_frequency": "daily",
+      "keyword_expansion": true
+    }
+  },
+  
+  "execution_parameters": {
+    "initial_capital": 1000000,
+    "commission_rate": 0.0003,
+    "slippage": 0.001,
+    "position_sizing": "risk_parity",
+    "max_position_weight": 0.40,
+    "stop_loss": -0.15,
+    "take_profit": 0.30
+  },
+  
+  "monitoring_metrics": {
+    "performance": ["累计收益率", "年化收益率", "夏普比率", "最大回撤", "胜率"],
+    "risk": ["波动率", "VaR(95%)", "Beta系数", "Alpha系数", "信息比率"],
+    "factor": ["政策因子贡献度", "技术因子贡献度", "基本面因子贡献度", "共振强度"],
+    "relative": ["相对基准超额收益", "相对行业超额收益", "相对ETF超额收益"]
+  },
+  
+  "benchmarks": {
+    "primary": "000300.SH",
+    "secondary": "515400.SH",
+    "tertiary": "884224.WI"
+  },
+  
+  "metadata": {
+    "authorization": "[2615-001号] '琥珀战车'试金石专项行动",
+    "commander": "首席架构师 Gemini ⚖️",
+    "executor": "工程师 Cheese 🧀",
+    "approver": "主编",
+    "start_date": "2026-04-07",
+    "expected_end_date": "2026-07-06",
+    "status": "🟢 已启动"
+  }
+}

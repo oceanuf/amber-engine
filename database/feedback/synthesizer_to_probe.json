@@ -1,0 +1,53 @@
+{
+  "timestamp": "2026-04-04T12:00:00+08:00",
+  "period": "LATEST_30_DAYS",
+  "metrics": {
+    "total_signals_generated": 45,
+    "high_confidence_signals": 28,
+    "signal_accuracy": 0.62,
+    "avg_holding_return": 0.032,
+    "sector_performance": {
+      "电子": {"signals": 12, "accuracy": 0.67, "avg_return": 0.041},
+      "计算机": {"signals": 8, "accuracy": 0.63, "avg_return": 0.035},
+      "医药生物": {"signals": 6, "accuracy": 0.58, "avg_return": 0.028},
+      "电力设备": {"signals": 7, "accuracy": 0.57, "avg_return": 0.025},
+      "国防军工": {"signals": 5, "accuracy": 0.60, "avg_return": 0.030},
+      "其他": {"signals": 7, "accuracy": 0.43, "avg_return": 0.018}
+    },
+    "algorithm_effectiveness": {
+      "G1": {"usage_count": 38, "contribution": 0.32},
+      "G2": {"usage_count": 32, "contribution": 0.25},
+      "G3": {"usage_count": 28, "contribution": 0.18},
+      "G4": {"usage_count": 25, "contribution": 0.12},
+      "G5": {"usage_count": 22, "contribution": 0.08},
+      "G6": {"usage_count": 18, "contribution": 0.03},
+      "G7": {"usage_count": 15, "contribution": 0.02},
+      "G8": {"usage_count": 20, "contribution": 0.05},
+      "G9": {"usage_count": 16, "contribution": 0.03},
+      "G10": {"usage_count": 12, "contribution": 0.01}
+    }
+  },
+  "action": {
+    "focus_sectors": ["电子", "计算机", "国防军工"],
+    "avoid_sectors": ["房地产", "农林牧渔"],
+    "recommended_search_patterns": [
+      "半导体+国产替代",
+      "人工智能+算力",
+      "军工+航天"
+    ],
+    "parameter_adjustments": {
+      "similarity_threshold": 0.72,
+      "max_candidates": 8,
+      "time_window_days": 25
+    },
+    "comment": "电子和计算机板块信号质量较高，建议探针重点扫描；房地产板块近期信号质量较差，可降低优先级",
+    "confidence_level": 0.78
+  },
+  "metadata": {
+    "generated_by": "Synthesizer算法引擎",
+    "data_source": "演武场实战反馈 + 历史信号分析",
+    "analysis_period": "2026-03-05 至 2026-04-04",
+    "version": "1.0.0",
+    "authorization": "[2614-090号] 反馈闭环接口规范"
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "version": "1.1.0",
+  "name": "日线监控配置",
+  "description": "V1.7.0 '智库并网'专项行动 - 专项二调整（日线模式）",
+  "execution_time": "18:00",
+  "execution_days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+  "market_hours": {
+    "note": "日线模式，不依赖盘中时间，每日收盘后执行"
+  },
+  "monitored_tickers": ["518880", "510300", "510500"],
+  "data_sources": {
+    "primary": "tushare_fund_daily",
+    "fallback": "cleaned_data",
+    "emergency": "mock_data",
+    "update_frequency": "daily"
+  },
+  "alert_rules": {
+    "daily_price_change_threshold": 0.05,
+    "weekly_price_change_threshold": 0.10,
+    "volume_spike_threshold": 3.0,
+    "stop_loss_daily": -0.05,
+    "stop_loss_total": -0.15,
+    "profit_target": 0.10,
+    "drawdown_alert": -0.08,
+    "trend_reversal_threshold": 0.03,
+    "support_resistance_break": true
+  },
+  "position_monitoring": {
+    "check_frequency": "daily",
+    "cost_basis_tracking": true,
+    "pnl_calculation": "accurate",
+    "performance_benchmark": "同期沪深300"
+  },
+  "integration": {
+    "arena_engine": true,
+    "stop_profit_hook": true,
+    "synthesizer_signals": true,
+    "orchestrator_sync": true,
+    "data_pipeline": {
+      "ingest": true,
+      "cleaner": true,
+      "storer": true,
+      "analyzer": true
+    }
+  },
+  "notification": {
+    "critical_alerts": {
+      "enabled": true,
+      "channels": ["log", "file"],
+      "retry_attempts": 3,
+      "cooldown_hours": 24
+    },
+    "daily_summary": {
+      "enabled": true,
+      "channels": ["log", "file", "report"],
+      "format": "json_and_summary"
+    },
+    "weekly_report": {
+      "enabled": true,
+      "day_of_week": "Friday",
+      "channels": ["report", "summary"]
+    }
+  },
+  "performance_monitoring": {
+    "enabled": true,
+    "metrics": ["alert_accuracy", "false_positive_rate", "response_time", "coverage_rate"],
+    "report_frequency": "weekly",
+    "benchmark_comparison": true
+  },
+  "data_quality": {
+    "validation_enabled": true,
+    "required_fields": ["ticker", "trade_date", "close"],
+    "freshness_threshold_hours": 48,
+    "fallback_strategy": "use_previous_day"
+  },
+  "execution_mode": {
+    "mode": "daily_line",
+    "reason": "放弃实时模拟盘，专注日线策略，避免Tushare分钟线额外费用",
+    "implementation_date": "2026-04-06",
+    "performance_target": "日线策略回测年化收益率 > 15%"
+  },
+  "metadata": {
+    "created_date": "2026-04-06",
+    "created_by": "工程师 Cheese 🧀",
+    "mission": "V1.7.0 '智库并网'专项行动 - 专项二调整",
+    "original_design": "盘中监控点火",
+    "adjusted_design": "日线监控策略",
+    "adjustment_reason": "Tushare分钟线需要单独付费（2000元/年），5120积分无法调用",
+    "technical_constraints": "使用现有fund_daily接口，无需额外费用",
+    "last_updated": "2026-04-06T08:50:00+08:00",
+    "next_review_date": "2026-04-13"
+  }
+}

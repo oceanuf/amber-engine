@@ -1,6 +1,45 @@
 {
   "data": [
     {
+      "date": "20260407",
+      "close": 9.837,
+      "open": 9.845,
+      "high": 9.867,
+      "low": 9.781,
+      "pre_close": 9.828,
+      "change": 0.009,
+      "pct_chg": 0.0916,
+      "volume": 5427847.69,
+      "amount": 5331846.502,
+      "nav": 9.837
+    },
+    {
+      "date": "20260403",
+      "close": 9.828,
+      "open": 9.914,
+      "high": 9.914,
+      "low": 9.793,
+      "pre_close": 9.738,
+      "change": 0.09,
+      "pct_chg": 0.9242,
+      "volume": 4242962.0,
+      "amount": 4176219.528,
+      "nav": 9.828
+    },
+    {
+      "date": "20260402",
+      "close": 9.738,
+      "open": 10.0,
+      "high": 10.0,
+      "low": 9.641,
+      "pre_close": 10.024,
+      "change": -0.286,
+      "pct_chg": -2.8532,
+      "volume": 13026467.46,
+      "amount": 12814253.058,
+      "nav": 9.738
+    },
+    {
       "date": "20260401",
       "close": 10.024,
       "open": 9.95,
@@ -6460,49 +6499,10 @@
       "volume": 971193.0,
       "amount": 472284.885,
       "nav": 4.87
-    },
-    {
-      "date": "20240312",
-      "close": 4.879,
-      "open": 4.901,
-      "high": 4.906,
-      "low": 4.875,
-      "pre_close": 4.899,
-      "change": -0.02,
-      "pct_chg": -0.4082,
-      "volume": 1477875.9,
-      "amount": 722925.045,
-      "nav": 4.879
-    },
-    {
-      "date": "20240311",
-      "close": 4.899,
-      "open": 4.912,
-      "high": 4.921,
-      "low": 4.894,
-      "pre_close": 4.881,
-      "change": 0.018,
-      "pct_chg": 0.3688,
-      "volume": 1380299.0,
-      "amount": 677319.004,
-      "nav": 4.899
-    },
-    {
-      "date": "20240308",
-      "close": 4.881,
-      "open": 4.885,
-      "high": 4.885,
-      "low": 4.865,
-      "pre_close": 4.885,
-      "change": -0.004,
-      "pct_chg": -0.0819,
-      "volume": 1050007.01,
-      "amount": 511853.589,
-      "nav": 4.881
     }
   ],
   "metadata": {
-    "fetch_time": "2026-04-01 18:02:10",
+    "fetch_time": "2026-04-07 18:00:33",
     "module": "ingest_tushare_adapter",
     "ticker_count": 1,
     "data_points": 500

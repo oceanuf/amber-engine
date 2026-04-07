@@ -3,6 +3,36 @@
   "name": "嘉实沪深300ETF",
   "history": [
     {
+      "date": "2026-04-07",
+      "price": "3.8880",
+      "change": "+0.11%"
+    },
+    {
+      "date": "2026-04-06",
+      "price": "3.8140",
+      "change": "+0.31%"
+    },
+    {
+      "date": "2026-04-05",
+      "price": "3.8540",
+      "change": "-0.14%"
+    },
+    {
+      "date": "2026-04-04",
+      "price": "3.8590",
+      "change": "-0.07%"
+    },
+    {
+      "date": "2026-04-03",
+      "price": "3.8610",
+      "change": "-0.41%"
+    },
+    {
+      "date": "2026-04-02",
+      "price": "3.8850",
+      "change": "+0.02%"
+    },
+    {
       "date": "2026-04-01",
       "price": "3.8360",
       "change": "-0.46%"
@@ -43,10 +73,10 @@
       "change": "+0.36%"
     }
   ],
-  "last_updated": "2026-04-01 18:02:14",
+  "last_updated": "2026-04-07 18:00:09",
   "created_time": "2026-03-29 13:56:25",
   "source_module": "storer_vault_storer",
-  "update_count": 17,
-  "cleaned_time": "2026-04-01 18:42:26",
+  "update_count": 117,
+  "cleaned_time": "2026-04-07 18:00:38",
   "cleaned_by": "cleaner_etf_purify"
 }

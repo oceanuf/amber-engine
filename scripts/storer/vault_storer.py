@@ -17,6 +17,8 @@ MODULE_NAME = "storer_vault_storer"
 CLEANED_DIR = "database/cleaned"
 HISTORY_DIR = "database"
 BACKUP_DIR = "_PRIVATE_DATA/backups"
+AUDIT_LOG_DIR = "logs/audit"
+BACKFILL_LOG_FILE = "backfill_log.json"
 TMP_SUFFIX = ".tmp"
 BAK_SUFFIX = ".bak"
 MAX_RETRIES = 2
@@ -39,11 +41,154 @@ def log_error(code, msg):
     # 同时打印到 stdout 便于调试
     print(f"[{timestamp}] [{MODULE_NAME}:ERROR] {code}: {msg}", file=sys.stdout)
 
+
+def vacuum_json_file(filepath: str, max_history_days: int = 365) -> dict:
+    """
+    JSON 文件压缩（VACUUM）功能
+    
+    Args:
+        filepath: JSON文件路径
+        max_history_days: 保留的最大历史天数（默认365天）
+    
+    Returns:
+        压缩统计信息
+    """
+    try:
+        log_info(f"开始VACUUM压缩: {filepath}")
+        
+        # 加载数据
+        with open(filepath, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        
+        if "history" not in data or not isinstance(data["history"], list):
+            log_warn(f"文件格式不支持VACUUM: {filepath}")
+            return {"status": "SKIPPED", "reason": "不支持的文件格式"}
+        
+        original_count = len(data["history"])
+        
+        # 如果没有历史记录或数量很少，不需要压缩
+        if original_count <= max_history_days:
+            log_info(f"数据量({original_count})未超过阈值({max_history_days})，跳过压缩")
+            return {"status": "SKIPPED", "reason": "数据量未超阈值", "original_count": original_count}
+        
+        # 按日期排序（最新的在前）
+        history = data["history"]
+        history.sort(key=lambda x: x.get("date", ""), reverse=True)
+        
+        # 保留最近 max_history_days 条记录
+        compressed_history = history[:max_history_days]
+        compressed_count = len(compressed_history)
+        removed_count = original_count - compressed_count
+        
+        # 更新数据
+        data["history"] = compressed_history
+        data["last_vacuum"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        data["vacuum_stats"] = {
+            "original_count": original_count,
+            "compressed_count": compressed_count,
+            "removed_count": removed_count,
+            "compression_ratio": round(removed_count / original_count * 100, 2)
+        }
+        
+        # 保存压缩后的数据
+        tmp_file = filepath + ".vacuum.tmp"
+        with open(tmp_file, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+        
+        # 备份原文件
+        backup_file = filepath + ".pre_vacuum.bak"
+        shutil.copy2(filepath, backup_file)
+        
+        # 原子替换
+        shutil.move(tmp_file, filepath)
+        
+        stats = {
+            "status": "SUCCESS",
+            "original_count": original_count,
+            "compressed_count": compressed_count,
+            "removed_count": removed_count,
+            "compression_ratio": round(removed_count / original_count * 100, 2),
+            "backup_file": backup_file
+        }
+        
+        log_info(f"VACUUM完成: 移除 {removed_count} 条记录，压缩率 {stats['compression_ratio']}%")
+        return stats
+        
+    except Exception as e:
+        log_error("VACUUM_ERROR", f"JSON压缩失败: {e}")
+        return {"status": "ERROR", "error": str(e)}
+
+
+def record_backfill_audit(ticker: str, operation: str, added_count: int, 
+                         skipped_count: int, total_count: int, 
+                         source_file: str, success: bool, error_msg: str = ""):
+    """
+    记录数据入库审计日志
+    
+    Args:
+        ticker: 股票代码
+        operation: 操作类型 (MERGE, CREATE, UPDATE, BACKUP, etc.)
+        added_count: 新增记录数
+        skipped_count: 跳过记录数
+        total_count: 总记录数
+        source_file: 源文件路径
+        success: 是否成功
+        error_msg: 错误信息（如果失败）
+    """
+    audit_entry = {
+        "timestamp": datetime.datetime.now().isoformat(),
+        "module": MODULE_NAME,
+        "ticker": ticker,
+        "operation": operation,
+        "stats": {
+            "added": added_count,
+            "skipped": skipped_count,
+            "total": total_count
+        },
+        "source_file": source_file,
+        "destination": f"history_{ticker}.json",
+        "success": success,
+        "error": error_msg if not success else ""
+    }
+    
+    # 确保审计目录存在
+    os.makedirs(AUDIT_LOG_DIR, exist_ok=True)
+    
+    # 审计日志文件路径
+    audit_file = os.path.join(AUDIT_LOG_DIR, BACKFILL_LOG_FILE)
+    
+    # 读取现有审计日志
+    audit_log = []
+    if os.path.exists(audit_file):
+        try:
+            with open(audit_file, 'r', encoding='utf-8') as f:
+                audit_log = json.load(f)
+                if not isinstance(audit_log, list):
+                    audit_log = []
+        except Exception:
+            audit_log = []
+    
+    # 添加新条目（限制最多1000条记录）
+    audit_log.append(audit_entry)
+    if len(audit_log) > 1000:
+        audit_log = audit_log[-1000:]  # 保留最近1000条
+    
+    # 保存审计日志
+    try:
+        tmp_file = audit_file + TMP_SUFFIX
+        with open(tmp_file, 'w', encoding='utf-8') as f:
+            json.dump(audit_log, f, ensure_ascii=False, indent=2)
+        shutil.move(tmp_file, audit_file)
+        log_info(f"审计日志记录成功: {ticker} {operation}")
+    except Exception as e:
+        log_warn(f"审计日志记录失败: {e}")
+
 def ensure_directories():
     """确保必要的目录存在"""
     os.makedirs(HISTORY_DIR, exist_ok=True)
     os.makedirs(BACKUP_DIR, exist_ok=True)
-    log_info(f"确保目录存在: {HISTORY_DIR}, {BACKUP_DIR}")
+    os.makedirs(AUDIT_LOG_DIR, exist_ok=True)
+    log_info(f"确保目录存在: {HISTORY_DIR}, {BACKUP_DIR}, {AUDIT_LOG_DIR}")
 
 def create_backup(filepath):
     """创建备份文件（写前备份策略）"""
@@ -216,7 +361,17 @@ def merge_history_data(cleaned_data, existing_history):
     history_data["update_count"] = history_data.get("update_count", 0) + 1
     
     log_info(f"合并完成: {ticker}, 新增: {added_count}, 跳过: {skipped_count}, 总数: {len(history_data['history'])}")
-    return history_data
+    
+    # 返回数据和统计信息
+    return {
+        "data": history_data,
+        "stats": {
+            "added_count": added_count,
+            "skipped_count": skipped_count,
+            "total_count": len(history_data['history']),
+            "ticker": ticker
+        }
+    }
 
 def process_single_etf(cleaned_data, history_path):
     """处理单个 ETF 数据"""
@@ -240,10 +395,24 @@ def process_single_etf(cleaned_data, history_path):
             return False
     
     # 3. 合并数据
-    merged_data = merge_history_data(cleaned_data, existing_history)
-    if merged_data is None:
+    merge_result = merge_history_data(cleaned_data, existing_history)
+    if merge_result is None:
         log_error("MERGE_FAIL", f"数据合并失败: {ticker}")
+        # 记录审计日志（失败）
+        record_backfill_audit(
+            ticker=ticker,
+            operation="MERGE_FAIL",
+            added_count=0,
+            skipped_count=0,
+            total_count=0,
+            source_file=history_path,
+            success=False,
+            error_msg="数据合并失败"
+        )
         return False
+    
+    merged_data = merge_result["data"]
+    stats = merge_result["stats"]
     
     # 4. 准备临时文件路径
     tmp_path = history_path + TMP_SUFFIX
@@ -251,9 +420,33 @@ def process_single_etf(cleaned_data, history_path):
     # 5. 保存合并后的数据（原子写入）
     if not save_json_file(merged_data, history_path, tmp_path):
         log_error("SAVE_FAIL", f"保存合并数据失败: {ticker}")
+        # 记录审计日志（失败）
+        record_backfill_audit(
+            ticker=ticker,
+            operation="SAVE_FAIL",
+            added_count=stats["added_count"],
+            skipped_count=stats["skipped_count"],
+            total_count=stats["total_count"],
+            source_file=history_path,
+            success=False,
+            error_msg="文件保存失败"
+        )
         return False
     
     log_info(f"ETF 数据处理成功: {ticker}")
+    
+    # 记录审计日志（成功）
+    record_backfill_audit(
+        ticker=ticker,
+        operation="MERGE_SUCCESS",
+        added_count=stats["added_count"],
+        skipped_count=stats["skipped_count"],
+        total_count=stats["total_count"],
+        source_file=history_path,
+        success=True,
+        error_msg=""
+    )
+    
     return True
 
 def process_etf_index(cleaned_data, base_path):

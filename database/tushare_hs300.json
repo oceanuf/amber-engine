@@ -1,6 +1,45 @@
 {
   "data": [
     {
+      "date": "20260407",
+      "close": 4.446,
+      "open": 4.455,
+      "high": 4.47,
+      "low": 4.431,
+      "pre_close": 4.454,
+      "change": -0.008,
+      "pct_chg": -0.1796,
+      "volume": 4285685.61,
+      "amount": 1908516.206,
+      "nav": 4.446
+    },
+    {
+      "date": "20260403",
+      "close": 4.454,
+      "open": 4.495,
+      "high": 4.506,
+      "low": 4.446,
+      "pre_close": 4.489,
+      "change": -0.035,
+      "pct_chg": -0.7797,
+      "volume": 4261095.95,
+      "amount": 1903072.42,
+      "nav": 4.454
+    },
+    {
+      "date": "20260402",
+      "close": 4.489,
+      "open": 4.521,
+      "high": 4.526,
+      "low": 4.47,
+      "pre_close": 4.534,
+      "change": -0.045,
+      "pct_chg": -0.9925,
+      "volume": 4663511.03,
+      "amount": 2098973.595,
+      "nav": 4.489
+    },
+    {
       "date": "20260401",
       "close": 4.534,
       "open": 4.52,
@@ -6460,49 +6499,10 @@
       "volume": 6858705.58,
       "amount": 2448621.615,
       "nav": 3.565
-    },
-    {
-      "date": "20240312",
-      "close": 3.586,
-      "open": 3.583,
-      "high": 3.599,
-      "low": 3.568,
-      "pre_close": 3.581,
-      "change": 0.005,
-      "pct_chg": 0.1396,
-      "volume": 11058395.72,
-      "amount": 3962320.648,
-      "nav": 3.586
-    },
-    {
-      "date": "20240311",
-      "close": 3.581,
-      "open": 3.531,
-      "high": 3.584,
-      "low": 3.53,
-      "pre_close": 3.533,
-      "change": 0.048,
-      "pct_chg": 1.3586,
-      "volume": 11207615.15,
-      "amount": 3980306.236,
-      "nav": 3.581
-    },
-    {
-      "date": "20240308",
-      "close": 3.533,
-      "open": 3.525,
-      "high": 3.54,
-      "low": 3.504,
-      "pre_close": 3.523,
-      "change": 0.01,
-      "pct_chg": 0.2838,
-      "volume": 8621876.98,
-      "amount": 3038389.403,
-      "nav": 3.533
     }
   ],
   "metadata": {
-    "fetch_time": "2026-04-01 18:02:11",
+    "fetch_time": "2026-04-07 18:00:34",
     "module": "ingest_tushare_adapter",
     "ticker_count": 1,
     "data_points": 500
