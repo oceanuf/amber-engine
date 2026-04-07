@@ -1,0 +1,27 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2026-03-29T14:23:00",
+  "dimensions": {
+    "safety": {
+      "weight": 30,
+      "bias_threshold": -2.0,
+      "score_if_oversold": 30
+    },
+    "trend": {
+      "weight": 40,
+      "price_above_ma_score": 40,
+      "ma_trend_up_score": 0
+    },
+    "momentum": {
+      "weight": 30,
+      "roc_positive_score": 30
+    }
+  },
+  "score_thresholds": {
+    "extreme_comfort": 80,
+    "comfort": 60,
+    "neutral": 40,
+    "caution": 30,
+    "survival_warning": 30
+  }
+}

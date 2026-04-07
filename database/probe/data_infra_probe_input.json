@@ -1,0 +1,118 @@
+{
+  "theme": "数据基础设施",
+  "analysis_time": "2026-04-07T11:48:52.158673",
+  "policy_background": "数据要素×三年行动计划（2024-2026）",
+  "key_stocks": [
+    {
+      "code": "000977.SZ",
+      "name": "浪潮信息",
+      "price": 56.94,
+      "change_pct": 0.5119,
+      "industry": "N/A",
+      "market_cap": "N/A"
+    },
+    {
+      "code": "603019.SH",
+      "name": "中科曙光",
+      "price": 77.89,
+      "change_pct": -0.2433,
+      "industry": "N/A",
+      "market_cap": "N/A"
+    },
+    {
+      "code": "000938.SZ",
+      "name": "紫光股份",
+      "price": 25.62,
+      "change_pct": 5.8678,
+      "industry": "N/A",
+      "market_cap": "N/A"
+    },
+    {
+      "code": "002439.SZ",
+      "name": "启明星辰",
+      "price": 12.64,
+      "change_pct": -0.7849,
+      "industry": "N/A",
+      "market_cap": "N/A"
+    },
+    {
+      "code": "300369.SZ",
+      "name": "绿盟科技",
+      "price": 7.69,
+      "change_pct": -2.7813,
+      "industry": "N/A",
+      "market_cap": "N/A"
+    },
+    {
+      "code": "300454.SZ",
+      "name": "深信服",
+      "price": 95.8,
+      "change_pct": -2.2449,
+      "industry": "N/A",
+      "market_cap": "N/A"
+    },
+    {
+      "code": "300383.SZ",
+      "name": "光环新网",
+      "price": 16.88,
+      "change_pct": 3.6855,
+      "industry": "N/A",
+      "market_cap": "N/A"
+    },
+    {
+      "code": "603881.SH",
+      "name": "数据港",
+      "price": 36.65,
+      "change_pct": 0.5211,
+      "industry": "N/A",
+      "market_cap": "N/A"
+    },
+    {
+      "code": "600633.SH",
+      "name": "浙数文化",
+      "price": 12.08,
+      "change_pct": -0.6579,
+      "industry": "N/A",
+      "market_cap": "N/A"
+    },
+    {
+      "code": "688256.SH",
+      "name": "寒武纪",
+      "price": 1025.7,
+      "change_pct": 2.6737,
+      "industry": "N/A",
+      "market_cap": "N/A"
+    },
+    {
+      "code": "688041.SH",
+      "name": "海光信息",
+      "price": 213.77,
+      "change_pct": 0.3615,
+      "industry": "N/A",
+      "market_cap": "N/A"
+    }
+  ],
+  "recommended_etfs": [
+    {
+      "code": "515050.SH",
+      "name": "华夏中证5G通信主题ETF",
+      "category": "通信基础设施"
+    },
+    {
+      "code": "515070.SH",
+      "name": "易方达中证人工智能ETF",
+      "category": "AI算力"
+    },
+    {
+      "code": "515250.SH",
+      "name": "富国中证信息安全ETF",
+      "category": "网络安全"
+    },
+    {
+      "code": "515400.SH",
+      "name": "富国中证大数据产业ETF",
+      "category": "大数据"
+    }
+  ],
+  "probe_instructions": "分析这些标的的业务构成，寻找更多数据基础设施相关公司"
+}

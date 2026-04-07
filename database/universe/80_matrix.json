@@ -1,0 +1,278 @@
+{
+  "version": "1.0.0",
+  "name": "琥珀引擎80标的池",
+  "description": "[2615-002号] 动态矩阵策略 - 20 ETF + 60 个股",
+  "created_date": "2026-04-07",
+  "created_by": "工程师 Cheese 🧀",
+  "mission": "深海演武 - 放弃单一'战神个股'依赖，转向数据驱动的动态矩阵",
+  
+  "pool_configuration": {
+    "total_capacity": 80,
+    "etf_count_target": 20,
+    "stock_count_target": 60,
+    "current_etf_count": 6,
+    "current_stock_count": 11,
+    "remaining_slots": 63,
+    "last_updated": "2026-04-07T12:25:00+08:00"
+  },
+  
+  "etf_radar_network": [
+    {
+      "code": "515050.SH",
+      "name": "华夏中证5G通信主题ETF",
+      "category": "通信基础设施",
+      "weight": 1.0,
+      "added_date": "2026-04-07",
+      "source": "数据基础设施板块筛选",
+      "status": "active",
+      "monitoring_level": "high"
+    },
+    {
+      "code": "515070.SH",
+      "name": "易方达中证人工智能ETF",
+      "category": "AI算力",
+      "weight": 1.0,
+      "added_date": "2026-04-07",
+      "source": "数据基础设施板块筛选",
+      "status": "active",
+      "monitoring_level": "high"
+    },
+    {
+      "code": "515250.SH",
+      "name": "富国中证信息安全ETF",
+      "category": "网络安全",
+      "weight": 1.0,
+      "added_date": "2026-04-07",
+      "source": "数据基础设施板块筛选",
+      "status": "active",
+      "monitoring_level": "high"
+    },
+    {
+      "code": "515400.SH",
+      "name": "富国中证大数据产业ETF",
+      "category": "大数据",
+      "weight": 1.0,
+      "added_date": "2026-04-07",
+      "source": "数据基础设施板块筛选",
+      "status": "active",
+      "monitoring_level": "high"
+    },
+    {
+      "code": "159995.SZ",
+      "name": "华夏国证半导体芯片ETF",
+      "category": "芯片/算力基础",
+      "weight": 1.0,
+      "added_date": "2026-04-07",
+      "source": "数据基础设施板块筛选",
+      "status": "active",
+      "monitoring_level": "high"
+    },
+    {
+      "code": "512480.SH",
+      "name": "国联安中证全指半导体ETF",
+      "category": "半导体基础设施",
+      "weight": 1.0,
+      "added_date": "2026-04-07",
+      "source": "数据基础设施板块筛选",
+      "status": "active",
+      "monitoring_level": "high"
+    }
+  ],
+  
+  "stock_deep_torpedoes": [
+    {
+      "code": "600633.SH",
+      "name": "浙数文化",
+      "category": "数据交易平台",
+      "weight": 1.2,
+      "added_date": "2026-04-07",
+      "source": "战略核心 - 哨兵政策锁定",
+      "status": "active",
+      "monitoring_level": "critical",
+      "trial_group": "进攻组",
+      "policy_relation": "浙江大数据交易中心参股方"
+    },
+    {
+      "code": "000938.SZ",
+      "name": "紫光股份",
+      "category": "云计算基础设施",
+      "weight": 1.2,
+      "added_date": "2026-04-07",
+      "source": "战略核心 - 哨兵政策锁定",
+      "status": "active",
+      "monitoring_level": "critical",
+      "trial_group": "进攻组",
+      "policy_relation": "紫光云、服务器业务"
+    },
+    {
+      "code": "688256.SH",
+      "name": "寒武纪",
+      "category": "AI算力芯片",
+      "weight": 1.1,
+      "added_date": "2026-04-07",
+      "source": "战略核心 - 哨兵政策锁定",
+      "status": "active",
+      "monitoring_level": "high",
+      "trial_group": "进攻组",
+      "policy_relation": "AI芯片国产替代核心"
+    },
+    {
+      "code": "603881.SH",
+      "name": "数据港",
+      "category": "数据中心",
+      "weight": 1.0,
+      "added_date": "2026-04-07",
+      "source": "战略核心 - 哨兵政策锁定",
+      "status": "active",
+      "monitoring_level": "high",
+      "trial_group": "防守组",
+      "policy_relation": "定制化数据中心服务"
+    },
+    {
+      "code": "000032.SZ",
+      "name": "深桑达A",
+      "category": "国资云",
+      "weight": 1.0,
+      "added_date": "2026-04-07",
+      "source": "战略核心 - 哨兵政策锁定",
+      "status": "active",
+      "monitoring_level": "high",
+      "trial_group": "防守组",
+      "policy_relation": "深圳国资云平台"
+    },
+    {
+      "code": "002368.SZ",
+      "name": "太极股份",
+      "category": "基础软件",
+      "weight": 1.0,
+      "added_date": "2026-04-07",
+      "source": "战略核心 - 哨兵政策锁定",
+      "status": "active",
+      "monitoring_level": "high",
+      "trial_group": "防守组",
+      "policy_relation": "操作系统等基础软件"
+    },
+    {
+      "code": "000977.SZ",
+      "name": "浪潮信息",
+      "category": "服务器",
+      "weight": 1.0,
+      "added_date": "2026-04-07",
+      "source": "数据基础设施筛选",
+      "status": "active",
+      "monitoring_level": "medium",
+      "policy_relation": "服务器龙头，AI服务器份额第一"
+    },
+    {
+      "code": "603019.SH",
+      "name": "中科曙光",
+      "category": "高性能计算",
+      "weight": 1.0,
+      "added_date": "2026-04-07",
+      "source": "数据基础设施筛选",
+      "status": "active",
+      "monitoring_level": "medium",
+      "policy_relation": "高性能计算，液冷技术领先"
+    },
+    {
+      "code": "002439.SZ",
+      "name": "启明星辰",
+      "category": "网络安全",
+      "weight": 1.0,
+      "added_date": "2026-04-07",
+      "source": "数据基础设施筛选",
+      "status": "active",
+      "monitoring_level": "medium",
+      "policy_relation": "网络安全综合服务商"
+    },
+    {
+      "code": "300369.SZ",
+      "name": "绿盟科技",
+      "category": "网络安全",
+      "weight": 1.0,
+      "added_date": "2026-04-07",
+      "source": "数据基础设施筛选",
+      "status": "active",
+      "monitoring_level": "medium",
+      "policy_relation": "安全产品与解决方案"
+    },
+    {
+      "code": "300383.SZ",
+      "name": "光环新网",
+      "category": "数据中心",
+      "weight": 1.1,
+      "added_date": "2026-04-07",
+      "source": "数据基础设施筛选",
+      "status": "active",
+      "monitoring_level": "critical",
+      "policy_relation": "一线城市IDC资源丰富",
+      "special_monitoring": "13:00开盘重点监控 - G11二次共振检验"
+    }
+  ],
+  
+  "dynamic_replacement_rules": {
+    "entry_criteria": {
+      "min_g_score": 80,
+      "required_strategies": ["G11-Policy-Resonance", "G5-Main-Force-Chips"],
+      "data_sufficiency": "至少30日历史数据"
+    },
+    "exit_criteria": {
+      "g11_disappearance_days": 10,
+      "g5_outflow_days": 10,
+      "max_drawdown_threshold": -0.20,
+      "liquidity_threshold": "日均成交额 > 1亿元"
+    },
+    "replacement_process": {
+      "candidate_source": "探针DNA挖掘",
+      "evaluation_period": "3个交易日",
+      "approval_required": "共振引擎综合评分 > 现有标的"
+    }
+  },
+  
+  "monitoring_framework": {
+    "etf_monitoring": {
+      "frequency": "15分钟",
+      "metrics": ["相对强度", "资金流向", "板块轮动"],
+      "purpose": "捕捉市场大势(Beta)与风格轮动"
+    },
+    "stock_monitoring": {
+      "frequency": "5分钟",
+      "metrics": ["G11政策共振", "G5主力筹码", "价格动量", "成交量异常"],
+      "purpose": "深水鱼雷精准打击"
+    },
+    "special_monitoring": {
+      "紫光股份(000938)": "13:00开盘重点监控 - 算力底座资金持续性",
+      "光环新网(300383)": "13:00开盘重点监控 - G11二次共振检验"
+    }
+  },
+  
+  "probe_integration_plan": {
+    "remaining_slots": 63,
+    "completion_deadline": "2026-04-07 15:00",
+    "discovery_methods": [
+      "DNA相似度分析 (浙数文化业务扩展)",
+      "产业链关联挖掘 (算力基础设施)",
+      "政策关键词匹配 (数据要素×行动)",
+      "技术形态筛选 (G1-G5因子共振)"
+    ],
+    "quality_control": "必须通过G1-G11综合评分 > 80分"
+  },
+  
+  "performance_tracking": {
+    "creation_date": "2026-04-07",
+    "initial_size": 17,
+    "target_size": 80,
+    "expected_completion": "2026-04-07 15:00",
+    "daily_report": "《80矩阵日度运行报告》",
+    "weekly_review": "《动态置换效果评估》"
+  },
+  
+  "metadata": {
+    "authorization": "[2615-002号] 开盘冲锋指令",
+    "commander": "首席架构师 Gemini ⚖️",
+    "executor": "工程师 Cheese 🧀",
+    "approver": "主编",
+    "status": "🟡 初始化完成 (17/80)",
+    "next_milestone": "13:00开盘监控激活"
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "timestamp": "2026-04-04T12:00:00+08:00",
+  "period": "LATEST_30_DAYS",
+  "metrics": {
+    "win_rate": 0.58,
+    "profit_factor": 1.4,
+    "max_drawdown": -0.04,
+    "total_trades": 12,
+    "profitable_trades": 7,
+    "total_return_pct": 8.2,
+    "sharpe_ratio": 1.2,
+    "sortino_ratio": 1.5,
+    "calmar_ratio": 2.1,
+    "avg_holding_days": 18.5
+  },
+  "position_analysis": [
+    {
+      "ticker": "000681",
+      "entry_date": "2026-04-03",
+      "exit_date": null,
+      "holding_days": 1,
+      "current_return_pct": 7.1,
+      "status": "holding",
+      "algorithm_contributions": {
+        "G1": 0.35,
+        "G2": 0.25,
+        "G3": 0.15,
+        "G4": 0.10,
+        "G5": 0.08,
+        "G6": 0.05,
+        "G7": 0.02
+      }
+    }
+  ],
+  "action": {
+    "adjust_weights": {
+      "G1": 0.05,
+      "G7": -0.02,
+      "G4": 0.01,
+      "G10": -0.01
+    },
+    "algorithm_performance": {
+      "G1": {"win_rate": 0.65, "avg_return": 0.042},
+      "G2": {"win_rate": 0.55, "avg_return": 0.028},
+      "G3": {"win_rate": 0.48, "avg_return": 0.015},
+      "G4": {"win_rate": 0.60, "avg_return": 0.035},
+      "G5": {"win_rate": 0.52, "avg_return": 0.022},
+      "G6": {"win_rate": 0.45, "avg_return": 0.012},
+      "G7": {"win_rate": 0.40, "avg_return": 0.008},
+      "G8": {"win_rate": 0.58, "avg_return": 0.030},
+      "G9": {"win_rate": 0.50, "avg_return": 0.020},
+      "G10": {"win_rate": 0.42, "avg_return": 0.010}
+    },
+    "comment": "G1在000681建仓点表现优异，权重上调；G7近期表现不佳，权重下调",
+    "confidence_level": 0.85,
+    "next_review": "2026-04-11T12:00:00+08:00"
+  },
+  "metadata": {
+    "generated_by": "演武场绩效分析引擎",
+    "data_source": "database/arena/virtual_fund.json",
+    "analysis_period": "2026-03-05 至 2026-04-04",
+    "version": "1.0.0",
+    "authorization": "[2614-090号] 反馈闭环接口规范"
+  }
+}

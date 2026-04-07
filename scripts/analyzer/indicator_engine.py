@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """
-Analyzer module for ETF technical indicators - 符合 V1.2.1 标准
-标准输出: database/analysis_518880.json
+Analyzer module for technical indicators - 符合 V1.4.1 加固标准
+支持多标度分析，增强异常处理
 计算指标: 5日、20日、60日移动平均线，乖离率(Bias)，5日变化率(ROC)
+使用: python3 indicator_engine.py [ticker]
+示例: python3 indicator_engine.py 518880
+      python3 indicator_engine.py 000681
 """
 
 import os
@@ -12,11 +15,11 @@ import tempfile
 import shutil
 import datetime
 import statistics
+import argparse
 from typing import List, Dict, Any, Optional
 
 # 模块常量
 MODULE_NAME = "analyzer_indicator_engine"
-OUTPUT_FILE = "database/analysis_518880.json"
 TMP_SUFFIX = ".tmp"
 SCHEMA_FILE = "config/schema_analysis.json"  # 验证用
 MAX_RETRIES = 3
@@ -39,13 +42,31 @@ def log_error(code, msg):
     # 同时打印到 stdout 便于调试
     print(f"[{timestamp}] [{MODULE_NAME}:ERROR] {code}: {msg}", file=sys.stdout)
 
-def load_history_data(ticker: str = "518880") -> Optional[Dict[str, Any]]:
+def parse_arguments():
+    """解析命令行参数"""
+    parser = argparse.ArgumentParser(description='技术指标分析引擎')
+    parser.add_argument('ticker', nargs='?', default='518880', 
+                       help='股票代码 (默认: 518880)')
+    parser.add_argument('--debug', action='store_true', 
+                       help='调试模式，输出详细日志')
+    return parser.parse_args()
+
+
+def load_history_data(ticker: str) -> Optional[Dict[str, Any]]:
     """
-    加载历史数据文件
+    加载历史数据文件，增强异常处理
     """
     history_file = f"database/history_{ticker}.json"
+    cleaned_file = f"database/cleaned/history_{ticker}_cleaned.json"
+    
+    # 优先使用清洗后的数据
+    if os.path.exists(cleaned_file):
+        log_info(f"使用清洗后数据: {cleaned_file}")
+        history_file = cleaned_file
+    
     if not os.path.exists(history_file):
         log_error("HISTORY_NOT_FOUND", f"历史数据文件不存在: {history_file}")
+        log_warn(f"尝试在以下位置查找: database/history_{ticker}.json, database/cleaned/history_{ticker}_cleaned.json")
         return None
     
     try:
@@ -109,39 +130,105 @@ def calculate_roc(current_price: float, price_n_days_ago: Optional[float]) -> Op
 
 def analyze_indicators(history_data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     """
-    分析技术指标
+    分析技术指标，增强异常处理
     """
     try:
         ticker = history_data.get("ticker", "518880")
         name = history_data.get("name", "未知ETF")
+        
+        # 日期格式转换函数: YYYYMMDD -> YYYY-MM-DD
+        def normalize_date(date_str: str) -> str:
+            """将YYYYMMDD格式转换为YYYY-MM-DD格式"""
+            if len(date_str) == 8 and date_str.isdigit():
+                return f"{date_str[:4]}-{date_str[4:6]}-{date_str[6:]}"
+            # 如果已经是YYYY-MM-DD格式，直接返回
+            if len(date_str) == 10 and date_str[4] == '-' and date_str[7] == '-':
+                return date_str
+            # 其他格式，记录警告但尝试转换
+            log_warn(f"非标准日期格式: {date_str}")
+            return date_str
+        
+        # 检查历史数据是否存在
+        if "history" not in history_data:
+            log_error("MISSING_HISTORY_FIELD", "历史数据缺少 'history' 字段")
+            return None
+        
         history = history_data["history"]
         
-        # 按日期排序 (确保最新的在前)
-        sorted_history = sorted(history, key=lambda x: x["date"], reverse=False)  # 升序，最旧的在前
+        if not isinstance(history, list):
+            log_error("INVALID_HISTORY_TYPE", f"'history' 字段应为列表，实际为 {type(history)}")
+            return None
         
-        # 提取价格和涨跌幅
+        if len(history) == 0:
+            log_error("EMPTY_HISTORY_DATA", "历史数据为空")
+            return None
+        
+        # 按日期排序 (确保最新的在前)
+        try:
+            sorted_history = sorted(history, key=lambda x: x["date"], reverse=False)  # 升序，最旧的在前
+        except KeyError as e:
+            log_error("MISSING_DATE_FIELD", f"历史数据缺少 'date' 字段: {e}")
+            return None
+        except Exception as e:
+            log_error("SORT_ERROR", f"排序历史数据失败: {e}")
+            return None
+        
+        # 提取价格和涨跌幅，增强异常处理
         prices = []
         changes = []
         dates = []
+        valid_count = 0
+        missing_count = 0
         
-        for item in sorted_history:
+        for idx, item in enumerate(sorted_history):
             try:
-                price = float(item["price"])
-                # 解析涨跌幅字符串 (如 "+0.44%" 或 "-0.41%")
-                change_str = item["change"]
-                if change_str.endswith("%"):
-                    change_str = change_str[:-1]
-                change = float(change_str)
+                # 检查必要字段
+                if "price" not in item or "change" not in item or "date" not in item:
+                    log_warn(f"历史数据项 {idx} 缺少必要字段，跳过: {item}")
+                    missing_count += 1
+                    continue
+                
+                # 处理停牌日 (价格或涨跌幅可能为空)
+                price_str = str(item["price"]).strip()
+                change_str = str(item["change"]).strip()
+                
+                if not price_str or price_str.lower() in ['', 'null', 'none', 'nan', '停牌']:
+                    log_warn(f"日期 {item.get('date', 'unknown')} 价格数据为空或停牌，使用前一日数据填充")
+                    if prices:  # 有前一日数据
+                        prices.append(prices[-1])
+                        changes.append(0.0)  # 停牌日涨跌幅为0
+                        dates.append(item["date"])
+                        valid_count += 1
+                    else:
+                        missing_count += 1
+                    continue
+                
+                # 正常数据解析
+                price = float(price_str)
+                
+                # 解析涨跌幅字符串 (如 "+0.44%" 或 "-0.41%" 或 "停牌")
+                if change_str.lower() in ['', 'null', 'none', 'nan', '停牌', '--']:
+                    change = 0.0  # 停牌日涨跌幅为0
+                else:
+                    if change_str.endswith("%"):
+                        change_str = change_str[:-1]
+                    change = float(change_str)
                 
                 prices.append(price)
                 changes.append(change)
                 dates.append(item["date"])
-            except (ValueError, KeyError) as e:
-                log_warn(f"解析历史数据项失败: {item}, 错误: {e}")
+                valid_count += 1
+                
+            except (ValueError, TypeError) as e:
+                log_warn(f"解析历史数据项失败 (日期: {item.get('date', 'unknown')}): {e}, 数据: {item}")
+                missing_count += 1
                 continue
         
-        if len(prices) == 0:
-            log_error("NO_VALID_PRICES", "没有有效的价格数据")
+        # 统计日志
+        log_info(f"数据解析完成: 有效 {valid_count} 条，缺失/无效 {missing_count} 条")
+        
+        if len(prices) < 5:  # 最少需要5条数据计算MA5
+            log_error("INSUFFICIENT_DATA", f"有效数据不足，最少需要5条，实际 {len(prices)} 条")
             return None
         
         # 计算移动平均线
@@ -158,7 +245,7 @@ def analyze_indicators(history_data: Dict[str, Any]) -> Optional[Dict[str, Any]]
             price_5_days_ago = prices[i - 5] if i >= 5 else None
             
             indicator = {
-                "date": dates[i],
+                "date": normalize_date(dates[i]),
                 "price": prices[i],
                 "change": changes[i],
                 "ma5": ma5_list[i],
@@ -241,11 +328,19 @@ def write_with_atomic_protocol(data: Dict[str, Any], output_file: str) -> bool:
         return False
 
 def main():
-    """主函数"""
-    log_info(f"开始执行 {MODULE_NAME}")
+    """主函数，支持多标度"""
+    # 解析命令行参数
+    args = parse_arguments()
+    ticker = args.ticker
+    
+    log_info(f"开始执行 {MODULE_NAME}，分析标的: {ticker}")
+    
+    # 动态生成输出文件路径
+    output_file = f"database/analysis_{ticker}.json"
+    log_info(f"输出文件: {output_file}")
     
     # 1. 加载历史数据
-    history_data = load_history_data()
+    history_data = load_history_data(ticker)
     if not history_data:
         log_error("DATA_LOAD_FAIL", "加载历史数据失败，模块退出")
         sys.exit(101)  # 数据加载失败
@@ -261,11 +356,11 @@ def main():
     log_info(f"技术指标分析完成，生成 {len(analysis_result['indicators'])} 个指标点")
     
     # 3. 原子写入输出文件
-    if not write_with_atomic_protocol(analysis_result, OUTPUT_FILE):
+    if not write_with_atomic_protocol(analysis_result, output_file):
         log_error("WRITE_FAIL", "写入输出文件失败，模块退出")
         sys.exit(103)  # 写入失败
     
-    log_info(f"成功生成分析文件: {OUTPUT_FILE}")
+    log_info(f"成功生成分析文件: {output_file}")
     sys.exit(0)  # 成功
 
 if __name__ == "__main__":

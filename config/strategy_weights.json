@@ -1,6 +1,6 @@
 {
   "version": "1.1.0",
-  "last_updated": "2026-03-29T15:47:00",
+  "last_updated": "2026-04-07T11:25:27.040476",
   "algorithm_weights": {
     "Gravity-Dip": {
       "weight": 1.0,
@@ -61,8 +61,88 @@
     "veto_penalty_score": 40
   },
   "scoring": {
-    "base_score_range": [0, 100],
+    "base_score_range": [
+      0,
+      100
+    ],
     "normalization_method": "min_max",
     "confidence_weight": 0.3
+  },
+  "strategies": {
+    "z_score_bias": {
+      "weight": 0.08729284295080562,
+      "last_updated": "2026-04-07T11:25:27.040456",
+      "optimization_method": "ir_weighted"
+    },
+    "dividend_alpha": {
+      "weight": 0.049727517736752054,
+      "last_updated": "2026-04-07T11:25:27.040460",
+      "optimization_method": "ir_weighted"
+    },
+    "test_macro_gold": {
+      "weight": 0.1686842219346586,
+      "last_updated": "2026-04-07T11:25:27.040462",
+      "optimization_method": "ir_weighted"
+    },
+    "test_dividend_alpha": {
+      "weight": 0.06720031261657103,
+      "last_updated": "2026-04-07T11:25:27.040463",
+      "optimization_method": "ir_weighted"
+    },
+    "gravity_dip": {
+      "weight": 0.009963269278067408,
+      "last_updated": "2026-04-07T11:25:27.040464",
+      "optimization_method": "ir_weighted"
+    },
+    "macro_gold": {
+      "weight": 0.05605731495531023,
+      "last_updated": "2026-04-07T11:25:27.040466",
+      "optimization_method": "ir_weighted"
+    },
+    "vol_squeeze": {
+      "weight": 0.04038819178513883,
+      "last_updated": "2026-04-07T11:25:27.040467",
+      "optimization_method": "ir_weighted"
+    },
+    "weekly_rsi": {
+      "weight": 0.04270908312774366,
+      "last_updated": "2026-04-07T11:25:27.040468",
+      "optimization_method": "ir_weighted"
+    },
+    "vol_retrace": {
+      "weight": 0.04056594766955849,
+      "last_updated": "2026-04-07T11:25:27.040469",
+      "optimization_method": "ir_weighted"
+    },
+    "macro_data_helper": {
+      "weight": 0.061095355990249976,
+      "last_updated": "2026-04-07T11:25:27.040471",
+      "optimization_method": "ir_weighted"
+    },
+    "base_strategy": {
+      "weight": 0.13727282738270305,
+      "last_updated": "2026-04-07T11:25:27.040472",
+      "optimization_method": "ir_weighted"
+    },
+    "obv_divergence": {
+      "weight": 0.07735680300947931,
+      "last_updated": "2026-04-07T11:25:27.040473",
+      "optimization_method": "ir_weighted"
+    },
+    "triple_cross": {
+      "weight": 0.06016937920087796,
+      "last_updated": "2026-04-07T11:25:27.040474",
+      "optimization_method": "ir_weighted"
+    },
+    "dual_momentum": {
+      "weight": 0.10151693236208378,
+      "last_updated": "2026-04-07T11:25:27.040475",
+      "optimization_method": "ir_weighted"
+    }
+  },
+  "ir_optimization": {
+    "optimization_date": "2026-04-07",
+    "expected_portfolio_ir": 0.13375674583102753,
+    "algorithm_count": 14
   }
 }

@@ -1,0 +1,60 @@
+{
+  "timestamp": "2026-04-04T12:00:00+08:00",
+  "period": "LATEST_30_DAYS",
+  "metrics": {
+    "total_clues_processed": 128,
+    "clues_converted_to_targets": 45,
+    "conversion_rate": 0.35,
+    "avg_processing_time_hours": 2.4,
+    "source_effectiveness": {
+      "新华网": {"clues": 25, "conversion": 0.44, "avg_quality": 0.82},
+      "路透社": {"clues": 18, "conversion": 0.39, "avg_quality": 0.78},
+      "国家统计局": {"clues": 12, "conversion": 0.58, "avg_quality": 0.88},
+      "新浪财经": {"clues": 35, "conversion": 0.29, "avg_quality": 0.65},
+      "东方财富": {"clues": 28, "conversion": 0.32, "avg_quality": 0.68},
+      "其他": {"clues": 10, "conversion": 0.20, "avg_quality": 0.55}
+    },
+    "keyword_effectiveness": {
+      "国产替代": {"clues": 18, "conversion": 0.50, "avg_return": 0.038},
+      "人工智能": {"clues": 15, "conversion": 0.47, "avg_return": 0.035},
+      "美联储": {"clues": 12, "conversion": 0.42, "avg_return": 0.030},
+      "地缘政治": {"clues": 8, "conversion": 0.38, "avg_return": 0.028},
+      "十五五规划": {"clues": 10, "conversion": 0.40, "avg_return": 0.032},
+      "其他关键词": {"clues": 65, "conversion": 0.28, "avg_return": 0.022}
+    },
+    "sector_hit_rates": {
+      "电子": {"clues": 22, "targets": 12, "hit_rate": 0.55},
+      "计算机": {"clues": 18, "targets": 8, "hit_rate": 0.44},
+      "国防军工": {"clues": 10, "targets": 5, "hit_rate": 0.50},
+      "医药生物": {"clues": 15, "targets": 6, "hit_rate": 0.40},
+      "电力设备": {"clues": 12, "targets": 7, "hit_rate": 0.58},
+      "其他": {"clues": 51, "targets": 7, "hit_rate": 0.14}
+    }
+  },
+  "action": {
+    "source_recommendations": {
+      "increase_priority": ["国家统计局", "新华网", "路透社"],
+      "decrease_priority": ["一般财经媒体", "自媒体/社交媒体"],
+      "maintain": ["东方财富", "新浪财经"]
+    },
+    "keyword_adjustments": {
+      "increase_weight": ["国产替代", "十五五规划", "新质生产力"],
+      "decrease_weight": ["消费", "房地产", "农业"],
+      "add_keywords": ["低空经济", "数字底座", "供应链安全"]
+    },
+    "parameter_optimizations": {
+      "relevance_threshold": 0.75,
+      "source_weight_multiplier": 1.2,
+      "time_decay_factor": 0.85
+    },
+    "comment": "国家统计局和新华网线索转化率最高，建议提高权重；国产替代和十五五规划关键词表现优异，可加强关注；电子和电力设备板块命中率较高，建议作为重点扫描方向",
+    "confidence_level": 0.80
+  },
+  "metadata": {
+    "generated_by": "深蓝探针分析引擎",
+    "data_source": "哨兵线索 + Synthesizer信号反馈",
+    "analysis_period": "2026-03-05 至 2026-04-04",
+    "version": "1.0.0",
+    "authorization": "[2614-090号] 反馈闭环接口规范"
+  }
+}

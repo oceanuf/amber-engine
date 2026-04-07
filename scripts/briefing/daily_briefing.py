@@ -43,11 +43,74 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+class PerplexityAPIClient:
+    """Perplexity API客户端"""
+    
+    def __init__(self, api_key: Optional[str] = None):
+        self.api_key = api_key or os.environ.get("PERPLEXITY_API_KEY")
+        self.base_url = "https://api.perplexity.ai"
+        self.model = "sonar"  # Perplexity API有效模型
+        
+    def is_available(self) -> bool:
+        """检查API是否可用"""
+        return bool(self.api_key)
+        
+    def generate_insight(self, prompt: str, max_tokens: int = 500) -> Optional[str]:
+        """生成洞察文本"""
+        if not self.is_available():
+            return None
+            
+        try:
+            import requests
+            
+            headers = {
+                "Authorization": f"Bearer {self.api_key}",
+                "Content-Type": "application/json"
+            }
+            
+            payload = {
+                "model": self.model,
+                "messages": [
+                    {
+                        "role": "system",
+                        "content": "你是一位资深投资分析师，擅长从新闻资讯中提取关键洞察和投资启示。请提供专业、简洁的分析。"
+                    },
+                    {
+                        "role": "user",
+                        "content": prompt
+                    }
+                ],
+                "max_tokens": max_tokens,
+                "temperature": 0.3
+            }
+            
+            response = requests.post(
+                f"{self.base_url}/chat/completions",
+                headers=headers,
+                json=payload,
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                result = response.json()
+                return result.get("choices", [{}])[0].get("message", {}).get("content", "")
+            else:
+                logger.error(f"Perplexity API调用失败: {response.status_code} - {response.text[:200]}")
+                return None
+                
+        except ImportError:
+            logger.error("缺少requests库，请安装: pip install requests")
+            return None
+        except Exception as e:
+            logger.error(f"Perplexity API调用异常: {e}")
+            return None
+
 class DailyBriefingGenerator:
     """每日简报生成器"""
     
     def __init__(self, use_mock_llm: bool = False):
         self.use_mock_llm = use_mock_llm
+        self.perplexity_client = PerplexityAPIClient()
         self.today = datetime.date.today().isoformat()
         
         # 确保输出目录存在
@@ -254,19 +317,61 @@ class DailyBriefingGenerator:
                 "generated_at": datetime.datetime.now().isoformat()
             }
         else:
-            # 实际调用LLM接口
-            # TODO: 集成Perplexity API或其他LLM
-            # 目前先返回模拟数据
+            # 尝试使用Perplexity API
+            if self.perplexity_client.is_available():
+                # 构建提示词
+                prompt = f"""作为资深投资分析师，请分析以下投资线索：
+                
+                标题：{clue.get('title', '无标题')}
+                内容摘要：{clue.get('content', '无内容')[:400]}
+                来源：{clue.get('source', '未知')}
+                紧急程度：{clue.get('urgency', '中等')}
+                影响范围：{clue.get('scope', '行业层面')}
+                相关标的：{', '.join(clue.get('related_targets', ['无']))}
+                权重分数：{clue.get('weight_score', 0):.2f}
+                
+                请从以下角度提供专业分析：
+                1. 【背后的思考】这条线索反映了什么市场动态或基本面变化？
+                2. 【投资启示】这对投资者意味着什么？可能带来哪些机会或风险？
+                3. 【置信度评估】基于线索质量和来源可靠性，你对这个分析的信心程度如何？
+                4. 【探针建议】琥珀引擎的深蓝探针应该扫描哪些相关领域？
+                
+                请用中文回答，保持专业、简洁。"""
+                
+                # 调用API
+                insight_text = self.perplexity_client.generate_insight(prompt, max_tokens=600)
+                
+                if insight_text:
+                    # 解析API响应，提取结构化信息
+                    # 这里简化处理，实际可以根据API响应格式调整
+                    return {
+                        "clue_index": index,
+                        "clue_title": clue.get('title', '未知标题'),
+                        "clue_summary": clue_summary,
+                        "insight": insight_text,
+                        "investment_implication": "由Perplexity API生成的投资启示（包含在洞察文本中）",
+                        "confidence": 0.75,  # 默认置信度，实际可从API响应中提取
+                        "probe_suggestions": ["根据Perplexity分析建议扫描相关领域"],
+                        "generated_at": datetime.datetime.now().isoformat(),
+                        "llm_provider": "perplexity",
+                        "api_success": True
+                    }
+                else:
+                    # API调用失败，回退到模拟数据
+                    logger.warning(f"Perplexity API调用失败，使用模拟数据（线索{index}）")
+            
+            # Perplexity API不可用或调用失败，使用模拟数据
             return {
                 "clue_index": index,
                 "clue_title": clue.get('title', '未知标题'),
                 "clue_summary": clue_summary,
-                "insight": "【待实现】需要集成LLM API生成真实洞察",
-                "investment_implication": "【待实现】需要LLM分析投资启示",
-                "confidence": 0.0,
-                "probe_suggestions": [],
+                "insight": f"Perplexity API集成准备中。线索分析：{clue.get('title', '未知标题')[:100]}...（来源：{clue.get('source', '未知')}，紧急程度：{clue.get('urgency', '中等')}）",
+                "investment_implication": "等待Perplexity API密钥配置",
+                "confidence": 0.3,
+                "probe_suggestions": ["建议配置Perplexity API密钥以获取深度分析"],
                 "generated_at": datetime.datetime.now().isoformat(),
-                "llm_pending": True
+                "llm_provider": "fallback",
+                "api_success": False
             }
     
     def generate_briefing_report(self, sentry_data: Dict[str, Any], 
@@ -477,17 +582,19 @@ class DailyBriefingGenerator:
             sentry_data = self.load_sentry_data()
             logger.info(f"加载到 {len(sentry_data.get('current_clues', []))} 条线索")
             
-            if mock_data and len(sentry_data.get('current_clues', [])) == 0:
-                logger.info("使用模拟数据填充...")
-                sentry_data['current_clues'] = self._generate_mock_clues()
+            # 架构师指令：强行跳过模拟数据，连接Perplexity
+            if len(sentry_data.get('current_clues', [])) == 0:
+                logger.info("⚠️ (SYSTEM) 架构师指令：强行跳过模拟数据，连接Perplexity...")
+                sentry_data['current_clues'] = self._fetch_realtime_news_via_perplexity(count=10)
             
             # 2. 筛选权重前10的线索
             logger.info("步骤2: 筛选权重前10的线索...")
             top_clues = self.rank_clues_by_weight(sentry_data.get('current_clues', []), top_n=10)
             
             if not top_clues:
-                logger.warning("没有筛选到任何线索，使用模拟数据")
-                top_clues = self.rank_clues_by_weight(self._generate_mock_clues(), top_n=10)
+                logger.warning("没有筛选到任何线索，尝试再次从Perplexity API获取...")
+                fresh_clues = self._fetch_realtime_news_via_perplexity(count=10)
+                top_clues = self.rank_clues_by_weight(fresh_clues, top_n=10)
             
             # 3. 生成LLM洞察
             logger.info("步骤3: 生成LLM洞察...")
@@ -583,6 +690,106 @@ class DailyBriefingGenerator:
             }
         ]
         return mock_clues
+
+    def _fetch_realtime_news_via_perplexity(self, count: int = 10) -> List[Dict[str, Any]]:
+        """通过Perplexity API获取实时新闻"""
+        logger.info(f"⚠️ (HOTFIX) 架构师指令：强制连接Perplexity API获取{count}条实时新闻")
+        
+        try:
+            import requests
+            import json
+            
+            if not self.perplexity_client.api_key:
+                logger.error("Perplexity API密钥未设置")
+                return []
+            
+            headers = {
+                "Authorization": f"Bearer {self.perplexity_client.api_key}",
+                "Content-Type": "application/json"
+            }
+            
+            # 构建查询：获取今天A股市场重要新闻
+            today_str = self.today
+            prompt = f"今天是{today_str}，请列出今天A股市场最重要的{count}条新闻，每条新闻包括：1.标题 2.简要内容 3.来源 4.紧急程度（critical/high/medium/low）5.影响范围（global/national/industry/sector/company）6.相关股票代码（A股）7.相关行业。请用纯文本列出，不要用JSON。"
+            
+            payload = {
+                "model": self.perplexity_client.model,
+                "messages": [
+                    {
+                        "role": "system",
+                        "content": "你是一位专业的金融新闻编辑，擅长提取和总结市场重要新闻。请提供清晰、结构化的新闻列表。"
+                    },
+                    {
+                        "role": "user",
+                        "content": prompt
+                    }
+                ],
+                "max_tokens": 2000,
+                "temperature": 0.1
+            }
+            
+            response = requests.post(
+                f"{self.perplexity_client.base_url}/chat/completions",
+                headers=headers,
+                json=payload,
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                result = response.json()
+                content = result.get("choices", [{}])[0].get("message", {}).get("content", "")
+                
+                # 解析响应文本，提取新闻
+                clues = []
+                lines = content.split('\n')
+                
+                for i, line in enumerate(lines[:count*2]):  # 估计每两条线一条新闻
+                    line = line.strip()
+                    if line.startswith(('1.', '2.', '3.', '4.', '5.', '6.', '7.', '8.', '9.', '10.')):
+                        # 简单解析：假设格式为 "1. 标题: 内容"
+                        if ': ' in line:
+                            title_part = line.split(': ', 1)[1]
+                            title = title_part.split('. ')[0] if '. ' in title_part else title_part
+                        else:
+                            title = line[3:].strip()
+                        
+                        clue = {
+                            "id": f"perplexity_{i+1:03d}",
+                            "title": title[:100],
+                            "content": f"{title} - 来自Perplexity API实时检索",
+                            "source": "perplexity",
+                            "urgency": "medium",
+                            "scope": "sector",
+                            "timestamp": datetime.datetime.now().isoformat(),
+                            "related_targets": [],
+                            "related_industries": []
+                        }
+                        clues.append(clue)
+                
+                if clues:
+                    logger.info(f"成功从Perplexity API解析出{len(clues)}条新闻")
+                    return clues
+                else:
+                    # 如果解析失败，创建一条通用新闻
+                    logger.warning("无法解析Perplexity API响应，创建通用新闻线索")
+                    return [{
+                        "id": "perplexity_001",
+                        "title": f"{today_str} A股市场重要新闻（Perplexity API实时检索）",
+                        "content": content[:500],
+                        "source": "perplexity",
+                        "urgency": "high",
+                        "scope": "national",
+                        "timestamp": datetime.datetime.now().isoformat(),
+                        "related_targets": ["000001.SH", "399001.SZ"],
+                        "related_industries": ["market_overview"]
+                    }]
+            else:
+                logger.error(f"Perplexity API调用失败: {response.status_code} - {response.text[:200]}")
+                return []
+                
+        except Exception as e:
+            logger.error(f"获取实时新闻失败: {e}")
+            return []
 
 
 def main():

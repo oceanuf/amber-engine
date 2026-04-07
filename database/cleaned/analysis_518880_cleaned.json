@@ -1,10 +1,70 @@
 {
   "ticker": "518880",
   "name": "华安黄金易ETF",
-  "analysis_time": "2026-04-01T18:02:14.794970",
-  "last_updated": "2026-04-01 18:02:14",
+  "analysis_time": "2026-04-07T18:00:09.505358",
+  "last_updated": "2026-04-07 17:00:09",
   "source_module": "analyzer_indicator_engine",
   "indicators": [
+    {
+      "date": "2026-04-07",
+      "price": 4.867,
+      "change": 0.22,
+      "ma5": 4.8514,
+      "ma20": null,
+      "ma60": null,
+      "bias_20": null,
+      "roc_5": 1.101
+    },
+    {
+      "date": "2026-04-06",
+      "price": 4.888,
+      "change": 0.22,
+      "ma5": 4.8408,
+      "ma20": null,
+      "ma60": null,
+      "bias_20": null,
+      "roc_5": 0.1639
+    },
+    {
+      "date": "2026-04-05",
+      "price": 4.812,
+      "change": 0.27,
+      "ma5": 4.8392,
+      "ma20": null,
+      "ma60": null,
+      "bias_20": null,
+      "roc_5": -1.0284
+    },
+    {
+      "date": "2026-04-04",
+      "price": 4.842,
+      "change": 0.4,
+      "ma5": 4.8492,
+      "ma20": null,
+      "ma60": null,
+      "bias_20": null,
+      "roc_5": -0.5137
+    },
+    {
+      "date": "2026-04-03",
+      "price": 4.848,
+      "change": 0.48,
+      "ma5": 4.8542,
+      "ma20": null,
+      "ma60": null,
+      "bias_20": null,
+      "roc_5": -0.6354
+    },
+    {
+      "date": "2026-04-02",
+      "price": 4.814,
+      "change": -0.33,
+      "ma5": 4.8604,
+      "ma20": null,
+      "ma60": null,
+      "bias_20": null,
+      "roc_5": -0.6808
+    },
     {
       "date": "2026-04-01",
       "price": 4.88,
@@ -136,6 +196,6 @@
       "roc_5": null
     }
   ],
-  "cleaned_time": "2026-04-01 18:42:25",
+  "cleaned_time": "2026-04-07 18:00:38",
   "cleaned_by": "cleaner_etf_purify"
 }
