@@ -3,6 +3,21 @@
   "name": "南方中证500ETF",
   "history": [
     {
+      "date": "2026-04-10",
+      "price": "5.6250",
+      "change": "-0.34%"
+    },
+    {
+      "date": "2026-04-09",
+      "price": "5.6210",
+      "change": "-0.09%"
+    },
+    {
+      "date": "2026-04-08",
+      "price": "5.6400",
+      "change": "-0.08%"
+    },
+    {
       "date": "2026-04-07",
       "price": "5.5780",
       "change": "+0.18%"
@@ -73,10 +88,10 @@
       "change": "+0.01%"
     }
   ],
-  "last_updated": "2026-04-07 18:00:09",
+  "last_updated": "2026-04-10 09:00:09",
   "created_time": "2026-03-29 13:56:25",
   "source_module": "storer_vault_storer",
-  "update_count": 117,
-  "cleaned_time": "2026-04-07 18:00:37",
+  "update_count": 184,
+  "cleaned_time": "2026-04-10 10:00:13",
   "cleaned_by": "cleaner_etf_purify"
 }

@@ -1,0 +1,710 @@
+{
+  "metadata": {
+    "saved_at": "2026-04-07T22:02:22.837035+08:00",
+    "version": "1.0.0",
+    "algorithm_count": 11,
+    "ewma_alpha": 0.1,
+    "min_weight": 0.01,
+    "max_weight": 0.3
+  },
+  "current_weights": {
+    "G1": 0.08613174638598302,
+    "G2": 0.10936170839373208,
+    "G3": 0.07937527466230197,
+    "G4": 0.08765495709848527,
+    "G5": 0.07451492044864973,
+    "G6": 0.12603091686303602,
+    "G7": 0.1087324074533488,
+    "G8": 0.07820320418331356,
+    "G9": 0.0984023464362104,
+    "G10": 0.07707759762628937,
+    "G11": 0.07451492044864973
+  },
+  "weight_history": [
+    {
+      "date": "2026-04-07",
+      "algorithm_weights": {
+        "G1": 0.08613174638598302,
+        "G2": 0.10936170839373208,
+        "G3": 0.07937527466230197,
+        "G4": 0.08765495709848527,
+        "G5": 0.07451492044864973,
+        "G6": 0.12603091686303602,
+        "G7": 0.1087324074533488,
+        "G8": 0.07820320418331356,
+        "G9": 0.0984023464362104,
+        "G10": 0.07707759762628937,
+        "G11": 0.07451492044864973
+      },
+      "algorithm_performances": {
+        "G1": {
+          "algorithm_id": "G1",
+          "algorithm_name": "Gravity-Dip",
+          "date": "2026-04-07",
+          "daily_score": 78,
+          "recommended_tickers": [
+            "000001",
+            "000002",
+            "000003"
+          ],
+          "ticker_returns": {
+            "000001": 0.01,
+            "000002": 0.02,
+            "000003": -0.01
+          },
+          "ticker_benchmark_returns": {
+            "000001": 0.005,
+            "000002": 0.008,
+            "000003": -0.005
+          },
+          "avg_excess_return": 0.0011499069077488839,
+          "performance_metric": 0.03507862305441889,
+          "weighted_performance": 0.0035078623054418893,
+          "raw_weight": 0.07498386565998018,
+          "smoothed_weight": 0.06702236829355147,
+          "final_weight": 0.08613174638598302,
+          "confidence": 0.6109498491270257,
+          "is_enabled": true,
+          "metadata": {}
+        },
+        "G2": {
+          "algorithm_id": "G2",
+          "algorithm_name": "Dual-Momentum",
+          "date": "2026-04-07",
+          "daily_score": 91,
+          "recommended_tickers": [
+            "000001",
+            "000002",
+            "000003"
+          ],
+          "ticker_returns": {
+            "000001": 0.01,
+            "000002": 0.02,
+            "000003": -0.01
+          },
+          "ticker_benchmark_returns": {
+            "000001": 0.005,
+            "000002": 0.008,
+            "000003": -0.005
+          },
+          "avg_excess_return": 0.0030562768466010776,
+          "performance_metric": 0.0958699007715258,
+          "weighted_performance": 0.00958699007715258,
+          "raw_weight": 0.20493095607360653,
+          "smoothed_weight": 0.18317217833229682,
+          "final_weight": 0.10936170839373208,
+          "confidence": 0.6964851738606677,
+          "is_enabled": true,
+          "metadata": {}
+        },
+        "G3": {
+          "algorithm_id": "G3",
+          "algorithm_name": "Vol-Squeeze",
+          "date": "2026-04-07",
+          "daily_score": 90,
+          "recommended_tickers": [
+            "000001",
+            "000002",
+            "000003"
+          ],
+          "ticker_returns": {
+            "000001": 0.01,
+            "000002": 0.02,
+            "000003": -0.01
+          },
+          "ticker_benchmark_returns": {
+            "000001": 0.005,
+            "000002": 0.008,
+            "000003": -0.005
+          },
+          "avg_excess_return": 0.0005750913202485279,
+          "performance_metric": 0.01739738238751376,
+          "weighted_performance": 0.001739738238751376,
+          "raw_weight": 0.037188545906060154,
+          "smoothed_weight": 0.03324000967514627,
+          "final_weight": 0.07937527466230197,
+          "confidence": 0.8979678768869466,
+          "is_enabled": true,
+          "metadata": {}
+        },
+        "G4": {
+          "algorithm_id": "G4",
+          "algorithm_name": "Dividend-Alpha",
+          "date": "2026-04-07",
+          "daily_score": 66,
+          "recommended_tickers": [
+            "000001",
+            "000002",
+            "000003"
+          ],
+          "ticker_returns": {
+            "000001": 0.01,
+            "000002": 0.02,
+            "000003": -0.01
+          },
+          "ticker_benchmark_returns": {
+            "000001": 0.005,
+            "000002": 0.008,
+            "000003": -0.005
+          },
+          "avg_excess_return": 0.0012781843197754825,
+          "performance_metric": 0.03906476497813394,
+          "weighted_performance": 0.003906476497813394,
+          "raw_weight": 0.0835046200249897,
+          "smoothed_weight": 0.07463842185606269,
+          "final_weight": 0.08765495709848527,
+          "confidence": 0.8365683742080402,
+          "is_enabled": true,
+          "metadata": {}
+        },
+        "G5": {
+          "algorithm_id": "G5",
+          "algorithm_name": "Weekly-RSI",
+          "date": "2026-04-07",
+          "daily_score": 73,
+          "recommended_tickers": [
+            "000001",
+            "000002",
+            "000003"
+          ],
+          "ticker_returns": {
+            "000001": 0.01,
+            "000002": 0.02,
+            "000003": -0.01
+          },
+          "ticker_benchmark_returns": {
+            "000001": 0.005,
+            "000002": 0.008,
+            "000003": -0.005
+          },
+          "avg_excess_return": -0.0011741720048649754,
+          "performance_metric": -0.03463195497476479,
+          "weighted_performance": -0.003463195497476479,
+          "raw_weight": -0.0740290705066064,
+          "smoothed_weight": 0.00893823860688502,
+          "final_weight": 0.07451492044864973,
+          "confidence": 0.7757534477431526,
+          "is_enabled": true,
+          "metadata": {}
+        },
+        "G6": {
+          "algorithm_id": "G6",
+          "algorithm_name": "Z-Score-Bias",
+          "date": "2026-04-07",
+          "daily_score": 89,
+          "recommended_tickers": [
+            "000001",
+            "000002",
+            "000003"
+          ],
+          "ticker_returns": {
+            "000001": 0.01,
+            "000002": 0.02,
+            "000003": -0.01
+          },
+          "ticker_benchmark_returns": {
+            "000001": 0.005,
+            "000002": 0.008,
+            "000003": -0.005
+          },
+          "avg_excess_return": 0.004362242126383391,
+          "performance_metric": 0.1394921193977885,
+          "weighted_performance": 0.01394921193977885,
+          "raw_weight": 0.29817756316498495,
+          "smoothed_weight": 0.26651822067881653,
+          "final_weight": 0.12603091686303602,
+          "confidence": 0.7955196460074376,
+          "is_enabled": true,
+          "metadata": {}
+        },
+        "G7": {
+          "algorithm_id": "G7",
+          "algorithm_name": "Triple-Cross",
+          "date": "2026-04-07",
+          "daily_score": 68,
+          "recommended_tickers": [
+            "000001",
+            "000002",
+            "000003"
+          ],
+          "ticker_returns": {
+            "000001": 0.01,
+            "000002": 0.02,
+            "000003": -0.01
+          },
+          "ticker_benchmark_returns": {
+            "000001": 0.005,
+            "000002": 0.008,
+            "000003": -0.005
+          },
+          "avg_excess_return": 0.003005994928041393,
+          "performance_metric": 0.09422306173572736,
+          "weighted_performance": 0.009422306173572738,
+          "raw_weight": 0.20141068229226824,
+          "smoothed_weight": 0.1800256736303805,
+          "final_weight": 0.1087324074533488,
+          "confidence": 0.6412289984235198,
+          "is_enabled": true,
+          "metadata": {}
+        },
+        "G8": {
+          "algorithm_id": "G8",
+          "algorithm_name": "Volume-Retracement",
+          "date": "2026-04-07",
+          "daily_score": 66,
+          "recommended_tickers": [
+            "000001",
+            "000002",
+            "000003"
+          ],
+          "ticker_returns": {
+            "000001": 0.01,
+            "000002": 0.02,
+            "000003": -0.01
+          },
+          "ticker_benchmark_returns": {
+            "000001": 0.005,
+            "000002": 0.008,
+            "000003": -0.005
+          },
+          "avg_excess_return": 0.0004743939945173013,
+          "performance_metric": 0.014330151284490888,
+          "weighted_performance": 0.001433015128449089,
+          "raw_weight": 0.03063205009890197,
+          "smoothed_weight": 0.027379657280204167,
+          "final_weight": 0.07820320418331356,
+          "confidence": 0.8245288244856448,
+          "is_enabled": true,
+          "metadata": {}
+        },
+        "G9": {
+          "algorithm_id": "G9",
+          "algorithm_name": "Macro-Gold",
+          "date": "2026-04-07",
+          "daily_score": 56,
+          "recommended_tickers": [
+            "000001",
+            "000002",
+            "000003"
+          ],
+          "ticker_returns": {
+            "000001": 0.01,
+            "000002": 0.02,
+            "000003": -0.01
+          },
+          "ticker_benchmark_returns": {
+            "000001": 0.005,
+            "000002": 0.008,
+            "000003": -0.005
+          },
+          "avg_excess_return": 0.0021699843880272217,
+          "performance_metric": 0.06718997369546109,
+          "weighted_performance": 0.00671899736954611,
+          "raw_weight": 0.14362490664078087,
+          "smoothed_weight": 0.12837536854468842,
+          "final_weight": 0.0984023464362104,
+          "confidence": 0.6862887050657878,
+          "is_enabled": true,
+          "metadata": {}
+        },
+        "G10": {
+          "algorithm_id": "G10",
+          "algorithm_name": "OBV-Divergence",
+          "date": "2026-04-07",
+          "daily_score": 91,
+          "recommended_tickers": [
+            "000001",
+            "000002",
+            "000003"
+          ],
+          "ticker_returns": {
+            "000001": 0.01,
+            "000002": 0.02,
+            "000003": -0.01
+          },
+          "ticker_benchmark_returns": {
+            "000001": 0.005,
+            "000002": 0.008,
+            "000003": -0.005
+          },
+          "avg_excess_return": 0.00037741111183714764,
+          "performance_metric": 0.011384513199270252,
+          "weighted_performance": 0.0011384513199270252,
+          "raw_weight": 0.024335470836869575,
+          "smoothed_weight": 0.021751624495083215,
+          "final_weight": 0.07707759762628937,
+          "confidence": 0.7862292781592923,
+          "is_enabled": true,
+          "metadata": {}
+        },
+        "G11": {
+          "algorithm_id": "G11",
+          "algorithm_name": "Basis-Calculator",
+          "date": "2026-04-07",
+          "daily_score": 73,
+          "recommended_tickers": [
+            "000001",
+            "000002",
+            "000003"
+          ],
+          "ticker_returns": {
+            "000001": 0.01,
+            "000002": 0.02,
+            "000003": -0.01
+          },
+          "ticker_benchmark_returns": {
+            "000001": 0.005,
+            "000002": 0.008,
+            "000003": -0.005
+          },
+          "avg_excess_return": -0.00038827551662239015,
+          "performance_metric": -0.011582922855160827,
+          "weighted_performance": -0.0011582922855160828,
+          "raw_weight": -0.024759590191835754,
+          "smoothed_weight": 0.00893823860688502,
+          "final_weight": 0.07451492044864973,
+          "confidence": 0.617638584990972,
+          "is_enabled": true,
+          "metadata": {}
+        }
+      },
+      "total_performance": 0.046781561267440486,
+      "benchmark_return": 0.005,
+      "notes": "权重更新完成，处理11个算法"
+    }
+  ],
+  "algorithm_performances": {
+    "2026-04-07": {
+      "G1": {
+        "algorithm_id": "G1",
+        "algorithm_name": "Gravity-Dip",
+        "date": "2026-04-07",
+        "daily_score": 78,
+        "recommended_tickers": [
+          "000001",
+          "000002",
+          "000003"
+        ],
+        "ticker_returns": {
+          "000001": 0.01,
+          "000002": 0.02,
+          "000003": -0.01
+        },
+        "ticker_benchmark_returns": {
+          "000001": 0.005,
+          "000002": 0.008,
+          "000003": -0.005
+        },
+        "avg_excess_return": 0.0011499069077488839,
+        "performance_metric": 0.03507862305441889,
+        "weighted_performance": 0.0035078623054418893,
+        "raw_weight": 0.07498386565998018,
+        "smoothed_weight": 0.06702236829355147,
+        "final_weight": 0.08613174638598302,
+        "confidence": 0.6109498491270257,
+        "is_enabled": true,
+        "metadata": {}
+      },
+      "G2": {
+        "algorithm_id": "G2",
+        "algorithm_name": "Dual-Momentum",
+        "date": "2026-04-07",
+        "daily_score": 91,
+        "recommended_tickers": [
+          "000001",
+          "000002",
+          "000003"
+        ],
+        "ticker_returns": {
+          "000001": 0.01,
+          "000002": 0.02,
+          "000003": -0.01
+        },
+        "ticker_benchmark_returns": {
+          "000001": 0.005,
+          "000002": 0.008,
+          "000003": -0.005
+        },
+        "avg_excess_return": 0.0030562768466010776,
+        "performance_metric": 0.0958699007715258,
+        "weighted_performance": 0.00958699007715258,
+        "raw_weight": 0.20493095607360653,
+        "smoothed_weight": 0.18317217833229682,
+        "final_weight": 0.10936170839373208,
+        "confidence": 0.6964851738606677,
+        "is_enabled": true,
+        "metadata": {}
+      },
+      "G3": {
+        "algorithm_id": "G3",
+        "algorithm_name": "Vol-Squeeze",
+        "date": "2026-04-07",
+        "daily_score": 90,
+        "recommended_tickers": [
+          "000001",
+          "000002",
+          "000003"
+        ],
+        "ticker_returns": {
+          "000001": 0.01,
+          "000002": 0.02,
+          "000003": -0.01
+        },
+        "ticker_benchmark_returns": {
+          "000001": 0.005,
+          "000002": 0.008,
+          "000003": -0.005
+        },
+        "avg_excess_return": 0.0005750913202485279,
+        "performance_metric": 0.01739738238751376,
+        "weighted_performance": 0.001739738238751376,
+        "raw_weight": 0.037188545906060154,
+        "smoothed_weight": 0.03324000967514627,
+        "final_weight": 0.07937527466230197,
+        "confidence": 0.8979678768869466,
+        "is_enabled": true,
+        "metadata": {}
+      },
+      "G4": {
+        "algorithm_id": "G4",
+        "algorithm_name": "Dividend-Alpha",
+        "date": "2026-04-07",
+        "daily_score": 66,
+        "recommended_tickers": [
+          "000001",
+          "000002",
+          "000003"
+        ],
+        "ticker_returns": {
+          "000001": 0.01,
+          "000002": 0.02,
+          "000003": -0.01
+        },
+        "ticker_benchmark_returns": {
+          "000001": 0.005,
+          "000002": 0.008,
+          "000003": -0.005
+        },
+        "avg_excess_return": 0.0012781843197754825,
+        "performance_metric": 0.03906476497813394,
+        "weighted_performance": 0.003906476497813394,
+        "raw_weight": 0.0835046200249897,
+        "smoothed_weight": 0.07463842185606269,
+        "final_weight": 0.08765495709848527,
+        "confidence": 0.8365683742080402,
+        "is_enabled": true,
+        "metadata": {}
+      },
+      "G5": {
+        "algorithm_id": "G5",
+        "algorithm_name": "Weekly-RSI",
+        "date": "2026-04-07",
+        "daily_score": 73,
+        "recommended_tickers": [
+          "000001",
+          "000002",
+          "000003"
+        ],
+        "ticker_returns": {
+          "000001": 0.01,
+          "000002": 0.02,
+          "000003": -0.01
+        },
+        "ticker_benchmark_returns": {
+          "000001": 0.005,
+          "000002": 0.008,
+          "000003": -0.005
+        },
+        "avg_excess_return": -0.0011741720048649754,
+        "performance_metric": -0.03463195497476479,
+        "weighted_performance": -0.003463195497476479,
+        "raw_weight": -0.0740290705066064,
+        "smoothed_weight": 0.00893823860688502,
+        "final_weight": 0.07451492044864973,
+        "confidence": 0.7757534477431526,
+        "is_enabled": true,
+        "metadata": {}
+      },
+      "G6": {
+        "algorithm_id": "G6",
+        "algorithm_name": "Z-Score-Bias",
+        "date": "2026-04-07",
+        "daily_score": 89,
+        "recommended_tickers": [
+          "000001",
+          "000002",
+          "000003"
+        ],
+        "ticker_returns": {
+          "000001": 0.01,
+          "000002": 0.02,
+          "000003": -0.01
+        },
+        "ticker_benchmark_returns": {
+          "000001": 0.005,
+          "000002": 0.008,
+          "000003": -0.005
+        },
+        "avg_excess_return": 0.004362242126383391,
+        "performance_metric": 0.1394921193977885,
+        "weighted_performance": 0.01394921193977885,
+        "raw_weight": 0.29817756316498495,
+        "smoothed_weight": 0.26651822067881653,
+        "final_weight": 0.12603091686303602,
+        "confidence": 0.7955196460074376,
+        "is_enabled": true,
+        "metadata": {}
+      },
+      "G7": {
+        "algorithm_id": "G7",
+        "algorithm_name": "Triple-Cross",
+        "date": "2026-04-07",
+        "daily_score": 68,
+        "recommended_tickers": [
+          "000001",
+          "000002",
+          "000003"
+        ],
+        "ticker_returns": {
+          "000001": 0.01,
+          "000002": 0.02,
+          "000003": -0.01
+        },
+        "ticker_benchmark_returns": {
+          "000001": 0.005,
+          "000002": 0.008,
+          "000003": -0.005
+        },
+        "avg_excess_return": 0.003005994928041393,
+        "performance_metric": 0.09422306173572736,
+        "weighted_performance": 0.009422306173572738,
+        "raw_weight": 0.20141068229226824,
+        "smoothed_weight": 0.1800256736303805,
+        "final_weight": 0.1087324074533488,
+        "confidence": 0.6412289984235198,
+        "is_enabled": true,
+        "metadata": {}
+      },
+      "G8": {
+        "algorithm_id": "G8",
+        "algorithm_name": "Volume-Retracement",
+        "date": "2026-04-07",
+        "daily_score": 66,
+        "recommended_tickers": [
+          "000001",
+          "000002",
+          "000003"
+        ],
+        "ticker_returns": {
+          "000001": 0.01,
+          "000002": 0.02,
+          "000003": -0.01
+        },
+        "ticker_benchmark_returns": {
+          "000001": 0.005,
+          "000002": 0.008,
+          "000003": -0.005
+        },
+        "avg_excess_return": 0.0004743939945173013,
+        "performance_metric": 0.014330151284490888,
+        "weighted_performance": 0.001433015128449089,
+        "raw_weight": 0.03063205009890197,
+        "smoothed_weight": 0.027379657280204167,
+        "final_weight": 0.07820320418331356,
+        "confidence": 0.8245288244856448,
+        "is_enabled": true,
+        "metadata": {}
+      },
+      "G9": {
+        "algorithm_id": "G9",
+        "algorithm_name": "Macro-Gold",
+        "date": "2026-04-07",
+        "daily_score": 56,
+        "recommended_tickers": [
+          "000001",
+          "000002",
+          "000003"
+        ],
+        "ticker_returns": {
+          "000001": 0.01,
+          "000002": 0.02,
+          "000003": -0.01
+        },
+        "ticker_benchmark_returns": {
+          "000001": 0.005,
+          "000002": 0.008,
+          "000003": -0.005
+        },
+        "avg_excess_return": 0.0021699843880272217,
+        "performance_metric": 0.06718997369546109,
+        "weighted_performance": 0.00671899736954611,
+        "raw_weight": 0.14362490664078087,
+        "smoothed_weight": 0.12837536854468842,
+        "final_weight": 0.0984023464362104,
+        "confidence": 0.6862887050657878,
+        "is_enabled": true,
+        "metadata": {}
+      },
+      "G10": {
+        "algorithm_id": "G10",
+        "algorithm_name": "OBV-Divergence",
+        "date": "2026-04-07",
+        "daily_score": 91,
+        "recommended_tickers": [
+          "000001",
+          "000002",
+          "000003"
+        ],
+        "ticker_returns": {
+          "000001": 0.01,
+          "000002": 0.02,
+          "000003": -0.01
+        },
+        "ticker_benchmark_returns": {
+          "000001": 0.005,
+          "000002": 0.008,
+          "000003": -0.005
+        },
+        "avg_excess_return": 0.00037741111183714764,
+        "performance_metric": 0.011384513199270252,
+        "weighted_performance": 0.0011384513199270252,
+        "raw_weight": 0.024335470836869575,
+        "smoothed_weight": 0.021751624495083215,
+        "final_weight": 0.07707759762628937,
+        "confidence": 0.7862292781592923,
+        "is_enabled": true,
+        "metadata": {}
+      },
+      "G11": {
+        "algorithm_id": "G11",
+        "algorithm_name": "Basis-Calculator",
+        "date": "2026-04-07",
+        "daily_score": 73,
+        "recommended_tickers": [
+          "000001",
+          "000002",
+          "000003"
+        ],
+        "ticker_returns": {
+          "000001": 0.01,
+          "000002": 0.02,
+          "000003": -0.01
+        },
+        "ticker_benchmark_returns": {
+          "000001": 0.005,
+          "000002": 0.008,
+          "000003": -0.005
+        },
+        "avg_excess_return": -0.00038827551662239015,
+        "performance_metric": -0.011582922855160827,
+        "weighted_performance": -0.0011582922855160828,
+        "raw_weight": -0.024759590191835754,
+        "smoothed_weight": 0.00893823860688502,
+        "final_weight": 0.07451492044864973,
+        "confidence": 0.617638584990972,
+        "is_enabled": true,
+        "metadata": {}
+      }
+    }
+  }
+}

@@ -1,0 +1,260 @@
+{
+  "schema_version": "1.0.0",
+  "created_at": "2026-04-08T21:30:00",
+  "updated_at": "2026-04-08T21:30:00",
+  "credit_system_config": {
+    "hit_rate_threshold": 0.30,
+    "dd_contribution_threshold": 3,
+    "credit_score_threshold": 50,
+    "inspection_mode_days": 20,
+    "max_hit_rate_weight": 0.7,
+    "max_dd_contribution_weight": 0.3
+  },
+  "algorithms_credit": {
+    "G1": {
+      "algorithm_id": "G1",
+      "algorithm_name": "橡皮筋阈值策略",
+      "credit_score": 75,
+      "hit_rate": {
+        "total_high_score_recommendations": 45,
+        "entered_team1": 18,
+        "hit_rate": 0.40,
+        "last_30_days_trend": "stable"
+      },
+      "drawdown_contribution": {
+        "total_recommendations": 120,
+        "triggered_stop_loss": 5,
+        "dd_contribution_ratio": 0.042,
+        "last_stop_loss_date": "2026-04-05"
+      },
+      "inspection_status": "normal",
+      "consecutive_low_days": 0,
+      "weight_restriction": "none",
+      "last_evaluation_date": "2026-04-08"
+    },
+    "G2": {
+      "algorithm_id": "G2",
+      "algorithm_name": "双重动量策略",
+      "credit_score": 82,
+      "hit_rate": {
+        "total_high_score_recommendations": 52,
+        "entered_team1": 25,
+        "hit_rate": 0.48,
+        "last_30_days_trend": "improving"
+      },
+      "drawdown_contribution": {
+        "total_recommendations": 135,
+        "triggered_stop_loss": 4,
+        "dd_contribution_ratio": 0.030,
+        "last_stop_loss_date": "2026-04-02"
+      },
+      "inspection_status": "normal",
+      "consecutive_low_days": 0,
+      "weight_restriction": "none",
+      "last_evaluation_date": "2026-04-08"
+    },
+    "G3": {
+      "algorithm_id": "G3",
+      "algorithm_name": "波动率挤压策略",
+      "credit_score": 68,
+      "hit_rate": {
+        "total_high_score_recommendations": 38,
+        "entered_team1": 12,
+        "hit_rate": 0.32,
+        "last_30_days_trend": "declining"
+      },
+      "drawdown_contribution": {
+        "total_recommendations": 98,
+        "triggered_stop_loss": 8,
+        "dd_contribution_ratio": 0.082,
+        "last_stop_loss_date": "2026-04-07"
+      },
+      "inspection_status": "normal",
+      "consecutive_low_days": 3,
+      "weight_restriction": "monitoring",
+      "last_evaluation_date": "2026-04-08"
+    },
+    "G4": {
+      "algorithm_id": "G4",
+      "algorithm_name": "分红保护垫策略",
+      "credit_score": 71,
+      "hit_rate": {
+        "total_high_score_recommendations": 42,
+        "entered_team1": 15,
+        "hit_rate": 0.36,
+        "last_30_days_trend": "stable"
+      },
+      "drawdown_contribution": {
+        "total_recommendations": 115,
+        "triggered_stop_loss": 6,
+        "dd_contribution_ratio": 0.052,
+        "last_stop_loss_date": "2026-04-06"
+      },
+      "inspection_status": "normal",
+      "consecutive_low_days": 0,
+      "weight_restriction": "none",
+      "last_evaluation_date": "2026-04-08"
+    },
+    "G5": {
+      "algorithm_id": "G5",
+      "algorithm_name": "周线RSI屏障",
+      "credit_score": 65,
+      "hit_rate": {
+        "total_high_score_recommendations": 40,
+        "entered_team1": 13,
+        "hit_rate": 0.33,
+        "last_30_days_trend": "stable"
+      },
+      "drawdown_contribution": {
+        "total_recommendations": 110,
+        "triggered_stop_loss": 9,
+        "dd_contribution_ratio": 0.082,
+        "last_stop_loss_date": "2026-04-08"
+      },
+      "inspection_status": "normal",
+      "consecutive_low_days": 5,
+      "weight_restriction": "monitoring",
+      "last_evaluation_date": "2026-04-08"
+    },
+    "G6": {
+      "algorithm_id": "G6",
+      "algorithm_name": "Z分数偏离算法",
+      "credit_score": 88,
+      "hit_rate": {
+        "total_high_score_recommendations": 60,
+        "entered_team1": 32,
+        "hit_rate": 0.53,
+        "last_30_days_trend": "improving"
+      },
+      "drawdown_contribution": {
+        "total_recommendations": 145,
+        "triggered_stop_loss": 3,
+        "dd_contribution_ratio": 0.021,
+        "last_stop_loss_date": "2026-03-28"
+      },
+      "inspection_status": "normal",
+      "consecutive_low_days": 0,
+      "weight_restriction": "none",
+      "last_evaluation_date": "2026-04-08"
+    },
+    "G7": {
+      "algorithm_id": "G7",
+      "algorithm_name": "三重均线交叉",
+      "credit_score": 73,
+      "hit_rate": {
+        "total_high_score_recommendations": 47,
+        "entered_team1": 17,
+        "hit_rate": 0.36,
+        "last_30_days_trend": "stable"
+      },
+      "drawdown_contribution": {
+        "total_recommendations": 125,
+        "triggered_stop_loss": 7,
+        "dd_contribution_ratio": 0.056,
+        "last_stop_loss_date": "2026-04-04"
+      },
+      "inspection_status": "normal",
+      "consecutive_low_days": 0,
+      "weight_restriction": "none",
+      "last_evaluation_date": "2026-04-08"
+    },
+    "G8": {
+      "algorithm_id": "G8",
+      "algorithm_name": "缩量回踩算法",
+      "credit_score": 69,
+      "hit_rate": {
+        "total_high_score_recommendations": 43,
+        "entered_team1": 14,
+        "hit_rate": 0.33,
+        "last_30_days_trend": "declining"
+      },
+      "drawdown_contribution": {
+        "total_recommendations": 105,
+        "triggered_stop_loss": 8,
+        "dd_contribution_ratio": 0.076,
+        "last_stop_loss_date": "2026-04-07"
+      },
+      "inspection_status": "normal",
+      "consecutive_low_days": 4,
+      "weight_restriction": "monitoring",
+      "last_evaluation_date": "2026-04-08"
+    },
+    "G9": {
+      "algorithm_id": "G9",
+      "algorithm_name": "实际利率锚点",
+      "credit_score": 77,
+      "hit_rate": {
+        "total_high_score_recommendations": 50,
+        "entered_team1": 20,
+        "hit_rate": 0.40,
+        "last_30_days_trend": "improving"
+      },
+      "drawdown_contribution": {
+        "total_recommendations": 130,
+        "triggered_stop_loss": 6,
+        "dd_contribution_ratio": 0.046,
+        "last_stop_loss_date": "2026-04-03"
+      },
+      "inspection_status": "normal",
+      "consecutive_low_days": 0,
+      "weight_restriction": "none",
+      "last_evaluation_date": "2026-04-08"
+    },
+    "G10": {
+      "algorithm_id": "G10",
+      "algorithm_name": "量价背离策略",
+      "credit_score": 70,
+      "hit_rate": {
+        "total_high_score_recommendations": 44,
+        "entered_team1": 15,
+        "hit_rate": 0.34,
+        "last_30_days_trend": "stable"
+      },
+      "drawdown_contribution": {
+        "total_recommendations": 112,
+        "triggered_stop_loss": 7,
+        "dd_contribution_ratio": 0.063,
+        "last_stop_loss_date": "2026-04-06"
+      },
+      "inspection_status": "normal",
+      "consecutive_low_days": 0,
+      "weight_restriction": "none",
+      "last_evaluation_date": "2026-04-08"
+    },
+    "G11": {
+      "algorithm_id": "G11",
+      "algorithm_name": "政策感知因子",
+      "credit_score": 85,
+      "hit_rate": {
+        "total_high_score_recommendations": 55,
+        "entered_team1": 28,
+        "hit_rate": 0.51,
+        "last_30_days_trend": "improving"
+      },
+      "drawdown_contribution": {
+        "total_recommendations": 140,
+        "triggered_stop_loss": 4,
+        "dd_contribution_ratio": 0.029,
+        "last_stop_loss_date": "2026-04-01"
+      },
+      "inspection_status": "normal",
+      "consecutive_low_days": 0,
+      "weight_restriction": "none",
+      "last_evaluation_date": "2026-04-08"
+    }
+  },
+  "evaluation_history": [
+    {
+      "date": "2026-04-08",
+      "total_algorithms": 11,
+      "inspection_mode_count": 0,
+      "average_credit_score": 74.5,
+      "top_performer": "G6",
+      "bottom_performer": "G5",
+      "actions_taken": "Credit ledger initialized"
+    }
+  ],
+  "inspection_mode_algorithms": [],
+  "system_status": "🟢 Normal",
+  "next_evaluation_date": "2026-04-09"
+}

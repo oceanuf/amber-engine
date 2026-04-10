@@ -1,7 +1,7 @@
 {
   "metadata": {
     "report_id": "resonance_report_20260407",
-    "generated_at": "2026-04-07T18:00:09.681054",
+    "generated_at": "2026-04-07T23:00:10.058542",
     "module": "synthesizer_resonance_engine",
     "strategies_count": 11,
     "tickers_count": 3
@@ -54,7 +54,7 @@
     "518880": {
       "ticker": "518880",
       "name": "黄金ETF",
-      "signal_time": "2026-04-07T18:00:09.669212",
+      "signal_time": "2026-04-07T23:00:10.046085",
       "resonance_score": 41.72,
       "signal_status": "中性",
       "action": "减持",
@@ -188,7 +188,7 @@
     "510300": {
       "ticker": "510300",
       "name": "沪深300ETF",
-      "signal_time": "2026-04-07T18:00:09.675231",
+      "signal_time": "2026-04-07T23:00:10.052305",
       "resonance_score": 35.78,
       "signal_status": "谨慎",
       "action": "减持",
@@ -321,7 +321,7 @@
     "510500": {
       "ticker": "510500",
       "name": "中证500ETF",
-      "signal_time": "2026-04-07T18:00:09.681011",
+      "signal_time": "2026-04-07T23:00:10.058497",
       "resonance_score": 33.62,
       "signal_status": "谨慎",
       "action": "减持",
@@ -496,6 +496,6 @@
       "category": "未知"
     }
   },
-  "cleaned_time": "2026-04-07 18:00:38",
+  "cleaned_time": "2026-04-10 10:00:13",
   "cleaned_by": "cleaner_etf_purify"
 }

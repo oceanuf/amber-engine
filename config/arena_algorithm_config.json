@@ -1,0 +1,155 @@
+{
+  "version": "1.0.0",
+  "description": "演武场算法权重配置",
+  "last_updated": "2026-04-07T22:00:00+08:00",
+  "config_author": "Engineer Cheese 🧀",
+  
+  "ewma_settings": {
+    "ewma_alpha": 0.1,
+    "alpha_description": "EWMA衰减因子，α=0.1对应半衰期约6.5天",
+    "smoothing_factor": 0.2,
+    "smoothing_description": "权重平滑因子，0.2表示20%新权重+80%旧权重"
+  },
+  
+  "weight_bounds": {
+    "min_weight": 0.01,
+    "max_weight": 0.30,
+    "min_description": "最小权重1%，防止算法被彻底遗忘",
+    "max_description": "最大权重30%，防止单一算法垄断决策"
+  },
+  
+  "performance_settings": {
+    "window_size": 30,
+    "window_description": "绩效计算窗口大小（天）",
+    "performance_exponent": 30,
+    "exponent_description": "绩效计算公式中的指数，(1+avg_excess_return)^30 - 1"
+  },
+  
+  "algorithms": {
+    "G1": {
+      "name": "Gravity-Dip",
+      "description": "橡皮筋阈值策略，捕捉价格回归机会",
+      "enabled": true,
+      "initial_weight": 0.0909,
+      "category": "value"
+    },
+    "G2": {
+      "name": "Dual-Momentum",
+      "description": "双重动量策略，长期向上且短期强势",
+      "enabled": true,
+      "initial_weight": 0.0909,
+      "category": "momentum"
+    },
+    "G3": {
+      "name": "Vol-Squeeze",
+      "description": "波动率挤压策略，识别低波动潜伏期",
+      "enabled": true,
+      "initial_weight": 0.0909,
+      "category": "volatility"
+    },
+    "G4": {
+      "name": "Dividend-Alpha",
+      "description": "分红保护垫策略，评估股息收益保护",
+      "enabled": true,
+      "initial_weight": 0.0909,
+      "category": "income"
+    },
+    "G5": {
+      "name": "Weekly-RSI",
+      "description": "周线RSI超买超卖屏障，30/70规则，提供一票否决权",
+      "enabled": true,
+      "initial_weight": 0.0909,
+      "category": "technical",
+      "has_veto_power": true,
+      "veto_threshold": 80
+    },
+    "G6": {
+      "name": "Z-Score-Bias",
+      "description": "Z分数偏离策略，利用60日标准差寻找统计学极端错价回归",
+      "enabled": true,
+      "initial_weight": 0.0909,
+      "category": "statistical"
+    },
+    "G7": {
+      "name": "Triple-Cross",
+      "description": "三重均线交叉策略，监测5/20/60/120四重均线的多头排列",
+      "enabled": true,
+      "initial_weight": 0.0909,
+      "category": "trend"
+    },
+    "G8": {
+      "name": "Volume-Retracement",
+      "description": "缩量回踩策略，识别波动率萎缩至50%以下且回踩均线不破",
+      "enabled": true,
+      "initial_weight": 0.0909,
+      "category": "volume"
+    },
+    "G9": {
+      "name": "Macro-Gold",
+      "description": "宏观对冲锚定策略，剥离名义金价中的利率杂质，分析实际利率对黄金的宏观影响",
+      "enabled": true,
+      "initial_weight": 0.0909,
+      "category": "macro"
+    },
+    "G10": {
+      "name": "OBV-Divergence",
+      "description": "能量潮背离策略，监测OBV指标背离，捕捉主力资金潜伏吸筹信号",
+      "enabled": true,
+      "initial_weight": 0.0909,
+      "category": "sentiment"
+    },
+    "G11": {
+      "name": "Basis-Calculator",
+      "description": "基差计算策略，分析期货现货价差机会",
+      "enabled": true,
+      "initial_weight": 0.0909,
+      "category": "arbitrage"
+    }
+  },
+  
+  "scoring_rules": {
+    "score_range": [0, 100],
+    "initial_score_threshold": {
+      "team1": 70,
+      "team2": 60,
+      "observation_pool": 0
+    },
+    "promotion_rules": {
+      "min_consecutive_days_top5": 3,
+      "min_score_for_promotion": 70
+    },
+    "demotion_rules": {
+      "max_consecutive_days_bottom5": 3,
+      "max_consecutive_days_low_score": 5
+    }
+  },
+  
+  "normalization_settings": {
+    "use_softmax": true,
+    "softmax_temperature": 1.0,
+    "fallback_to_equal_weights": true,
+    "epsilon": 1e-10,
+    "description": "权重归一化设置，防止分母为零溢出"
+  },
+  
+  "rollback_settings": {
+    "max_history_days": 100,
+    "auto_backup": true,
+    "backup_interval_days": 7,
+    "enable_emergency_rollback": true
+  },
+  
+  "logging_settings": {
+    "log_level": "INFO",
+    "log_file": "logs/arena/algorithm_weights.log",
+    "max_log_size_mb": 100,
+    "backup_count": 5
+  },
+  
+  "monitoring_thresholds": {
+    "weight_change_alert": 0.10,
+    "performance_drop_alert": -0.20,
+    "algorithm_failure_threshold": 60,
+    "consecutive_failure_days": 5
+  }
+}

@@ -1,6 +1,32 @@
 {
   "data": [
     {
+      "date": "20260409",
+      "close": 9.908,
+      "open": 9.92,
+      "high": 9.95,
+      "low": 9.9,
+      "pre_close": 10.113,
+      "change": -0.205,
+      "pct_chg": -2.0271,
+      "volume": 6552527.44,
+      "amount": 6501536.554,
+      "nav": 9.908
+    },
+    {
+      "date": "20260408",
+      "close": 10.113,
+      "open": 10.103,
+      "high": 10.153,
+      "low": 10.057,
+      "pre_close": 9.837,
+      "change": 0.276,
+      "pct_chg": 2.8057,
+      "volume": 9943479.75,
+      "amount": 10051847.595,
+      "nav": 10.113
+    },
+    {
       "date": "20260407",
       "close": 9.837,
       "open": 9.845,
@@ -6473,40 +6499,14 @@
       "volume": 800613.0,
       "amount": 391228.979,
       "nav": 4.899
-    },
-    {
-      "date": "20240314",
-      "close": 4.877,
-      "open": 4.896,
-      "high": 4.901,
-      "low": 4.873,
-      "pre_close": 4.87,
-      "change": 0.007,
-      "pct_chg": 0.1437,
-      "volume": 1143476.0,
-      "amount": 559146.124,
-      "nav": 4.877
-    },
-    {
-      "date": "20240313",
-      "close": 4.87,
-      "open": 4.861,
-      "high": 4.871,
-      "low": 4.86,
-      "pre_close": 4.879,
-      "change": -0.009,
-      "pct_chg": -0.1845,
-      "volume": 971193.0,
-      "amount": 472284.885,
-      "nav": 4.87
     }
   ],
   "metadata": {
-    "fetch_time": "2026-04-07 18:00:33",
+    "fetch_time": "2026-04-10 10:00:09",
     "module": "ingest_tushare_adapter",
     "ticker_count": 1,
     "data_points": 500
   },
-  "cleaned_time": "2026-04-07 18:00:38",
+  "cleaned_time": "2026-04-10 10:00:14",
   "cleaned_by": "cleaner_etf_purify"
 }

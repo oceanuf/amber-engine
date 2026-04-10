@@ -1,0 +1,58 @@
+{
+  "timestamp": "2026-04-08T20:00:21.072188",
+  "total_modules": 10,
+  "successful": 10,
+  "failed": 0,
+  "details": [
+    {
+      "module": "ingest_etf_gold",
+      "success": true,
+      "error": null
+    },
+    {
+      "module": "ingest_etf_index",
+      "success": true,
+      "error": null
+    },
+    {
+      "module": "ingest_macro_logic",
+      "success": true,
+      "error": null
+    },
+    {
+      "module": "ingest_sentiment_monitor",
+      "success": true,
+      "error": null
+    },
+    {
+      "module": "ingest_tushare_adapter",
+      "success": true,
+      "error": null
+    },
+    {
+      "module": "cleaner_etf_purify",
+      "success": true,
+      "error": null
+    },
+    {
+      "module": "storer_vault_storer",
+      "success": true,
+      "error": null
+    },
+    {
+      "module": "analyzer_indicator_engine",
+      "success": true,
+      "error": null
+    },
+    {
+      "module": "synthesizer_score_engine",
+      "success": true,
+      "error": null
+    },
+    {
+      "module": "synthesizer_resonance_engine",
+      "success": true,
+      "error": null
+    }
+  ]
+}

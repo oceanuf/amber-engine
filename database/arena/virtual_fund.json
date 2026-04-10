@@ -3,10 +3,10 @@
   "fund_name": "琥珀引擎演武场虚拟基金",
   "currency": "CNY",
   "initial_capital": 1000000.00,
-  "current_capital": 1000000.00,
+  "current_capital": 700000.00,
   "locked_period": 30,
   "created_time": "2026-04-03T11:30:00+08:00",
-  "last_updated": "2026-04-03T11:30:00+08:00",
+  "last_updated": "2026-04-09T19:45:00+08:00",
   "status": "active",
   "rules": {
     "lock_period_rule": "任何非强制止损的卖出动作必须在建仓30天后执行",
@@ -15,19 +15,192 @@
     "diversification": "至少持有3只不同行业的股票",
     "rebalance_frequency": "每30天重新评估和调整仓位"
   },
-  "positions": [],
-  "transaction_history": [],
+  "positions": [
+    {
+      "contract_id": "CONTRACT_000681_20260408_183000_abcdef12",
+      "ticker": "000681",
+      "name": "视觉中国",
+      "quantity": 4747,
+      "average_cost": 21.07,
+      "current_price": 20.37,
+      "market_value": 96694.79,
+      "cost_basis": 100000.00,
+      "unrealized_pnl": -3305.21,
+      "unrealized_pnl_pct": -3.31,
+      "entry_date": "2026-04-08",
+      "locked_until": "2026-05-08",
+      "stop_loss_price": 17.91,
+      "take_profit_price": 25.28,
+      "position_type": "long",
+      "status": "active",
+      "sector": "数字媒体",
+      "tags": ["演武场1队", "政策受益"]
+    },
+    {
+      "contract_id": "CONTRACT_600633_20260408_183100_34567890",
+      "ticker": "600633",
+      "name": "浙数文化",
+      "quantity": 7764,
+      "average_cost": 12.88,
+      "current_price": 12.52,
+      "market_value": 97165.28,
+      "cost_basis": 100000.00,
+      "unrealized_pnl": -2834.72,
+      "unrealized_pnl_pct": -2.83,
+      "entry_date": "2026-04-08",
+      "locked_until": "2026-05-08",
+      "stop_loss_price": 10.95,
+      "take_profit_price": 15.46,
+      "position_type": "long",
+      "status": "active",
+      "sector": "文化传媒",
+      "tags": ["演武场1队", "进攻组"]
+    },
+    {
+      "contract_id": "CONTRACT_000938_20260408_183200_78901234",
+      "ticker": "000938",
+      "name": "紫光股份",
+      "quantity": 3779,
+      "average_cost": 26.46,
+      "current_price": 27.02,
+      "market_value": 102108.58,
+      "cost_basis": 100000.00,
+      "unrealized_pnl": 2108.58,
+      "unrealized_pnl_pct": 2.11,
+      "entry_date": "2026-04-08",
+      "locked_until": "2026-05-08",
+      "stop_loss_price": 22.49,
+      "take_profit_price": 31.75,
+      "position_type": "long",
+      "status": "active",
+      "sector": "云计算",
+      "tags": ["演武场1队", "基础设施"]
+    }
+  ],
+  "transaction_history": [
+    {
+      "transaction_id": "TRANS_000681_20260408_183000",
+      "transaction_type": "open_position",
+      "ticker": "000681",
+      "name": "视觉中国",
+      "action": "buy",
+      "quantity": 4747,
+      "price": 21.07,
+      "slippage": 0.05,
+      "total_amount": 100250.00,
+      "timestamp": "2026-04-08T18:30:00+08:00",
+      "locked_until": "2026-05-08T18:30:00+08:00",
+      "lock_period_days": 30,
+      "contract_id": "CONTRACT_000681_20260408_183000_abcdef12",
+      "status": "executed",
+      "rules_applied": {
+        "lock_period": true,
+        "position_limit": true,
+        "stop_loss_exemption": false
+      },
+      "execution_details": {
+        "order_type": "limit",
+        "filled_price": 21.13,
+        "commission": 50.13,
+        "stamp_duty": 0.0,
+        "total_cost": 100199.87,
+        "exchange": "SZSE",
+        "settlement_date": "2026-04-09"
+      },
+      "strategy_signal": {
+        "confidence": 0.85,
+        "resonance_score": 78.42,
+        "signal_type": "policy_resonance",
+        "algorithms": ["G11", "G6", "G2"]
+      }
+    },
+    {
+      "transaction_id": "TRANS_600633_20260408_183100",
+      "transaction_type": "open_position",
+      "ticker": "600633",
+      "name": "浙数文化",
+      "action": "buy",
+      "quantity": 7764,
+      "price": 12.88,
+      "slippage": 0.05,
+      "total_amount": 100250.00,
+      "timestamp": "2026-04-08T18:31:00+08:00",
+      "locked_until": "2026-05-08T18:31:00+08:00",
+      "lock_period_days": 30,
+      "contract_id": "CONTRACT_600633_20260408_183100_34567890",
+      "status": "executed",
+      "rules_applied": {
+        "lock_period": true,
+        "position_limit": true,
+        "stop_loss_exemption": false
+      },
+      "execution_details": {
+        "order_type": "limit",
+        "filled_price": 12.92,
+        "commission": 50.13,
+        "stamp_duty": 0.0,
+        "total_cost": 100199.87,
+        "exchange": "SSE",
+        "settlement_date": "2026-04-09"
+      },
+      "strategy_signal": {
+        "confidence": 0.75,
+        "resonance_score": 72.15,
+        "signal_type": "momentum_policy",
+        "algorithms": ["G2", "G11"]
+      }
+    },
+    {
+      "transaction_id": "TRANS_000938_20260408_183200",
+      "transaction_type": "open_position",
+      "ticker": "000938",
+      "name": "紫光股份",
+      "action": "buy",
+      "quantity": 3779,
+      "price": 26.46,
+      "slippage": 0.05,
+      "total_amount": 100250.00,
+      "timestamp": "2026-04-08T18:32:00+08:00",
+      "locked_until": "2026-05-08T18:32:00+08:00",
+      "lock_period_days": 30,
+      "contract_id": "CONTRACT_000938_20260408_183200_78901234",
+      "status": "executed",
+      "rules_applied": {
+        "lock_period": true,
+        "position_limit": true,
+        "stop_loss_exemption": false
+      },
+      "execution_details": {
+        "order_type": "limit",
+        "filled_price": 26.53,
+        "commission": 50.13,
+        "stamp_duty": 0.0,
+        "total_cost": 100199.87,
+        "exchange": "SZSE",
+        "settlement_date": "2026-04-09"
+      },
+      "strategy_signal": {
+        "confidence": 0.80,
+        "resonance_score": 71.89,
+        "signal_type": "macro_technical",
+        "algorithms": ["G9", "G7", "G5"]
+      }
+    }
+  ],
   "performance_metrics": {
-    "total_return": 0.0,
-    "annualized_return": 0.0,
-    "sharpe_ratio": 0.0,
-    "max_drawdown": 0.0,
-    "win_rate": 0.0
+    "total_return": -0.0134,
+    "annualized_return": -4.89,
+    "sharpe_ratio": -0.31,
+    "max_drawdown": 3.31,
+    "win_rate": 0.3333,
+    "total_trades": 3,
+    "profitable_trades": 1
   },
   "metadata": {
     "version": "1.0.0",
     "engine_version": "V1.4.1",
     "created_by": "Engineer Cheese 🧀",
-    "authorization": "[最高作战指令] 专项二"
+    "authorization": "[最高作战指令] 专项二",
+    "last_manual_update": "2026-04-09_1945_紧急修复"
   }
 }

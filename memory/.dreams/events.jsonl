@@ -1,0 +1,2 @@
+{"type":"memory.recall.recorded","timestamp":"2026-04-10T02:27:52.683Z","query":"演武场架构加固失败原因分析","resultCount":1,"results":[{"path":"memory/2026-03-29.md","startLine":542,"endLine":562,"score":0.8228743668821522}]}
+{"type":"memory.recall.recorded","timestamp":"2026-04-10T02:28:13.432Z","query":"EmergencyLogic 模块 集成 失败 时间","resultCount":1,"results":[{"path":"memory/2026-03-29.md","startLine":489,"endLine":512,"score":0.7985768745961562}]}

@@ -1,0 +1,46 @@
+{
+  "extraction_date": "2026-04-07 22:05:40",
+  "report_date": "2026-04-07",
+  "ticker_count": 2,
+  "initial_scores": {
+    "ticker_signals": 0.0,
+    "strategy_summary": 0.0
+  },
+  "queue_assignments": {
+    "team1": [],
+    "team2": [],
+    "observation": [
+      "ticker_signals",
+      "strategy_summary"
+    ]
+  },
+  "algorithm_weights": {
+    "G1": 0.09090909090909091,
+    "G2": 0.09090909090909091,
+    "G3": 0.09090909090909091,
+    "G4": 0.09090909090909091,
+    "G5": 0.09090909090909091,
+    "G6": 0.09090909090909091,
+    "G7": 0.09090909090909091,
+    "G8": 0.09090909090909091,
+    "G9": 0.09090909090909091,
+    "G10": 0.09090909090909091,
+    "G11": 0.09090909090909091
+  },
+  "ticker_details": {
+    "ticker_signals": {
+      "name": "",
+      "resonance_score": 0.0,
+      "signal_status": "未知",
+      "action": "未知",
+      "algorithm_scores": {}
+    },
+    "strategy_summary": {
+      "name": "",
+      "resonance_score": 0.0,
+      "signal_status": "未知",
+      "action": "未知",
+      "algorithm_scores": {}
+    }
+  }
+}

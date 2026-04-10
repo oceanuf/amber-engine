@@ -1,0 +1,102 @@
+{
+  "file_format": "arena_watch_list_v1.0",
+  "description": "演武场标的监控列表 - 自动同步到十诫共振引擎",
+  "purpose": "确保进入演武场1队或2队的标的自动同步到共振引擎监控列表，从根源上消灭'情报断流'",
+  "created_at": "2026-04-09T21:10:00+08:00",
+  "created_by": "Engineer Cheese 🧀 (首席架构师Gemini指令: 2615-021)",
+  "update_mechanism": "queue_manager钩子自动更新",
+  
+  "watch_list": [
+    {
+      "ticker": "000681",
+      "name": "视觉中国",
+      "team": "1队",
+      "added_date": "2026-04-08",
+      "added_by": "queue_manager",
+      "status": "active",
+      "priority": "high",
+      "reason": "政策共振算法(G11)命中",
+      "monitoring_required": true,
+      "last_synced": "2026-04-09T21:10:00+08:00",
+      "sync_status": "manual_initial"
+    },
+    {
+      "ticker": "600633",
+      "name": "浙数文化",
+      "team": "1队",
+      "added_date": "2026-04-08",
+      "added_by": "queue_manager",
+      "status": "active",
+      "priority": "high",
+      "reason": "双重动量算法(G2)命中",
+      "monitoring_required": true,
+      "last_synced": "2026-04-09T21:10:00+08:00",
+      "sync_status": "manual_initial"
+    },
+    {
+      "ticker": "000938",
+      "name": "紫光股份",
+      "team": "1队",
+      "added_date": "2026-04-08",
+      "added_by": "queue_manager",
+      "status": "active",
+      "priority": "high",
+      "reason": "宏观技术算法(G9)命中",
+      "monitoring_required": true,
+      "last_synced": "2026-04-09T21:10:00+08:00",
+      "sync_status": "manual_initial"
+    }
+  ],
+  
+  "sync_config": {
+    "source": "queue_manager_teams",
+    "destination": "resonance_engine_tickers",
+    "trigger": "team_assignment",
+    "frequency": "real_time",
+    "teams_to_sync": ["1队", "2队"],
+    "exclude_teams": ["观察队", "淘汰队"],
+    "data_format": {
+      "required_fields": ["ticker", "name", "team", "added_date", "added_by"],
+      "optional_fields": ["priority", "reason", "metadata"],
+      "validation_rules": {
+        "ticker": "非空，符合交易所代码规范",
+        "name": "非空字符串",
+        "team": "必须为['1队', '2队']之一"
+      }
+    }
+  },
+  
+  "integration": {
+    "resonance_engine": {
+      "config_file": "config/v170_orchestrator.json",
+      "module": "synthesizer_resonance_engine",
+      "parameter": "tickers",
+      "update_method": "config_merge",
+      "validation": "ticker_inclusion_check"
+    },
+    "queue_manager_hook": {
+      "event": "team_assignment",
+      "action": "update_watch_list",
+      "script": "scripts/arena/sync_watch_list.py",
+      "status": "待实现"
+    }
+  },
+  
+  "status": {
+    "total_tickers": 3,
+    "active_tickers": 3,
+    "last_updated": "2026-04-09T21:10:00+08:00",
+    "update_method": "manual_initial",
+    "sync_mechanism": "待实现",
+    "data_freshness": "当前",
+    "validation_passed": true
+  },
+  
+  "metadata": {
+    "version": "1.0.0",
+    "schema_version": "2026.04.09",
+    "emergency_implementation": true,
+    "source": "首席架构师Gemini零点修复指令",
+    "instruction_sequence": "2615-021"
+  }
+}

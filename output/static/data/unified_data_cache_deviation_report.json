@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-04-09 15:00:56",
+  "deviations": [
+    {
+      "index": "创业板指",
+      "old_price": 3160.8157,
+      "new_price": 3347.61,
+      "deviation_pct": 5.909686540724283
+    }
+  ],
+  "alert": "数据偏差超过5%阈值，建议人工核查",
+  "threshold": 5.0
+}
