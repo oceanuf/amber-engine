@@ -1,14 +1,14 @@
 {
   "metadata": {
     "report_id": "resonance_report_20260411",
-    "generated_at": "2026-04-11T13:00:15.824824",
+    "generated_at": "2026-04-11T14:00:15.604180",
     "module": "synthesizer_resonance_engine",
     "strategies_count": 11,
     "tickers_count": 3
   },
   "overall_analysis": {
     "total_tickers": 3,
-    "avg_resonance_score": 39.88,
+    "avg_resonance_score": 39.11,
     "signals_by_status": {
       "中性": 1,
       "谨慎": 2
@@ -22,16 +22,16 @@
         "action": "减持"
       },
       {
-        "ticker": "510500",
-        "name": "中证500ETF",
-        "resonance_score": 36.01,
+        "ticker": "510300",
+        "name": "沪深300ETF",
+        "resonance_score": 33.89,
         "signal_status": "谨慎",
         "action": "减持"
       },
       {
-        "ticker": "510300",
-        "name": "沪深300ETF",
-        "resonance_score": 33.89,
+        "ticker": "510500",
+        "name": "中证500ETF",
+        "resonance_score": 33.69,
         "signal_status": "谨慎",
         "action": "减持"
       }
@@ -46,7 +46,7 @@
       "Triple-Cross": 3,
       "Volume-Retracement": 1,
       "Macro-Gold": 1,
-      "OBV-Divergence": 1,
+      "OBV-Divergence": 0,
       "Policy-Resonance": 0
     }
   },
@@ -54,7 +54,7 @@
     "518880": {
       "ticker": "518880",
       "name": "黄金ETF",
-      "signal_time": "2026-04-11T13:00:15.811747",
+      "signal_time": "2026-04-11T14:00:15.592331",
       "resonance_score": 49.75,
       "signal_status": "中性",
       "action": "减持",
@@ -189,7 +189,7 @@
     "510300": {
       "ticker": "510300",
       "name": "沪深300ETF",
-      "signal_time": "2026-04-11T13:00:15.818111",
+      "signal_time": "2026-04-11T14:00:15.598427",
       "resonance_score": 33.89,
       "signal_status": "谨慎",
       "action": "减持",
@@ -321,18 +321,17 @@
     "510500": {
       "ticker": "510500",
       "name": "中证500ETF",
-      "signal_time": "2026-04-11T13:00:15.824750",
-      "resonance_score": 36.01,
+      "signal_time": "2026-04-11T14:00:15.604137",
+      "resonance_score": 33.69,
       "signal_status": "谨慎",
       "action": "减持",
       "action_type": "REDUCE",
       "min_holding_days": 60,
-      "hit_count": 4,
+      "hit_count": 3,
       "hits": [
         "Gravity-Dip",
         "Dividend-Alpha",
-        "Triple-Cross",
-        "OBV-Divergence"
+        "Triple-Cross"
       ],
       "veto_applied": false,
       "latest_info": {
@@ -427,14 +426,14 @@
           "signal_type": "unknown"
         },
         "OBV-Divergence": {
-          "hit": true,
-          "score": 9.68,
-          "confidence": 0.58,
+          "hit": false,
+          "score": 50.0,
+          "confidence": 0.0,
           "signals": [
-            "看跌背离: 价格up，OBVdown，强度0.76",
+            "无显著背离: 价格up，OBVdown",
             "注意: 使用模拟成交量数据，需接入真实成交量"
           ],
-          "signal_type": "bearish_divergence"
+          "signal_type": "no_divergence"
         },
         "Policy-Resonance": {
           "hit": false,

@@ -4,60 +4,60 @@
   "nav_history": [
     {
       "date": "2026-04-11",
-      "price": "4.866",
-      "change": "-0.19%"
+      "price": "4.853",
+      "change": "+0.42%"
     },
     {
       "date": "2026-04-10",
-      "price": "4.882",
-      "change": "+0.19%"
+      "price": "4.874",
+      "change": "+0.37%"
     },
     {
       "date": "2026-04-09",
-      "price": "4.845",
-      "change": "+0.48%"
+      "price": "4.843",
+      "change": "-0.46%"
     },
     {
       "date": "2026-04-08",
-      "price": "4.807",
-      "change": "-0.17%"
+      "price": "4.877",
+      "change": "-0.01%"
     },
     {
       "date": "2026-04-07",
-      "price": "4.897",
-      "change": "-0.39%"
+      "price": "4.841",
+      "change": "+0.33%"
     },
     {
       "date": "2026-04-06",
-      "price": "4.867",
-      "change": "-0.21%"
+      "price": "4.815",
+      "change": "+0.04%"
     },
     {
       "date": "2026-04-05",
-      "price": "4.817",
-      "change": "-0.29%"
+      "price": "4.802",
+      "change": "-0.16%"
     },
     {
       "date": "2026-04-04",
-      "price": "4.898",
-      "change": "+0.11%"
+      "price": "4.856",
+      "change": "-0.20%"
     },
     {
       "date": "2026-04-03",
-      "price": "4.805",
-      "change": "+0.03%"
+      "price": "4.850",
+      "change": "+0.30%"
     },
     {
       "date": "2026-04-02",
-      "price": "4.844",
-      "change": "+0.44%"
+      "price": "4.847",
+      "change": "+0.16%"
     }
   ],
-  "current_nav": "4.830",
-  "daily_change": "-0.41%",
-  "ytd_return": "+7.01%",
+  "current_nav": "4.856",
+  "daily_change": "+0.13%",
+  "ytd_return": "+5.61%",
   "risk_level": "低",
   "asset_class": "商品",
-  "fetch_time": "2026-04-11 13:00:07",
-  "last_updated": "2026-04-11 13:00:07"
+  "fetch_time": "2026-04-11 14:00:02",
+  "last_updated": "2026-04-11 14:00:02"
 }

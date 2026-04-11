@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-04-10T02:28:13.432Z",
+  "updatedAt": "2026-04-11T05:12:38.356Z",
   "entries": {
     "memory:memory/2026-03-31.md:244:273": {
       "key": "memory:memory/2026-03-31.md:244:273",
@@ -313,6 +313,130 @@
         "strategy-weights.json",
         "v1.2.1",
         "temp-write"
+      ]
+    },
+    "memory:memory/2026-03-29.md:262:288": {
+      "key": "memory:memory/2026-03-29.md:262:288",
+      "path": "memory/2026-03-29.md",
+      "startLine": 262,
+      "endLine": 288,
+      "source": "memory",
+      "snippet": "2. 权限控制: 长期历史文件权限是否正确设置为 `600` 3. 增量合并: 重复数据是否被正确跳过 4. 错误处理: 备份失败、权限设置失败等场景的熔断机制 5. 调度器集成: 三级依赖链是否按预期工作 **架构师智慧锚点践行**: > \"存储即记忆 - 在入库时，我们要采用'写前备份（Backup-before-Write）'策略。\" > > \"理由：一旦长期历史文件损坏，我们的回测基准就会消失。V1.2.1 框架下，Storer 在修改长期库前，必须先在 _PRIVATE_DATA/backups/ 下生成一个 .bak。\" **下一步执行**: 1. 运行 `python3 scripts/storer/vault_storer.py` 测试基础功能 2. 运行 `python3 scripts/orchestrator.py` 测试完整流水线 3. 验证备份文件生成与权限设置 4. 提交 GitHub 同步供架构师审计 ### Task-20260330-E 任务完成 **目标**: 数据分析与量化建模 (Analyzer) - 标准链条第4节点 **执行人**: Cheese 🧀 **完成时间**: 2026-03-29 14:12 **交付物**: 1. `scripts/analyzer/indicator_engine.py` - ETF技术指标分析模组 2. `config/schema_analysis.json` - 技术分析指标Schema验证模板 3. `scripts/orchestrator.py` 升级 - 新增Analyzer模",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.8312491558392042,
+      "maxScore": 0.8312491558392042,
+      "firstRecalledAt": "2026-04-11T05:12:38.356Z",
+      "lastRecalledAt": "2026-04-11T05:12:38.356Z",
+      "queryHashes": [
+        "119c62a8f6d0"
+      ],
+      "recallDays": [
+        "2026-04-11"
+      ],
+      "conceptTags": [
+        "backup",
+        "backups",
+        "备份",
+        "backup-before-write",
+        "v1.2.1",
+        "private-data/backups",
+        "scripts/storer/vault-storer.py",
+        "scripts/orchestrator.py"
+      ]
+    },
+    "memory:memory/2026-04-07.md:27:63": {
+      "key": "memory:memory/2026-04-07.md:27:63",
+      "path": "memory/2026-04-07.md",
+      "startLine": 27,
+      "endLine": 63,
+      "source": "memory",
+      "snippet": "3. **数据适配器框架**: - ✅ data_adapter.py (从resonance_report提取算法评分) - ✅ 算法名称映射 (Gravity-Dip → G1等) 4. **演示系统**: - ✅ arena_demo.py (完整工作流程演示) - ✅ 模拟数据生成与队列分配 ### 🔧 技术要点实现 - **EWMA机制**: weighted_performance = α * current + (1-α) * previous - **表现度量**: performance = (1 + avg_excess_return)^30 - 1 - **权重更新**: weight(t) = 0.8 * weight(t-1) + 0.2 * raw_weight(t) - **边界保护**: 强制限制在[0.01, 0.30]范围内 - **Softmax备用**: 当所有算法绩效为负时自动切换 ### 📁 生成文件 - `scripts/arena/algorithm_weighter.py` (26,264字节) - `config/arena_algorithm_config.json` (3,857字节) - `scripts/arena/data_adapter.py` (13,569字节) - `scripts/arena/arena_demo.py` (13,718字节) - `database/arena/algorithm_weights_history.json` (权重历史) - `databa",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.7812794497544755,
+      "maxScore": 0.7812794497544755,
+      "firstRecalledAt": "2026-04-11T05:12:38.356Z",
+      "lastRecalledAt": "2026-04-11T05:12:38.356Z",
+      "queryHashes": [
+        "119c62a8f6d0"
+      ],
+      "recallDays": [
+        "2026-04-11"
+      ],
+      "conceptTags": [
+        "data-adapter.py",
+        "从resonance-report提取算法评分",
+        "gravity-dip",
+        "arena-demo.py",
+        "weighted-performance",
+        "1-α",
+        "avg-excess-return",
+        "0.8"
+      ]
+    },
+    "memory:memory/2026-04-02.md:30:41": {
+      "key": "memory:memory/2026-04-02.md:30:41",
+      "path": "memory/2026-04-02.md",
+      "startLine": 30,
+      "endLine": 41,
+      "source": "memory",
+      "snippet": "- `arena/PORTFOLIO.md` - 投资组合报告 - `arena/RADAR.md` - 市场雷达报告 - `arena/rebuild_log_20260402_102545.txt` - 执行日志 **核心数据**: - **现金储备**: 85.5% (保持隔离) - **风险资产**: 14.5% - **年化收益率**: +15.3% - **胜率**: 68.7% **执行者**: 工程师 Cheese 🧀 **完成时间**: 2026-04-02 10:25:45 GMT+8",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.7722392046147191,
+      "maxScore": 0.7722392046147191,
+      "firstRecalledAt": "2026-04-11T05:12:38.356Z",
+      "lastRecalledAt": "2026-04-11T05:12:38.356Z",
+      "queryHashes": [
+        "119c62a8f6d0"
+      ],
+      "recallDays": [
+        "2026-04-11"
+      ],
+      "conceptTags": [
+        "arena/portfolio.md",
+        "arena/radar.md",
+        "85.5",
+        "14.5",
+        "15.3",
+        "68.7",
+        "arena",
+        "portfolio.md"
+      ]
+    },
+    "memory:memory/2026-04-02.md:1:40": {
+      "key": "memory:memory/2026-04-02.md:1:40",
+      "path": "memory/2026-04-02.md",
+      "startLine": 1,
+      "endLine": 40,
+      "source": "memory",
+      "snippet": "# 📅 2026-04-02 工作日志 ## 🕙 上午 10:25 GMT+8 **事件**: Cron任务执行琥珀引擎演武场自动重筑 **任务ID**: 3737659b-e06b-4e83-a78a-402ed42667cd **执行命令**: `cd /home/luckyelite/.openclaw/workspace/amber-engine && ./scripts/arena_rebuild_auto.sh` **输出**: ``` 🚀 开始执行琥珀引擎演武场重筑... 时间: 2026-04-02 10:25:45 ❌ arena目录不存在，创建中... 📊 生成投资组合报告... ✅ 已生成 PORTFOLIO.md 📡 生成市场雷达报告... ✅ 已生成 RADAR.md ✅ 已记录执行日志 🎉 琥珀引擎演武场重筑完成！ ✅ 琥珀引擎演武场重筑任务完成 完成时间: 2026-04-02 10:25:45 ``` **状态**: ✅ 演武场重筑任务成功完成 **详细情况**: 1. **脚本重建**: 由于原脚本丢失，根据记忆记录重新创建了 `scripts/arena_rebuild_auto.sh` 2. **目录创建**: 自动创建了 `arena/` 目录 3. **文件生成**: 成功生成 `PORTFOLIO.md` 和 `RADAR.md` 报告文件 4. **日志记录**: 创建了执行日志文件 **生成文件**: - `arena/PORTFOLIO.md` - 投资组合报告 - `arena/RADAR",
+      "recallCount": 1,
+      "dailyCount": 0,
+      "groundedCount": 0,
+      "totalScore": 0.7709421841899271,
+      "maxScore": 0.7709421841899271,
+      "firstRecalledAt": "2026-04-11T05:12:38.356Z",
+      "lastRecalledAt": "2026-04-11T05:12:38.356Z",
+      "queryHashes": [
+        "119c62a8f6d0"
+      ],
+      "recallDays": [
+        "2026-04-11"
+      ],
+      "conceptTags": [
+        "home/luckyelite",
+        "openclaw/workspace/amber-engine",
+        "scripts/arena-rebuild-auto.sh",
+        "portfolio.md",
+        "radar.md",
+        "arena/portfolio.md",
+        "arena/radar",
+        "工作"
       ]
     }
   }

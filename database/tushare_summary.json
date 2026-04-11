@@ -37,12 +37,12 @@
         "data_fresh": true
       }
     },
-    "fetch_time": "2026-04-11 13:00:09",
+    "fetch_time": "2026-04-11 14:00:09",
     "sync_mode": "daily",
     "data_days": 500
   },
   "metadata": {
-    "fetch_time": "2026-04-11 13:00:14",
+    "fetch_time": "2026-04-11 14:00:14",
     "module": "ingest_tushare_adapter",
     "ticker_count": 3,
     "data_points": "object"

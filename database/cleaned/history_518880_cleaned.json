@@ -3,6 +3,11 @@
   "name": "华安黄金易ETF",
   "history": [
     {
+      "date": "2026-04-11",
+      "price": "4.8660",
+      "change": "-0.19%"
+    },
+    {
       "date": "2026-04-10",
       "price": "4.8880",
       "change": "-0.24%"
@@ -113,10 +118,10 @@
       "change": "-0.47%"
     }
   ],
-  "last_updated": "2026-04-10 10:00:14",
+  "last_updated": "2026-04-11 13:13:20",
   "created_time": "2026-03-29 13:56:25",
   "source_module": "storer_vault_storer",
-  "update_count": 185,
-  "cleaned_time": "2026-04-11 13:00:14",
+  "update_count": 188,
+  "cleaned_time": "2026-04-11 14:00:14",
   "cleaned_by": "cleaner_etf_purify"
 }
