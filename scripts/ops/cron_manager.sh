@@ -176,6 +176,7 @@ except Exception as e:
 dry_run_mode() {
     log_info "干运行模式 - 仅显示将要执行的命令"
     
+    echo "0. 生成宏观脉冲简报: cd $WORKSPACE_ROOT && python3 scripts/pipeline/macro_pulse_dispatcher.py"
     echo "1. 加载环境: source $CONFIG_FILE"
     echo "2. 生成实战报告: cd $WORKSPACE_ROOT && python3 scripts/reporting/arena_report_generator.py"
     echo "3. 同步监控列表: cd $WORKSPACE_ROOT && python3 scripts/arena/sync_watch_list.py --mode=all"
@@ -397,6 +398,84 @@ verify_fingerprint() {
     fi
 }
 
+# 生成宏观脉冲简报
+# 任务指令 [2616-0412-P1]：宏观感知哨兵实装
+# 法典依据：ARENA-SOP.md 第一阶段
+# 验收标准：1) 感知自动化 2) 逻辑脱耦 3) 流程首环挂接 4) 工程诚实
+generate_macro_pulse() {
+    log_info "开始生成宏观脉冲简报..."
+    
+    local pulse_script="$WORKSPACE_ROOT/scripts/pipeline/macro_pulse_dispatcher.py"
+    
+    if [[ ! -f "$pulse_script" ]]; then
+        log_warning "宏观脉冲分发器不存在: $pulse_script"
+        log_warning "跳过宏观脉冲生成（系统将缺少宏观感知输入）"
+        return 0  # 不是致命错误，继续执行
+    fi
+    
+    log_info "执行宏观脉冲分发器..."
+    cd "$WORKSPACE_ROOT"
+    
+    # 获取当前小时，决定是否使用缓存
+    local current_hour=$(date '+%H')
+    local use_cache=""
+    
+    # 如果在09:00-10:00之间，获取新鲜新闻；其他时间使用缓存
+    if [[ "$current_hour" == "09" ]]; then
+        log_info "09:00时段，获取新鲜宏观新闻"
+        use_cache="--fresh"
+    else
+        log_info "非09:00时段，使用缓存新闻"
+        use_cache=""
+    fi
+    
+    # 执行宏观脉冲分发器
+    if python3 "$pulse_script" $use_cache; then
+        log_info "✅ 宏观脉冲简报生成成功"
+        
+        # 检查是否生成报告
+        local today_report="$WORKSPACE_ROOT/reports/macro/macro_pulse_today.json"
+        if [[ -f "$today_report" ]]; then
+            log_info "宏观脉冲报告已生成: $today_report"
+            
+            # 提取宏观强度指数
+            local macro_intensity
+            macro_intensity=$(python3 -c "
+import json
+try:
+    with open('$today_report', 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    intensity = data.get('executive_summary', {}).get('macro_intensity_index', 0)
+    print(f'{intensity:.2f}')
+except Exception as e:
+    print('0.00')
+")
+            
+            log_info "📈 今日宏观强度指数: $macro_intensity/1.0"
+            
+            # 根据宏观强度决定是否继续执行
+            if (( $(echo "$macro_intensity >= 0.7" | bc -l) )); then
+                log_warning "⚠️  高宏观强度($macro_intensity)，市场可能出现大幅波动"
+            elif (( $(echo "$macro_intensity >= 0.4" | bc -l) )); then
+                log_info "中宏观强度($macro_intensity)，正常执行后续流程"
+            else
+                log_info "低宏观强度($macro_intensity)，市场相对平静"
+            fi
+        fi
+        
+        return 0
+    else
+        log_warning "⚠️  宏观脉冲简报生成失败，但继续执行（降级模式）"
+        
+        # 创建降级标记
+        local fallback_marker="$WORKSPACE_ROOT/.MACRO_FALLBACK_ACTIVE"
+        echo "{\"timestamp\": \"$(date -Is)\", \"reason\": \"macro_pulse_dispatcher_failed\"}" > "$fallback_marker"
+        log_warning "已创建宏观降级标记: $fallback_marker"
+        
+        return 0  # 不是致命错误，继续执行
+    fi
+}
+
 # 主执行流程
 main() {
     local dry_run=false
@@ -438,6 +517,12 @@ main() {
     
     # 执行顺序
     local success=true
+    
+    # 0. 生成宏观脉冲简报（SOP第一阶段）
+    if ! generate_macro_pulse; then
+        success=false
+        log_warning "宏观脉冲生成失败，但继续执行后续流程"
+    fi
     
     # 1. 生成实战报告
     if ! generate_arena_report; then
