@@ -1,0 +1,48 @@
+{
+  "data": [
+    {
+      "date": "20260411",
+      "close": 4.642,
+      "open": 4.588,
+      "high": 4.664,
+      "low": 4.588,
+      "pre_close": 4.572,
+      "change": 0.07,
+      "pct_chg": 1.5311,
+      "volume": 9063872.71,
+      "amount": 4203124.967,
+      "nav": 4.642
+    },
+    {
+      "date": "20260410",
+      "close": 4.572,
+      "open": 4.573,
+      "high": 4.586,
+      "low": 4.56,
+      "pre_close": 4.602,
+      "change": -0.03,
+      "pct_chg": -0.6519,
+      "volume": 7049553.23,
+      "amount": 3223934.997,
+      "nav": 4.572
+    },
+    {
+      "date": "20260409",
+      "close": 4.602,
+      "open": 4.519,
+      "high": 4.604,
+      "low": 4.517,
+      "pre_close": 4.446,
+      "change": 0.156,
+      "pct_chg": 12.0,
+      "volume": 9968845.8,
+      "amount": 4550818.244,
+      "nav": 4.602
+    }
+  ],
+  "metadata": {
+    "fetch_time": "2026-04-11 19:00:11",
+    "module": "ingest_tushare_adapter",
+    "ticker": "510300"
+  }
+}
