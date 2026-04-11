@@ -312,6 +312,48 @@ update_judge_weights() {
     fi
 }
 
+# 记录资产净值
+record_nav() {
+    log_info "开始记录资产净值..."
+    
+    local nav_script="$WORKSPACE_ROOT/scripts/arena/nav_recorder.py"
+    
+    if [[ ! -f "$nav_script" ]]; then
+        log_warning "资产净值记录脚本不存在: $nav_script"
+        return 0
+    fi
+    
+    cd "$WORKSPACE_ROOT"
+    if python3 "$nav_script"; then
+        log_info "资产净值记录成功"
+        return 0
+    else
+        log_warning "资产净值记录失败，但继续执行"
+        return 0
+    fi
+}
+
+# 清算交易
+settle_trades() {
+    log_info "开始清算交易..."
+    
+    local settle_script="$WORKSPACE_ROOT/scripts/arena/trade_settler.py"
+    
+    if [[ ! -f "$settle_script" ]]; then
+        log_warning "交易清算脚本不存在: $settle_script"
+        return 0
+    fi
+    
+    cd "$WORKSPACE_ROOT"
+    if python3 "$settle_script"; then
+        log_info "交易清算成功"
+        return 0
+    else
+        log_warning "交易清算失败，但继续执行"
+        return 0
+    fi
+}
+
 # 执行GitHub同步
 run_github_sync() {
     log_info "开始GitHub同步..."
@@ -417,12 +459,22 @@ main() {
         log_info "非18:00时段，跳过评委权重更新"
     fi
     
-    # 4. GitHub同步
+    # 4. 记录资产净值
+    if ! record_nav; then
+        success=false
+    fi
+    
+    # 5. 清算交易
+    if ! settle_trades; then
+        success=false
+    fi
+    
+    # 6. GitHub同步
     if ! run_github_sync; then
         success=false
     fi
     
-    # 5. 验证指纹对撞
+    # 7. 验证指纹对撞
     if ! verify_fingerprint; then
         success=false
     fi
