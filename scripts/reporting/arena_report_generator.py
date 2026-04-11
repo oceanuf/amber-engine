@@ -10,8 +10,10 @@ import os
 import sys
 import json
 import datetime
+import time
 from typing import Dict, List, Optional, Tuple, Any
 import logging
+import tushare as ts
 
 # 添加项目根目录到路径
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
@@ -38,7 +40,7 @@ class ArenaReportGenerator:
         self.virtual_fund_data = self._load_virtual_fund()
         self.current_date = datetime.datetime.now().strftime("%Y-%m-%d")
         
-        # 价格缓存（原型阶段使用模拟数据）
+        # 价格缓存（原型阶段使用模拟数据，供回退使用）
         self.price_cache = {
             "000681": 20.37,  # 视觉中国
             "600633": 12.52,  # 浙数文化
@@ -47,6 +49,22 @@ class ArenaReportGenerator:
             "510500": 6.78,   # 中证500ETF
             "510300": 4.12    # 沪深300ETF
         }
+        
+        # Tushare Pro API初始化
+        self.tushare_token = os.environ.get("TUSHARE_TOKEN")
+        self.tushare_pro = None
+        self.last_api_call_time = 0
+        self.api_call_interval = 0.5  # 每次调用间隔0.5秒，避免频率限制
+        
+        if self.tushare_token:
+            try:
+                ts.set_token(self.tushare_token)
+                self.tushare_pro = ts.pro_api()
+                logger.info("Tushare Pro API初始化成功")
+            except Exception as e:
+                logger.warning(f"Tushare Pro API初始化失败: {e}，将使用缓存价格")
+        else:
+            logger.warning("未找到TUSHARE_TOKEN环境变量，将使用缓存价格")
         
         logger.info(f"报告生成器初始化完成，工作空间: {self.workspace_root}")
     
@@ -82,7 +100,7 @@ class ArenaReportGenerator:
     
     def get_current_price(self, ticker: str) -> Tuple[float, str]:
         """
-        获取标的当前价格
+        获取标的当前价格（优先Tushare API，失败则回退缓存）
         
         Args:
             ticker: 股票代码
@@ -90,12 +108,55 @@ class ArenaReportGenerator:
         Returns:
             (价格, 状态) 状态为 "OK" 或 "DATA_MISSING"
         """
-        # 原型阶段：使用缓存价格
+        # 首先检查缓存（快速路径）
         if ticker in self.price_cache:
             return self.price_cache[ticker], "OK"
         
-        # 实际实现应调用Tushare API或查询本地数据库
-        # 这里返回DATA_MISSING警告
+        # 尝试使用Tushare API获取实时价格
+        if self.tushare_pro:
+            try:
+                # API频率控制：确保调用间隔
+                current_time = time.time()
+                time_since_last_call = current_time - self.last_api_call_time
+                if time_since_last_call < self.api_call_interval:
+                    sleep_time = self.api_call_interval - time_since_last_call
+                    logger.debug(f"API频率控制: 等待{sleep_time:.2f}秒")
+                    time.sleep(sleep_time)
+                
+                # 转换股票代码为Tushare格式
+                if ticker.startswith("6"):
+                    ts_code = f"{ticker}.SH"
+                else:
+                    ts_code = f"{ticker}.SZ"
+                
+                logger.info(f"查询Tushare实时价格: {ticker} -> {ts_code}")
+                
+                # 调用Tushare daily接口获取最新数据
+                # trade_date格式: YYYYMMDD，空表示最新交易日
+                df = self.tushare_pro.daily(ts_code=ts_code, trade_date="")
+                
+                # 更新最后调用时间
+                self.last_api_call_time = time.time()
+                
+                if df is not None and not df.empty:
+                    latest = df.iloc[0]
+                    close_price = latest["close"]
+                    logger.info(f"Tushare价格获取成功: {ticker} = {close_price}")
+                    
+                    # 更新缓存
+                    self.price_cache[ticker] = close_price
+                    return close_price, "OK"
+                else:
+                    logger.warning(f"Tushare返回空数据: {ticker}")
+                    
+            except Exception as e:
+                logger.warning(f"Tushare API调用失败: {ticker}, 错误: {e}")
+                # 继续尝试缓存
+        
+        # Tushare不可用或失败，尝试从本地数据库获取历史价格
+        # 这里可以扩展：查询本地存储的历史收盘价
+        
+        # 最终回退：返回DATA_MISSING警告
         logger.warning(f"价格数据缺失: {ticker}，返回0.0作为占位符")
         return 0.0, "DATA_MISSING"
     

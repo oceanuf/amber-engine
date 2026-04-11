@@ -1,8 +1,8 @@
 {
   "ticker": "518880",
   "name": "华安黄金易ETF",
-  "analysis_time": "2026-04-11T13:13:20.841629",
-  "synthesis_time": "2026-04-11T13:13:20.917890",
+  "analysis_time": "2026-04-11T14:00:15.428969",
+  "synthesis_time": "2026-04-11T14:00:15.501845",
   "latest_date": "2026-04-11",
   "latest_price": 4.866,
   "latest_change": -0.19,
@@ -21,6 +21,6 @@
   },
   "strategy_params_version": "1.0.0",
   "source_module": "synthesizer_score_engine",
-  "cleaned_time": "2026-04-11 14:00:14",
+  "cleaned_time": "2026-04-11 15:00:09",
   "cleaned_by": "cleaner_etf_purify"
 }
