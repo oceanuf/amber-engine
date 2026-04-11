@@ -3,6 +3,11 @@
   "name": "易方达创业板ETF",
   "history": [
     {
+      "date": "2026-04-11",
+      "price": "2.1450",
+      "change": "-0.43%"
+    },
+    {
       "date": "2026-04-10",
       "price": "2.1860",
       "change": "-0.41%"
@@ -88,8 +93,8 @@
       "change": "-0.38%"
     }
   ],
-  "last_updated": "2026-04-10 10:00:14",
+  "last_updated": "2026-04-11 13:00:15",
   "created_time": "2026-03-29 13:56:25",
   "source_module": "storer_vault_storer",
-  "update_count": 185
+  "update_count": 186
 }

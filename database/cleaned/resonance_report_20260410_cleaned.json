@@ -1,14 +1,14 @@
 {
   "metadata": {
     "report_id": "resonance_report_20260410",
-    "generated_at": "2026-04-10T09:00:09.981694",
+    "generated_at": "2026-04-10T10:00:14.644657",
     "module": "synthesizer_resonance_engine",
     "strategies_count": 11,
     "tickers_count": 3
   },
   "overall_analysis": {
     "total_tickers": 3,
-    "avg_resonance_score": 37.26,
+    "avg_resonance_score": 35.95,
     "signals_by_status": {
       "中性": 1,
       "谨慎": 2
@@ -24,7 +24,7 @@
       {
         "ticker": "510500",
         "name": "中证500ETF",
-        "resonance_score": 36.15,
+        "resonance_score": 32.24,
         "signal_status": "谨慎",
         "action": "减持"
       },
@@ -46,7 +46,7 @@
       "Triple-Cross": 3,
       "Volume-Retracement": 0,
       "Macro-Gold": 1,
-      "OBV-Divergence": 1,
+      "OBV-Divergence": 0,
       "Policy-Resonance": 0
     }
   },
@@ -54,7 +54,7 @@
     "518880": {
       "ticker": "518880",
       "name": "黄金ETF",
-      "signal_time": "2026-04-10T09:00:09.969732",
+      "signal_time": "2026-04-10T10:00:14.632512",
       "resonance_score": 44.12,
       "signal_status": "中性",
       "action": "减持",
@@ -188,7 +188,7 @@
     "510300": {
       "ticker": "510300",
       "name": "沪深300ETF",
-      "signal_time": "2026-04-10T09:00:09.975833",
+      "signal_time": "2026-04-10T10:00:14.638643",
       "resonance_score": 31.5,
       "signal_status": "谨慎",
       "action": "减持",
@@ -318,17 +318,16 @@
     "510500": {
       "ticker": "510500",
       "name": "中证500ETF",
-      "signal_time": "2026-04-10T09:00:09.981631",
-      "resonance_score": 36.15,
+      "signal_time": "2026-04-10T10:00:14.644603",
+      "resonance_score": 32.24,
       "signal_status": "谨慎",
       "action": "减持",
       "action_type": "REDUCE",
       "min_holding_days": 60,
-      "hit_count": 3,
+      "hit_count": 2,
       "hits": [
         "Dividend-Alpha",
-        "Triple-Cross",
-        "OBV-Divergence"
+        "Triple-Cross"
       ],
       "veto_applied": false,
       "latest_info": {
@@ -423,14 +422,14 @@
           "signal_type": "unknown"
         },
         "OBV-Divergence": {
-          "hit": true,
-          "score": 30.1,
-          "confidence": 0.47,
+          "hit": false,
+          "score": 50.0,
+          "confidence": 0.0,
           "signals": [
-            "看跌背离: 价格up，OBVdown，强度0.25",
+            "无显著背离: 价格up，OBVup",
             "注意: 使用模拟成交量数据，需接入真实成交量"
           ],
-          "signal_type": "bearish_divergence"
+          "signal_type": "no_divergence"
         },
         "Policy-Resonance": {
           "hit": false,
@@ -494,6 +493,6 @@
       "category": "未知"
     }
   },
-  "cleaned_time": "2026-04-10 10:00:13",
+  "cleaned_time": "2026-04-11 13:00:14",
   "cleaned_by": "cleaner_etf_purify"
 }

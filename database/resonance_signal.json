@@ -1,23 +1,24 @@
 {
   "ticker": "518880",
   "name": "黄金ETF",
-  "signal_time": "2026-04-10T10:00:14.632512",
-  "resonance_score": 44.12,
+  "signal_time": "2026-04-11T13:00:15.811747",
+  "resonance_score": 49.75,
   "signal_status": "中性",
   "action": "减持",
   "action_type": "REDUCE",
   "min_holding_days": 60,
-  "hit_count": 3,
+  "hit_count": 4,
   "hits": [
     "Dividend-Alpha",
     "Triple-Cross",
+    "Volume-Retracement",
     "Macro-Gold"
   ],
   "veto_applied": false,
   "latest_info": {
-    "date": "20260409",
-    "price": 9.908,
-    "change": -0.205
+    "date": "20260410",
+    "price": 9.972,
+    "change": 0.064
   },
   "strategy_summary": {
     "Gravity-Dip": {
@@ -49,7 +50,7 @@
     },
     "Dividend-Alpha": {
       "hit": true,
-      "score": 38.76,
+      "score": 38.85,
       "confidence": 0.56,
       "signals": [
         "基础股息保护: 净股息率超过1%",
@@ -61,10 +62,10 @@
     },
     "Weekly-RSI": {
       "hit": false,
-      "score": 13.1,
+      "score": 11.13,
       "confidence": 0.3,
       "signals": [
-        "偏弱: 周线RSI=46.9"
+        "偏强: 周线RSI=51.1"
       ],
       "signal_type": "unknown"
     },
@@ -73,32 +74,32 @@
       "score": 0.0,
       "confidence": 0.5,
       "signals": [
-        "Z分数正常: -0.74"
+        "Z分数正常: -0.66"
       ],
       "signal_type": "normal"
     },
     "Triple-Cross": {
       "hit": true,
+      "score": 60.0,
+      "confidence": 0.6,
+      "signals": [
+        "黄金交叉：MA5上穿MA20"
+      ],
+      "signal_type": "golden_cross"
+    },
+    "Volume-Retracement": {
+      "hit": true,
       "score": 40.0,
       "confidence": 0.6,
       "signals": [
-        "中期空头排列：MA5<MA20<MA60"
-      ],
-      "signal_type": "medium_term_bearish"
-    },
-    "Volume-Retracement": {
-      "hit": false,
-      "score": 0.0,
-      "confidence": 0.5,
-      "signals": [
-        "状态：波动率比率0.79，MA20偏离-0.6%",
+        "良好缩量回踩：波动率萎缩0.58，价格回撤7.7%",
         "短期上涨趋势"
       ],
       "signal_type": "unknown"
     },
     "Macro-Gold": {
       "hit": true,
-      "score": 75.0,
+      "score": 62.5,
       "confidence": 0.54,
       "signals": [
         "宏观偏多: 实际利率0.75%，黄金有吸引力",

@@ -1,7 +1,7 @@
 {
   "ticker": "518880",
   "name": "黄金ETF",
-  "signal_time": "2026-04-10T09:00:09.969732",
+  "signal_time": "2026-04-10T10:00:14.632512",
   "resonance_score": 44.12,
   "signal_status": "中性",
   "action": "减持",
@@ -131,6 +131,6 @@
   },
   "weight": 1.0,
   "type": "etf",
-  "cleaned_time": "2026-04-10 10:00:13",
+  "cleaned_time": "2026-04-11 13:00:14",
   "cleaned_by": "cleaner_etf_purify"
 }
