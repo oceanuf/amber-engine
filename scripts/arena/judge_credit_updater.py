@@ -89,7 +89,9 @@ class JudgeCreditUpdater:
         self.config = config or JudgeCreditConfig()
         self.credit_file = "database/arena/judge_credit_ledger.json"
         self.trade_records_file = "database/arena/trade_records.json"
+        self.fallback_marker_file = ".AMBER_FALLBACK_ACTIVE"
         self.initialized = False
+        self.fallback_mode_active = False
         
     def initialize(self):
         """初始化信用系统"""
@@ -117,10 +119,64 @@ class JudgeCreditUpdater:
                 logger.info("✅ 初始化空交易记录")
             
             self.initialized = True
+            
+            # 检查是否处于降级模式
+            self.fallback_mode_active = self._check_fallback_marker()
+            if self.fallback_mode_active:
+                logger.warning("⚠️  检测到降级标记，启用信用保护熔断机制")
+                logger.warning(f"   标记文件: {self.fallback_marker_file}")
+                logger.warning("   惩罚性权重调整将被跳过")
+            
             return True
             
         except Exception as e:
             logger.error(f"❌ 信用系统初始化失败: {e}")
+            return False
+    
+    def _check_fallback_marker(self) -> bool:
+        """
+        检查降级标记文件是否存在且有效
+        
+        返回:
+            是否处于降级模式
+        """
+        try:
+            if not os.path.exists(self.fallback_marker_file):
+                return False
+            
+            # 验证标记文件内容
+            with open(self.fallback_marker_file, 'r', encoding='utf-8') as f:
+                marker_data = json.load(f)
+            
+            # 检查必要字段
+            required_fields = ["marker_type", "created_at", "today"]
+            if not all(field in marker_data for field in required_fields):
+                logger.warning(f"⚠️  降级标记文件字段不完整: {self.fallback_marker_file}")
+                return False
+            
+            # 检查标记类型
+            if marker_data.get("marker_type") != "AMBER_FALLBACK_ACTIVE":
+                logger.warning(f"⚠️  降级标记文件类型不匹配: {marker_data.get('marker_type')}")
+                return False
+            
+            # 检查日期（防止旧标记污染）
+            marker_date = marker_data.get("today", "")
+            today = datetime.datetime.now().strftime("%Y-%m-%d")
+            if marker_date != today:
+                logger.warning(f"⚠️  降级标记文件日期不匹配: {marker_date} != {today}")
+                return False
+            
+            logger.info(f"✅ 检测到有效的降级标记: {self.fallback_marker_file}")
+            logger.info(f"   创建时间: {marker_data.get('created_at')}")
+            logger.info(f"   触发原因: {marker_data.get('trigger_reason', 'unknown')}")
+            
+            return True
+            
+        except json.JSONDecodeError:
+            logger.error(f"❌ 降级标记文件JSON格式错误: {self.fallback_marker_file}")
+            return False
+        except Exception as e:
+            logger.error(f"❌ 检查降级标记文件失败: {e}")
             return False
     
     def _initialize_credit_data(self) -> Dict:
@@ -374,6 +430,30 @@ class JudgeCreditUpdater:
     
     def _calculate_credit_scores(self):
         """计算信用分"""
+        
+        # 检查是否处于降级模式
+        if self.fallback_mode_active:
+            logger.warning("⚠️  降级模式激活，跳过惩罚性信用分调整")
+            logger.warning("   所有算法信用分将保持当前值或仅进行非惩罚性更新")
+            
+            # 在降级模式下，只更新评估日期，不调整信用分
+            for algo_id, algo_data in self.credit_data["algorithms_credit"].items():
+                algo_data["last_evaluation_date"] = datetime.datetime.now().strftime('%Y-%m-%d')
+                
+                # 记录降级模式下的特殊标记
+                if "fallback_mode_notes" not in algo_data:
+                    algo_data["fallback_mode_notes"] = []
+                
+                algo_data["fallback_mode_notes"].append({
+                    "date": datetime.datetime.now().strftime('%Y-%m-%d'),
+                    "action": "credit_score_frozen",
+                    "reason": "AMBER_FALLBACK_ACTIVE marker detected",
+                    "original_score": algo_data.get("credit_score", 75.0)
+                })
+            
+            return
+        
+        # 正常模式：执行完整的信用分计算
         for algo_id, algo_data in self.credit_data["algorithms_credit"].items():
             hit_rate = algo_data["hit_rate"]["hit_rate"]
             dd_ratio = algo_data["drawdown_contribution"]["dd_contribution_ratio"]
@@ -392,6 +472,8 @@ class JudgeCreditUpdater:
             previous_score = algo_data.get("credit_score", 75.0)
             smoothed_score = 0.7 * previous_score + 0.3 * credit_score
             
+            # 在降级模式下，信用分不应下降，只允许上升或保持
+            # 但我们已经在上面的if语句中处理了降级模式，所以这里总是正常模式
             algo_data["credit_score"] = smoothed_score
             algo_data["last_evaluation_date"] = datetime.datetime.now().strftime('%Y-%m-%d')
             
@@ -403,6 +485,35 @@ class JudgeCreditUpdater:
     
     def _check_inspection_mode(self):
         """检查是否触发观察模式"""
+        
+        # 检查是否处于降级模式
+        if self.fallback_mode_active:
+            logger.warning("⚠️  降级模式激活，跳过观察模式触发")
+            logger.warning("   所有算法将保持当前观察状态，不触发新的观察模式")
+            
+            # 在降级模式下，保持当前状态，不触发新的观察模式
+            inspection_algorithms = self.credit_data.get("inspection_mode_algorithms", [])
+            
+            # 记录降级模式下的特殊标记
+            for algo_id, algo_data in self.credit_data["algorithms_credit"].items():
+                if "fallback_mode_notes" not in algo_data:
+                    algo_data["fallback_mode_notes"] = []
+                
+                algo_data["fallback_mode_notes"].append({
+                    "date": datetime.datetime.now().strftime('%Y-%m-%d'),
+                    "action": "inspection_mode_frozen",
+                    "reason": "AMBER_FALLBACK_ACTIVE marker detected",
+                    "original_status": algo_data.get("inspection_status", "normal")
+                })
+            
+            self.credit_data["inspection_mode_algorithms"] = inspection_algorithms
+            
+            # 系统状态标记为降级模式
+            self.credit_data["system_status"] = "🟠 Fallback Mode"
+            
+            return
+        
+        # 正常模式：执行完整的观察模式检查
         inspection_algorithms = []
         
         for algo_id, algo_data in self.credit_data["algorithms_credit"].items():
@@ -671,6 +782,7 @@ def main():
             "generation_time": datetime.datetime.now().isoformat(),
             "signal_type": args.signal,
             "execution_mode": "auto" if args.auto else "manual",
+            "fallback_mode_active": updater.fallback_mode_active,
             "total_algorithms": len(algorithm_weights),
             "algorithm_weights": algorithm_weights,
             "credit_report_summary": {
@@ -679,6 +791,11 @@ def main():
                 "system_status": report.get("system_status", "unknown")
             }
         }
+        
+        # 如果处于降级模式，添加特殊标记
+        if updater.fallback_mode_active:
+            weights_history["fallback_mode_note"] = "信用保护熔断激活：惩罚性权重调整被跳过"
+            weights_history["fallback_marker_file"] = updater.fallback_marker_file
         
         # 保存权重历史记录
         output_path = os.path.join(

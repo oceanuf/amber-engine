@@ -40,6 +40,13 @@ class ArenaReportGenerator:
         self.virtual_fund_data = self._load_virtual_fund()
         self.current_date = datetime.datetime.now().strftime("%Y-%m-%d")
         
+        # 降级标记文件路径
+        self.fallback_marker_file = os.path.join(self.workspace_root, ".AMBER_FALLBACK_ACTIVE")
+        self.fallback_mode_active = False
+        
+        # 检查降级标记
+        self._check_fallback_marker()
+        
         # 价格缓存（原型阶段使用模拟数据，供回退使用）
         self.price_cache = {
             "000681": 20.37,  # 视觉中国
@@ -83,6 +90,52 @@ class ArenaReportGenerator:
         # 当前脚本的祖父目录
         script_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         return script_dir
+    
+    def _check_fallback_marker(self):
+        """
+        检查降级标记文件是否存在且有效
+        """
+        try:
+            if not os.path.exists(self.fallback_marker_file):
+                self.fallback_mode_active = False
+                return
+            
+            # 验证标记文件内容
+            with open(self.fallback_marker_file, 'r', encoding='utf-8') as f:
+                marker_data = json.load(f)
+            
+            # 检查必要字段
+            required_fields = ["marker_type", "created_at", "today"]
+            if not all(field in marker_data for field in required_fields):
+                logger.warning(f"⚠️  降级标记文件字段不完整: {self.fallback_marker_file}")
+                self.fallback_mode_active = False
+                return
+            
+            # 检查标记类型
+            if marker_data.get("marker_type") != "AMBER_FALLBACK_ACTIVE":
+                logger.warning(f"⚠️  降级标记文件类型不匹配: {marker_data.get('marker_type')}")
+                self.fallback_mode_active = False
+                return
+            
+            # 检查日期（防止旧标记污染）
+            marker_date = marker_data.get("today", "")
+            if marker_date != self.current_date:
+                logger.warning(f"⚠️  降级标记文件日期不匹配: {marker_date} != {self.current_date}")
+                self.fallback_mode_active = False
+                return
+            
+            self.fallback_mode_active = True
+            logger.warning(f"⚠️  检测到降级标记，报告将显示降级模式")
+            logger.warning(f"   标记文件: {self.fallback_marker_file}")
+            logger.warning(f"   创建时间: {marker_data.get('created_at')}")
+            logger.warning(f"   触发原因: {marker_data.get('trigger_reason', 'unknown')}")
+            
+        except json.JSONDecodeError:
+            logger.error(f"❌ 降级标记文件JSON格式错误: {self.fallback_marker_file}")
+            self.fallback_mode_active = False
+        except Exception as e:
+            logger.error(f"❌ 检查降级标记文件失败: {e}")
+            self.fallback_mode_active = False
     
     def _load_virtual_fund(self) -> Dict:
         """加载virtual_fund.json数据"""
@@ -372,11 +425,20 @@ class ArenaReportGenerator:
         """生成简化报告（原型用）"""
         md_lines = []
         
-        # 标题
-        md_lines.append(f"# 🏟️ 琥珀引擎演武场实战报告 (原型)")
-        md_lines.append(f"**报告日期**: {report_data['metadata']['report_date']}  ")
-        md_lines.append(f"**生成时间**: {report_data['metadata']['generated_at']}  ")
-        md_lines.append(f"**状态**: {report_data['metadata']['report_status']}  ")
+        # 标题（根据降级模式调整）
+        if self.fallback_mode_active:
+            md_lines.append(f"# 🏟️ [降级模式] 琥珀引擎演武场实战报告")
+            md_lines.append(f"**报告日期**: {report_data['metadata']['report_date']}  ")
+            md_lines.append(f"**生成时间**: {report_data['metadata']['generated_at']}  ")
+            md_lines.append(f"**状态**: {report_data['metadata']['report_status']} (降级模式)  ")
+            md_lines.append(f"**数据来源**: Fallback Static Cache (降级缓存)  ")
+            md_lines.append(f"**降级原因**: 数据就绪检查超时，使用备用数据  ")
+        else:
+            md_lines.append(f"# 🏟️ 琥珀引擎演武场实战报告")
+            md_lines.append(f"**报告日期**: {report_data['metadata']['report_date']}  ")
+            md_lines.append(f"**生成时间**: {report_data['metadata']['generated_at']}  ")
+            md_lines.append(f"**状态**: {report_data['metadata']['report_status']}  ")
+            md_lines.append(f"**数据来源**: Real-time API (实时数据)  ")
         md_lines.append("")
         
         # 资金总览
@@ -419,10 +481,24 @@ class ArenaReportGenerator:
         md_lines.append("")
         md_lines.append("---")
         md_lines.append("**报告生成**: 琥珀引擎演武场报告生成器 V1.0 (原型)  ")
-        md_lines.append("**数据来源**: virtual_fund.json + 价格缓存  ")
+        
+        # 数据来源说明（根据降级模式调整）
+        if self.fallback_mode_active:
+            md_lines.append("**数据来源**: Fallback Static Cache (降级缓存) + virtual_fund.json  ")
+            md_lines.append("**运行模式**: 🟠 降级模式 - 信用保护熔断激活  ")
+            md_lines.append("**降级标记**: .AMBER_FALLBACK_ACTIVE  ")
+        else:
+            md_lines.append("**数据来源**: Real-time API (实时数据) + virtual_fund.json  ")
+            md_lines.append("**运行模式**: 🟢 正常模式  ")
+        
         md_lines.append("**法典对齐**: 任务指令[2616-0411-P0A]  ")
         md_lines.append("")
-        md_lines.append("> \"原型已走通，逻辑在进化。\"")
+        
+        # 不同的标语
+        if self.fallback_mode_active:
+            md_lines.append("> \"降级不是失败，而是有觉知的推进。\"")
+        else:
+            md_lines.append("> \"原型已走通，逻辑在进化。\"")
         
         return "\n".join(md_lines)
     

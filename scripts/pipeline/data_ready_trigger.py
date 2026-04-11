@@ -49,6 +49,7 @@ class DataReadyTrigger:
         # 关键目录路径
         self.extracted_dir = os.path.join(self.workspace_root, "database", "arena", "extracted_data")
         self.logs_dir = os.path.join(self.workspace_root, "logs", "pipeline")
+        self.fallback_marker_file = os.path.join(self.workspace_root, ".AMBER_FALLBACK_ACTIVE")
         
         # 确保目录存在
         os.makedirs(self.extracted_dir, exist_ok=True)
@@ -301,6 +302,106 @@ class DataReadyTrigger:
                 "note": "数据未就绪且降级模式失败"
             }
     
+    def create_fallback_marker(self) -> bool:
+        """
+        创建降级标记文件 .AMBER_FALLBACK_ACTIVE
+        
+        设计理念:
+        - 提供物理信号级联，让评委中控感知数据降级状态
+        - 标记文件包含创建时间、触发原因等元数据
+        - 文件存在即表示系统处于降级运行模式
+        
+        返回:
+            是否成功创建标记
+        """
+        try:
+            marker_data = {
+                "marker_type": "AMBER_FALLBACK_ACTIVE",
+                "created_at": datetime.now().isoformat(),
+                "today": self.today,
+                "trigger_reason": "DATA_NOT_READY_TIMEOUT",
+                "workspace_root": self.workspace_root,
+                "note": "数据就绪检查超时，系统进入降级运行模式。评委中控应避免惩罚性权重调整。"
+            }
+            
+            with open(self.fallback_marker_file, 'w', encoding='utf-8') as f:
+                json.dump(marker_data, f, ensure_ascii=False, indent=2)
+            
+            print(f"📝 创建降级标记文件: {self.fallback_marker_file}")
+            print(f"   标记时间: {marker_data['created_at']}")
+            print(f"   触发原因: {marker_data['trigger_reason']}")
+            
+            return True
+            
+        except Exception as e:
+            print(f"❌ 创建降级标记文件失败: {e}")
+            return False
+    
+    def remove_fallback_marker(self) -> bool:
+        """
+        删除降级标记文件 .AMBER_FALLBACK_ACTIVE
+        
+        设计理念:
+        - 防止状态污染次日逻辑
+        - 仅在确保流程完整执行后清理
+        - 支持幂等操作（文件不存在时不报错）
+        
+        返回:
+            是否成功删除标记（或标记不存在）
+        """
+        try:
+            if os.path.exists(self.fallback_marker_file):
+                os.remove(self.fallback_marker_file)
+                print(f"🗑️  删除降级标记文件: {self.fallback_marker_file}")
+                return True
+            else:
+                # 文件不存在，视为成功（幂等）
+                return True
+        except Exception as e:
+            print(f"❌ 删除降级标记文件失败: {e}")
+            return False
+    
+    def check_fallback_marker_exists(self) -> bool:
+        """
+        检查降级标记文件是否存在
+        
+        返回:
+            标记文件是否存在且有效
+        """
+        if not os.path.exists(self.fallback_marker_file):
+            return False
+        
+        try:
+            # 验证标记文件内容
+            with open(self.fallback_marker_file, 'r', encoding='utf-8') as f:
+                marker_data = json.load(f)
+            
+            # 检查必要字段
+            required_fields = ["marker_type", "created_at", "today"]
+            if not all(field in marker_data for field in required_fields):
+                print(f"⚠️  降级标记文件字段不完整: {self.fallback_marker_file}")
+                return False
+            
+            # 检查标记类型
+            if marker_data.get("marker_type") != "AMBER_FALLBACK_ACTIVE":
+                print(f"⚠️  降级标记文件类型不匹配: {marker_data.get('marker_type')}")
+                return False
+            
+            # 检查日期（防止旧标记污染）
+            marker_date = marker_data.get("today", "")
+            if marker_date != self.today:
+                print(f"⚠️  降级标记文件日期不匹配: {marker_date} != {self.today}")
+                return False
+            
+            return True
+            
+        except json.JSONDecodeError:
+            print(f"❌ 降级标记文件JSON格式错误: {self.fallback_marker_file}")
+            return False
+        except Exception as e:
+            print(f"❌ 检查降级标记文件失败: {e}")
+            return False
+    
     def send_ready_signal(self, file_path: Optional[str] = None, 
                          metadata: Dict[str, Any] = None) -> int:
         """
@@ -337,12 +438,21 @@ class DataReadyTrigger:
         
         if file_path:
             print(f"✅ 数据就绪，可以启动评委中控")
+            # 正常模式：确保没有残留的降级标记
+            self.remove_fallback_marker()
             return 0  # 正常就绪
         elif metadata and metadata.get("mode") == "FALLBACK":
             print(f"⚠️  降级模式就绪，使用备用数据")
+            # 降级模式：创建物理标记文件
+            if self.create_fallback_marker():
+                print(f"📝 降级标记已创建: {self.fallback_marker_file}")
+            else:
+                print(f"⚠️  降级标记创建失败，但继续执行")
             return 2  # 降级模式就绪
         else:
             print(f"❌ 数据未就绪且无降级方案")
+            # 失败模式：清理可能存在的旧标记
+            self.remove_fallback_marker()
             return 1  # 失败
     
     def run(self, wait_for_data: bool = True) -> int:
