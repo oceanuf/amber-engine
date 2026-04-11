@@ -567,9 +567,164 @@ def test_judge_credit_updater():
     
     return True
 
-if __name__ == "__main__":
-    success = test_judge_credit_updater()
-    if success:
-        print("\n✅ 评委信用更新器测试通过")
+def main():
+    """评委信用更新器主函数，支持自动化模式"""
+    import argparse
+    
+    parser = argparse.ArgumentParser(
+        description="评委信用更新器 - 根据演武场实战结果自动更新算法信用评分",
+        formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    
+    parser.add_argument("--auto", action="store_true",
+                       help="自动化模式，静默执行并返回状态码，适合cron调度")
+    parser.add_argument("--signal", type=str, default="AUTO",
+                       help="触发信号类型: AUTO(自动)/MANUAL(手动)/FORCE(强制)")
+    parser.add_argument("--date", type=str, default=None,
+                       help="指定评估日期(YYYY-MM-DD)，默认使用今日")
+    parser.add_argument("--output", type=str, default="algorithm_weights_history.json",
+                       help="权重历史记录输出文件，默认: algorithm_weights_history.json")
+    parser.add_argument("--verbose", action="store_true",
+                       help="详细输出模式，显示更多信息")
+    parser.add_argument("--test", action="store_true",
+                       help="测试模式，运行原测试函数")
+    
+    args = parser.parse_args()
+    
+    # 测试模式
+    if args.test:
+        success = test_judge_credit_updater()
+        return 0 if success else 1
+    
+    # 自动化模式设置
+    if args.auto:
+        # 静默执行，减少输出
+        import logging
+        logging.getLogger().setLevel(logging.WARNING)
     else:
-        print("\n❌ 评委信用更新器测试失败")
+        # 正常模式，显示横幅
+        print("⚖️  评委信用更新器启动")
+        print(f"   模式: {'自动化(静默)' if args.auto else '交互'}")
+        print(f"   信号: {args.signal}")
+        print(f"   日期: {args.date or '今日'}")
+        print(f"   输出: {args.output}")
+    
+    try:
+        # 创建更新器实例
+        updater = JudgeCreditUpdater()
+        
+        # 初始化信用系统
+        if not updater.initialize():
+            if not args.auto:
+                print("❌ 信用系统初始化失败")
+            return 1
+        
+        if not args.auto:
+            print("✅ 信用系统初始化成功")
+        
+        # 确定评估日期
+        evaluation_date = args.date or datetime.datetime.now().strftime("%Y-%m-%d")
+        
+        # 更新信用评分
+        if not updater.update_credit_scores(evaluation_date):
+            if not args.auto:
+                print(f"❌ 信用评分更新失败，日期: {evaluation_date}")
+            return 2
+        
+        if not args.auto:
+            print(f"✅ 信用评分更新成功，日期: {evaluation_date}")
+        
+        # 获取信用报告
+        report = updater.get_credit_report()
+        if "error" in report:
+            if not args.auto:
+                print(f"❌ 获取信用报告失败: {report['error']}")
+            return 3
+        
+        # 生成算法权重数据
+        algorithm_weights = {}
+        for algo_id, algo_data in updater.credit_data.get("algorithms_credit", {}).items():
+            # 基于信用分计算权重
+            credit_score = algo_data.get("credit_score", 50.0)
+            inspection_status = algo_data.get("inspection_status", "normal")
+            
+            # 权重计算逻辑: 信用分越高，权重越大
+            base_weight = credit_score / 100.0  # 0-1范围
+            
+            # 根据观察状态调整权重
+            if inspection_status == "inspection":
+                base_weight *= 0.1  # 观察模式权重大幅降低
+            elif inspection_status == "monitoring":
+                base_weight *= 0.5  # 监控模式权重适中
+            
+            # 归一化处理
+            algorithm_weights[algo_id] = round(base_weight, 4)
+        
+        # 归一化权重，使总和为1
+        total_weight = sum(algorithm_weights.values())
+        if total_weight > 0:
+            algorithm_weights = {k: round(v/total_weight, 4) for k, v in algorithm_weights.items()}
+        
+        # 构建权重历史记录
+        weights_history = {
+            "report_date": evaluation_date,
+            "generation_time": datetime.datetime.now().isoformat(),
+            "signal_type": args.signal,
+            "execution_mode": "auto" if args.auto else "manual",
+            "total_algorithms": len(algorithm_weights),
+            "algorithm_weights": algorithm_weights,
+            "credit_report_summary": {
+                "average_credit_score": report.get("average_credit_score", 0.0),
+                "inspection_mode_count": len(report.get("inspection_algorithms", [])),
+                "system_status": report.get("system_status", "unknown")
+            }
+        }
+        
+        # 保存权重历史记录
+        output_path = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            "database", "arena", args.output
+        )
+        
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        
+        with open(output_path, 'w', encoding='utf-8') as f:
+            json.dump(weights_history, f, ensure_ascii=False, indent=2)
+        
+        if not args.auto:
+            print(f"✅ 算法权重历史记录已保存: {output_path}")
+            print(f"   生成时间: {weights_history['generation_time']}")
+            print(f"   算法数量: {weights_history['total_algorithms']}")
+            print(f"   平均信用分: {weights_history['credit_report_summary']['average_credit_score']:.2f}")
+            
+            # 显示权重示例
+            print("\n🎯 算法权重示例(前5个):")
+            for algo_id, weight in list(algorithm_weights.items())[:5]:
+                print(f"   {algo_id}: {weight:.4f}")
+        
+        # 返回成功
+        return 0
+        
+    except Exception as e:
+        if not args.auto:
+            print(f"❌ 评委信用更新器执行异常: {e}")
+            import traceback
+            traceback.print_exc()
+        return 99
+
+
+if __name__ == "__main__":
+    # 支持旧版测试模式
+    import sys
+    if len(sys.argv) == 1:
+        # 无参数时运行测试
+        success = test_judge_credit_updater()
+        if success:
+            print("\n✅ 评委信用更新器测试通过")
+        else:
+            print("\n❌ 评委信用更新器测试失败")
+        sys.exit(0 if success else 1)
+    else:
+        # 有参数时运行主函数
+        exit_code = main()
+        sys.exit(exit_code)

@@ -228,7 +228,46 @@ sync_watch_list() {
     fi
 }
 
-# 更新评委权重
+# 检查数据就绪状态
+check_data_ready() {
+    log_info "检查数据就绪状态..."
+    
+    local trigger_script="$WORKSPACE_ROOT/scripts/pipeline/data_ready_trigger.py"
+    
+    if [[ ! -f "$trigger_script" ]]; then
+        log_warning "数据就绪触发器不存在: $trigger_script"
+        return 1  # 视为数据未就绪
+    fi
+    
+    cd "$WORKSPACE_ROOT"
+    
+    # 执行数据就绪检查（不等待，立即检查）
+    log_info "执行数据就绪检查..."
+    local exit_code
+    
+    if python3 "$trigger_script" --no-wait; then
+        exit_code=$?
+    else
+        exit_code=$?
+    fi
+    
+    case $exit_code in
+        0)
+            log_info "✅ 数据就绪，可以启动评委中控"
+            return 0
+            ;;
+        2)
+            log_warning "⚠️  数据未就绪，但降级模式可用"
+            return 2  # 降级模式
+            ;;
+        *)
+            log_error "❌ 数据就绪检查失败，退出码: $exit_code"
+            return 1  # 失败
+            ;;
+    esac
+}
+
+# 更新评委权重（支持数据就绪检测）
 update_judge_weights() {
     log_info "开始更新评委权重..."
     
@@ -239,12 +278,36 @@ update_judge_weights() {
         return 0
     fi
     
+    # 检查数据就绪状态
+    check_data_ready
+    local data_ready_status=$?
+    
     cd "$WORKSPACE_ROOT"
-    if python3 "$weight_script"; then
-        log_info "评委权重更新成功"
-        return 0
+    
+    # 根据数据就绪状态执行不同的命令
+    if [[ $data_ready_status -eq 0 ]]; then
+        # 数据就绪，正常执行
+        log_info "数据就绪，执行正常评委权重更新"
+        if python3 "$weight_script" --auto --signal="DATA_READY"; then
+            log_info "评委权重更新成功"
+            return 0
+        else
+            log_warning "评委权重更新失败，但继续执行"
+            return 0
+        fi
+    elif [[ $data_ready_status -eq 2 ]]; then
+        # 降级模式
+        log_info "数据未就绪，执行降级模式评委权重更新"
+        if python3 "$weight_script" --auto --signal="FALLBACK_MODE"; then
+            log_info "评委权重更新成功（降级模式）"
+            return 0
+        else
+            log_warning "评委权重更新失败（降级模式），但继续执行"
+            return 0
+        fi
     else
-        log_warning "评委权重更新失败，但继续执行"
+        # 数据检查失败
+        log_warning "数据就绪检查失败，跳过评委权重更新"
         return 0
     fi
 }
