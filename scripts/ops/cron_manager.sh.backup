@@ -70,108 +70,6 @@ check_environment() {
     log_info "环境检查完成"
 }
 
-# 架构加固预检：检查端口健康和数据降级模块
-preflight_checks() {
-    log_info "开始架构加固预检..."
-    
-    # 检查10168端口健康状态
-    local port_check_script="$WORKSPACE_ROOT/scripts/ops/service_sentry.sh"
-    if [[ -f "$port_check_script" ]]; then
-        log_info "检查10168端口健康状态..."
-        if "$port_check_script" --test &> /dev/null; then
-            log_info "✅ 10168端口健康"
-        else
-            log_warning "⚠️  10168端口不健康，尝试重启服务..."
-            
-            # 这里可以调用service_sentry.sh的自动修复功能
-            # 但由于权限问题，暂时只记录警告
-            log_warning "端口异常，但需要手动或配置sudo权限执行重启"
-            
-            # 记录到日志文件
-            echo "[$(date '+%Y-%m-%d %H:%M:%S')] 10168端口异常 - 需要人工干预" >> "$LOG_FILE"
-        fi
-    else
-        log_warning "端口检查脚本不存在: $port_check_script"
-    fi
-    
-    # 检查数据降级模块
-    local fallback_script="$WORKSPACE_ROOT/scripts/arena/technical_fallback.py"
-    if [[ -f "$fallback_script" ]]; then
-        log_info "检查数据降级模块..."
-        
-        # 测试数据降级模块
-        cd "$WORKSPACE_ROOT"
-        if python3 -c "import sys; sys.path.insert(0, '.'); from scripts.arena.technical_fallback import DataFallback; print('✅ 数据降级模块导入成功')" 2>&1 | grep -q "导入成功"; then
-            log_info "✅ 数据降级模块就绪"
-            
-            # 测试获取一个股票数据
-            local test_output
-            test_output=$(python3 -c "
-import sys
-sys.path.insert(0, '.')
-from scripts.arena.technical_fallback import DataFallback
-fallback = DataFallback()
-result = fallback.get_stock_price('510300')
-if result.get('success'):
-    print(f'测试通过: {result["data_source"]}')
-else:
-    print(f'测试失败: {result.get("reason", "unknown")}')
-" 2>&1)
-            
-            if echo "$test_output" | grep -q "测试通过"; then
-                log_info "✅ 数据降级功能测试通过"
-            else
-                log_warning "⚠️  数据降级功能测试异常: $test_output"
-            fi
-        else
-            log_warning "⚠️  数据降级模块导入失败"
-        fi
-    else
-        log_warning "数据降级脚本不存在: $fallback_script"
-    fi
-    
-    # 检查arena_watch_list.json有效性
-    local watch_list_file="$WORKSPACE_ROOT/config/arena_watch_list.json"
-    if [[ -f "$watch_list_file" ]]; then
-        log_info "检查arena_watch_list.json有效性..."
-        
-        if python3 -c "
-import json
-with open('$watch_list_file', 'r', encoding='utf-8') as f:
-    data = json.load(f)
-    
-# 基本验证
-if not isinstance(data, dict):
-    print('无效格式: 不是字典')
-elif 'watch_list' not in data:
-    print('缺少watch_list字段')
-elif not isinstance(data.get('watch_list', []), list):
-    print('watch_list不是列表')
-else:
-    tickers = [item.get('ticker') for item in data.get('watch_list', []) if item.get('ticker')]
-    print(f'验证通过: {len(tickers)}个有效标的')
-" 2>&1 | grep -q "验证通过"; then
-            log_info "✅ arena_watch_list.json验证通过"
-        else
-            local validation_result
-            validation_result=$(python3 -c "
-import json
-try:
-    with open('$watch_list_file', 'r', encoding='utf-8') as f:
-        data = json.load(f)
-    print('JSON格式正确')
-except Exception as e:
-    print(f'JSON解析错误: {e}')
-" 2>&1)
-            log_warning "⚠️  arena_watch_list.json验证失败: $validation_result"
-        fi
-    else
-        log_warning "arena_watch_list.json不存在: $watch_list_file"
-    fi
-    
-    log_info "架构加固预检完成"
-}
-
 # 干运行模式：仅打印命令，不执行
 dry_run_mode() {
     log_info "干运行模式 - 仅显示将要执行的命令"
@@ -320,9 +218,6 @@ main() {
     
     # 检查环境
     check_environment
-    
-    # 架构加固预检（新增）
-    preflight_checks
     
     if [[ "$dry_run" == true ]]; then
         dry_run_mode

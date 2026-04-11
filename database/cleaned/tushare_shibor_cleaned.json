@@ -5469,11 +5469,11 @@
     }
   ],
   "metadata": {
-    "fetch_time": "2026-04-11 15:00:07",
+    "fetch_time": "2026-04-11 15:33:34",
     "module": "ingest_tushare_adapter",
     "ticker_count": 1,
     "data_points": 497
   },
-  "cleaned_time": "2026-04-11 15:00:09",
+  "cleaned_time": "2026-04-11 15:33:35",
   "cleaned_by": "cleaner_etf_purify"
 }

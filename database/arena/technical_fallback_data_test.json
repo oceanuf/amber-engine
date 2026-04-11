@@ -1,0 +1,70 @@
+{
+  "510300": {
+    "success": true,
+    "ticker": "510300",
+    "date": "2026-04-11",
+    "price": 3.805,
+    "change_pct": -0.0034000000000000002,
+    "data_source": "local_cache",
+    "backup_marker": "[BACKUP_DATA]",
+    "timestamp": "2026-04-11T15:32:17.460312",
+    "cache_file": "history_510300.json"
+  },
+  "000681": {
+    "success": true,
+    "ticker": "000681",
+    "date": "2026-04-11",
+    "price": 20.37,
+    "change_pct": -0.033222591362126214,
+    "data_source": "virtual_fund",
+    "backup_marker": "[BACKUP_DATA]",
+    "timestamp": "2026-04-11T15:32:17.554908",
+    "fund_data": {
+      "avg_cost": 21.07,
+      "quantity": 4747,
+      "entry_date": "2026-04-08"
+    }
+  },
+  "600633": {
+    "success": true,
+    "ticker": "600633",
+    "date": "2026-04-11",
+    "price": 12.52,
+    "change_pct": -0.027950310559006302,
+    "data_source": "virtual_fund",
+    "backup_marker": "[BACKUP_DATA]",
+    "timestamp": "2026-04-11T15:32:17.654450",
+    "fund_data": {
+      "avg_cost": 12.88,
+      "quantity": 7764,
+      "entry_date": "2026-04-08"
+    }
+  },
+  "000938": {
+    "success": true,
+    "ticker": "000938",
+    "date": "2026-04-11",
+    "price": 27.02,
+    "change_pct": 0.021164021164021114,
+    "data_source": "virtual_fund",
+    "backup_marker": "[BACKUP_DATA]",
+    "timestamp": "2026-04-11T15:32:17.747901",
+    "fund_data": {
+      "avg_cost": 26.46,
+      "quantity": 3779,
+      "entry_date": "2026-04-08"
+    }
+  },
+  "TEST123": {
+    "success": true,
+    "ticker": "TEST123",
+    "date": "2026-04-11",
+    "price": 11.04,
+    "change_pct": 0.0,
+    "data_source": "default_fallback",
+    "backup_marker": "[BACKUP_DATA]",
+    "timestamp": "2026-04-11T15:32:17.844773",
+    "note": "所有数据源失败，使用默认启发式价格",
+    "emergency": true
+  }
+}

@@ -452,15 +452,551 @@ def test_technical_fallback():
     return result
 
 
+class DataFallback:
+    """
+    数据降级模块 - Tushare接口失败时自动降级到本地缓存或历史数据
+    
+    设计理念:
+    1. 数据分级检索: 实时API > 本地缓存 > 历史均值 > 默认值
+    2. 自动标记备份数据: [BACKUP_DATA]
+    3. 无缝降级: 上层调用无需感知数据源变化
+    """
+    
+    def __init__(self, workspace_root: str = None):
+        """初始化数据降级模块"""
+        if workspace_root is None:
+            # 默认工作空间根目录
+            self.workspace_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        else:
+            self.workspace_root = workspace_root
+        
+        # 数据目录路径
+        self.history_dir = os.path.join(self.workspace_root, "database")
+        self.extracted_dir = os.path.join(self.workspace_root, "database", "arena", "extracted_data")
+        self.cache_dir = os.path.join(self.workspace_root, "database", "tushare")
+        
+        # 确保目录存在
+        os.makedirs(self.extracted_dir, exist_ok=True)
+        os.makedirs(self.cache_dir, exist_ok=True)
+        
+        self.data_source = "unknown"  # 记录数据来源
+        self.backup_marker = "[BACKUP_DATA]"  # 备份数据标记
+        
+        print(f"📦 DataFallback 初始化完成，工作空间: {self.workspace_root}")
+    
+    def get_stock_price(self, ticker: str, date: str = None) -> Dict[str, Any]:
+        """
+        获取股票价格数据，支持多级降级
+        
+        参数:
+            ticker: 股票代码 (如: 000681.SZ, 510300)
+            date: 日期字符串 (YYYY-MM-DD)，默认今天
+            
+        返回:
+            包含价格数据和源信息的字典
+        """
+        if date is None:
+            date = datetime.now().strftime("%Y-%m-%d")
+        
+        # 标准化ticker格式
+        normalized_ticker = self._normalize_ticker(ticker)
+        
+        print(f"🔍 获取股票数据: {ticker} -> {normalized_ticker} ({date})")
+        
+        # 第1级: 尝试实时API (Tushare)
+        realtime_data = self._try_realtime_api(normalized_ticker, date)
+        if realtime_data and realtime_data.get("success"):
+            print(f"✅ 实时API数据成功: {ticker}")
+            return realtime_data
+        
+        # 第2级: 尝试本地缓存
+        cached_data = self._try_local_cache(normalized_ticker, date)
+        if cached_data and cached_data.get("success"):
+            print(f"⚠️  使用本地缓存数据: {ticker}")
+            return cached_data
+        
+        # 第3级: 尝试虚拟基金数据 (最新持仓价格)
+        fund_data = self._try_fund_data(normalized_ticker, date)
+        if fund_data and fund_data.get("success"):
+            print(f"💰 使用虚拟基金数据: {ticker}")
+            return fund_data
+        
+        # 第4级: 尝试历史数据 (均值计算)
+        historical_data = self._try_historical_data(normalized_ticker, date)
+        if historical_data and historical_data.get("success"):
+            print(f"🔄 使用历史均值数据: {ticker}")
+            return historical_data
+        
+        # 第5级: 尝试extracted_data (任务要求)
+        extracted_data = self._try_extracted_data(normalized_ticker, date)
+        if extracted_data and extracted_data.get("success"):
+            print(f"📂 使用extracted数据: {ticker}")
+            return extracted_data
+        
+        # 第5级: 降级到默认值
+        print(f"🚨 所有数据源失败，使用默认值: {ticker}")
+        return self._get_default_data(normalized_ticker, date)
+    
+    def _normalize_ticker(self, ticker: str) -> str:
+        """标准化股票代码格式"""
+        # 移除后缀和空格
+        clean_ticker = ticker.replace(".SZ", "").replace(".SH", "").strip()
+        
+        # 如果是6位数字代码，保持原样
+        if clean_ticker.isdigit() and len(clean_ticker) == 6:
+            return clean_ticker
+        
+        # 其他格式直接返回
+        return clean_ticker
+    
+    def _try_realtime_api(self, ticker: str, date: str) -> Dict[str, Any]:
+        """尝试从Tushare API获取实时数据"""
+        try:
+            # 导入Tushare
+            import tushare as ts
+            import pandas as pd
+            
+            # 检查token是否设置
+            token = os.environ.get("TUSHARE_TOKEN")
+            if not token:
+                # 尝试从secrets文件加载
+                secrets_path = os.path.join(self.workspace_root, "_PRIVATE_DATA", "secrets.json")
+                if os.path.exists(secrets_path):
+                    with open(secrets_path, 'r', encoding='utf-8') as f:
+                        secrets = json.load(f)
+                    token = secrets.get("TUSHARE_TOKEN")
+            
+            if not token:
+                print(f"❌ Tushare token未设置，跳过实时API")
+                return {"success": False, "reason": "no_token"}
+            
+            # 设置token
+            ts.set_token(token)
+            pro = ts.pro_api()
+            
+            # 尝试获取日线数据
+            # 注意: 需要将6位代码转换为Tushare格式
+            tushare_code = f"{ticker}.SZ" if ticker.startswith("0") or ticker.startswith("3") else f"{ticker}.SH"
+            
+            df = pro.daily(ts_code=tushare_code, start_date=date, end_date=date)
+            
+            if df.empty:
+                print(f"⚠️  Tushare返回空数据: {ticker}")
+                return {"success": False, "reason": "empty_data"}
+            
+            # 提取数据
+            row = df.iloc[0]
+            price = float(row["close"])
+            change = (float(row["close"]) - float(row["pre_close"])) / float(row["pre_close"])
+            
+            result = {
+                "success": True,
+                "ticker": ticker,
+                "date": date,
+                "price": price,
+                "change_pct": change,
+                "data_source": "tushare_realtime",
+                "backup_marker": "",  # 实时数据不标记
+                "timestamp": datetime.now().isoformat(),
+                "raw_data": row.to_dict()
+            }
+            
+            return result
+            
+        except Exception as e:
+            print(f"⚠️  Tushare API错误: {e}")
+            return {"success": False, "reason": f"api_error: {str(e)}"}
+    
+    def _try_local_cache(self, ticker: str, date: str) -> Dict[str, Any]:
+        """尝试从本地缓存获取数据"""
+        try:
+            # 检查history文件
+            history_file = os.path.join(self.history_dir, f"history_{ticker}.json")
+            
+            if not os.path.exists(history_file):
+                # 尝试其他可能的文件名格式
+                history_file_alt = os.path.join(self.history_dir, f"{ticker}.json")
+                if not os.path.exists(history_file_alt):
+                    return {"success": False, "reason": "no_cache_file"}
+                history_file = history_file_alt
+            
+            with open(history_file, 'r', encoding='utf-8') as f:
+                history_data = json.load(f)
+            
+            # 查找指定日期的数据
+            history_list = history_data.get("history", [])
+            for item in history_list:
+                if item.get("date") == date:
+                    price = float(item["price"]) if isinstance(item["price"], str) else item["price"]
+                    change_str = item.get("change", "0%")
+                    
+                    # 解析涨跌幅字符串
+                    change_pct = 0.0
+                    if change_str.endswith("%"):
+                        try:
+                            change_pct = float(change_str.rstrip("%")) / 100
+                        except:
+                            change_pct = 0.0
+                    
+                    result = {
+                        "success": True,
+                        "ticker": ticker,
+                        "date": date,
+                        "price": price,
+                        "change_pct": change_pct,
+                        "data_source": "local_cache",
+                        "backup_marker": self.backup_marker,
+                        "timestamp": datetime.now().isoformat(),
+                        "cache_file": os.path.basename(history_file)
+                    }
+                    
+                    return result
+            
+            # 如果没有找到指定日期，尝试获取最新数据
+            if history_list:
+                latest = history_list[0]  # 假设第一个是最新的
+                price = float(latest["price"]) if isinstance(latest["price"], str) else latest["price"]
+                change_str = latest.get("change", "0%")
+                
+                change_pct = 0.0
+                if change_str.endswith("%"):
+                    try:
+                        change_pct = float(change_str.rstrip("%")) / 100
+                    except:
+                        change_pct = 0.0
+                
+                result = {
+                    "success": True,
+                    "ticker": ticker,
+                    "date": latest.get("date", date),
+                    "price": price,
+                    "change_pct": change_pct,
+                    "data_source": "local_cache_latest",
+                    "backup_marker": self.backup_marker,
+                    "timestamp": datetime.now().isoformat(),
+                    "cache_file": os.path.basename(history_file),
+                    "note": f"未找到{date}数据，使用最新数据{latest.get('date')}"
+                }
+                
+                return result
+            
+            return {"success": False, "reason": "no_data_in_cache"}
+            
+        except Exception as e:
+            print(f"⚠️  本地缓存错误: {e}")
+            return {"success": False, "reason": f"cache_error: {str(e)}"}
+    
+    def _try_fund_data(self, ticker: str, date: str) -> Dict[str, Any]:
+        """尝试从虚拟基金数据获取最新价格"""
+        try:
+            fund_file = os.path.join(self.workspace_root, "database", "arena", "virtual_fund.json")
+            
+            if not os.path.exists(fund_file):
+                return {"success": False, "reason": "no_fund_file"}
+            
+            with open(fund_file, 'r', encoding='utf-8') as f:
+                fund_data = json.load(f)
+            
+            # 查找持仓
+            positions = fund_data.get("positions", [])
+            for position in positions:
+                if position.get("ticker") == ticker:
+                    price = position.get("current_price", 0)
+                    avg_cost = position.get("average_cost", 0)
+                    
+                    # 计算相对于成本的变化
+                    change_pct = 0.0
+                    if avg_cost > 0:
+                        change_pct = (price - avg_cost) / avg_cost
+                    
+                    result = {
+                        "success": True,
+                        "ticker": ticker,
+                        "date": date,
+                        "price": price,
+                        "change_pct": change_pct,
+                        "data_source": "virtual_fund",
+                        "backup_marker": self.backup_marker,
+                        "timestamp": datetime.now().isoformat(),
+                        "fund_data": {
+                            "avg_cost": avg_cost,
+                            "quantity": position.get("quantity", 0),
+                            "entry_date": position.get("entry_date", "unknown")
+                        }
+                    }
+                    
+                    return result
+            
+            return {"success": False, "reason": "ticker_not_in_fund"}
+            
+        except Exception as e:
+            print(f"⚠️  虚拟基金数据错误: {e}")
+            return {"success": False, "reason": f"fund_error: {str(e)}"}
+    
+    def _try_historical_data(self, ticker: str, date: str) -> Dict[str, Any]:
+        """尝试从历史数据计算均值"""
+        try:
+            history_file = os.path.join(self.history_dir, f"history_{ticker}.json")
+            
+            if not os.path.exists(history_file):
+                return {"success": False, "reason": "no_history_file"}
+            
+            with open(history_file, 'r', encoding='utf-8') as f:
+                history_data = json.load(f)
+            
+            history_list = history_data.get("history", [])
+            
+            if not history_list:
+                return {"success": False, "reason": "empty_history"}
+            
+            # 计算最近5天的平均价格
+            recent_prices = []
+            for item in history_list[:5]:  # 取最近5条
+                try:
+                    price = float(item["price"]) if isinstance(item["price"], str) else item["price"]
+                    recent_prices.append(price)
+                except:
+                    continue
+            
+            if not recent_prices:
+                return {"success": False, "reason": "no_valid_prices"}
+            
+            avg_price = sum(recent_prices) / len(recent_prices)
+            
+            result = {
+                "success": True,
+                "ticker": ticker,
+                "date": date,
+                "price": avg_price,
+                "change_pct": 0.0,  # 历史均值没有涨跌幅
+                "data_source": "historical_average",
+                "backup_marker": self.backup_marker,
+                "timestamp": datetime.now().isoformat(),
+                "calculation": f"最近{len(recent_prices)}天平均价格",
+                "recent_prices": recent_prices,
+                "avg_price": avg_price
+            }
+            
+            return result
+            
+        except Exception as e:
+            print(f"⚠️  历史数据错误: {e}")
+            return {"success": False, "reason": f"history_error: {str(e)}"}
+    
+    def _try_extracted_data(self, ticker: str, date: str) -> Dict[str, Any]:
+        """尝试从extracted_data目录获取数据"""
+        try:
+            # 查找extracted_data目录下的所有JSON文件
+            extracted_files = []
+            for filename in os.listdir(self.extracted_dir):
+                if filename.endswith('.json'):
+                    extracted_files.append(os.path.join(self.extracted_dir, filename))
+            
+            if not extracted_files:
+                return {"success": False, "reason": "no_extracted_files"}
+            
+            # 按修改时间排序，获取最新的文件
+            extracted_files.sort(key=lambda x: os.path.getmtime(x), reverse=True)
+            latest_file = extracted_files[0]
+            
+            with open(latest_file, 'r', encoding='utf-8') as f:
+                extracted_data = json.load(f)
+            
+            # 尝试从提取的数据中查找股票信息
+            # 当前extracted_data主要包含共振评分数据，可能没有价格信息
+            # 这里我们检查是否有任何价格相关信息
+            
+            # 检查常见的数据结构
+            price_found = False
+            price = 0.0
+            change_pct = 0.0
+            
+            # 方法1: 检查ticker_details中是否有价格字段
+            ticker_details = extracted_data.get("ticker_details", {})
+            if ticker in ticker_details:
+                ticker_info = ticker_details[ticker]
+                # 检查常见价格字段
+                for field in ["price", "close", "current_price", "last_price"]:
+                    if field in ticker_info:
+                        try:
+                            price = float(ticker_info[field])
+                            price_found = True
+                            break
+                        except:
+                            continue
+            
+            # 方法2: 检查其他可能的数据结构
+            if not price_found:
+                # 尝试从历史记录中查找
+                for key, value in extracted_data.items():
+                    if isinstance(value, dict) and "price" in value:
+                        try:
+                            price = float(value["price"])
+                            price_found = True
+                            break
+                        except:
+                            continue
+            
+            if price_found:
+                result = {
+                    "success": True,
+                    "ticker": ticker,
+                    "date": date,
+                    "price": price,
+                    "change_pct": change_pct,
+                    "data_source": "extracted_data",
+                    "backup_marker": self.backup_marker,
+                    "timestamp": datetime.now().isoformat(),
+                    "extracted_file": os.path.basename(latest_file),
+                    "note": "从extracted_data中找到价格信息"
+                }
+                return result
+            else:
+                # 没有找到价格信息，返回失败，让流程继续到下一级
+                return {
+                    "success": False, 
+                    "reason": "no_price_in_extracted",
+                    "extracted_file": os.path.basename(latest_file),
+                    "extraction_date": extracted_data.get("extraction_date", "unknown")
+                }
+            
+        except Exception as e:
+            print(f"⚠️  extracted_data错误: {e}")
+            return {"success": False, "reason": f"extracted_error: {str(e)}"}
+    
+    def _get_default_data(self, ticker: str, date: str) -> Dict[str, Any]:
+        """获取默认数据（最后一道防线）"""
+        # 使用一些启发式规则生成默认值
+        # 例如: 基于股票代码的简单哈希生成"合理"的价格
+        
+        # 简单哈希生成伪随机但确定性的价格
+        hash_val = hash(ticker) % 1000
+        base_price = 10.0 + (hash_val / 100)  # 10-20元范围
+        
+        result = {
+            "success": True,
+            "ticker": ticker,
+            "date": date,
+            "price": base_price,
+            "change_pct": 0.0,
+            "data_source": "default_fallback",
+            "backup_marker": self.backup_marker,
+            "timestamp": datetime.now().isoformat(),
+            "note": "所有数据源失败，使用默认启发式价格",
+            "emergency": True
+        }
+        
+        return result
+    
+    def batch_get_prices(self, tickers: List[str], date: str = None) -> Dict[str, Dict[str, Any]]:
+        """批量获取股票价格数据"""
+        if date is None:
+            date = datetime.now().strftime("%Y-%m-%d")
+        
+        results = {}
+        
+        print(f"📊 批量获取 {len(tickers)} 个股票数据 ({date})")
+        
+        for ticker in tickers:
+            try:
+                result = self.get_stock_price(ticker, date)
+                results[ticker] = result
+                
+                source = result.get("data_source", "unknown")
+                marker = "🔴" if self.backup_marker in result.get("backup_marker", "") else "🟢"
+                
+                print(f"   {marker} {ticker}: {source} | 价格: {result.get('price', 'N/A')}")
+                
+            except Exception as e:
+                print(f"❌ {ticker} 获取失败: {e}")
+                results[ticker] = {
+                    "success": False,
+                    "ticker": ticker,
+                    "error": str(e)
+                }
+        
+        # 统计
+        success_count = sum(1 for r in results.values() if r.get("success"))
+        backup_count = sum(1 for r in results.values() if self.backup_marker in r.get("backup_marker", ""))
+        
+        print(f"📈 批量获取完成: {success_count}/{len(tickers)} 成功，{backup_count} 个使用备份数据")
+        
+        return results
+
+
+def test_data_fallback():
+    """测试数据降级模块"""
+    print("\n🧪 开始测试 DataFallback 模块")
+    
+    # 创建数据降级实例
+    fallback = DataFallback()
+    
+    # 测试单个股票
+    test_tickers = ["510300", "000681", "600633", "000938", "TEST123"]
+    today = datetime.now().strftime("%Y-%m-%d")
+    
+    print(f"\n📅 测试日期: {today}")
+    
+    for ticker in test_tickers:
+        print(f"\n--- 测试 {ticker} ---")
+        result = fallback.get_stock_price(ticker, today)
+        
+        if result["success"]:
+            source = result["data_source"]
+            price = result["price"]
+            marker = result.get("backup_marker", "")
+            
+            print(f"✅ 成功: {source}")
+            print(f"   价格: {price}")
+            print(f"   标记: {marker if marker else '实时数据'}")
+            if "note" in result:
+                print(f"   备注: {result['note']}")
+        else:
+            print(f"❌ 失败: {result.get('reason', 'unknown')}")
+    
+    # 批量测试
+    print(f"\n📦 批量测试 {len(test_tickers)} 个股票")
+    batch_results = fallback.batch_get_prices(test_tickers, today)
+    
+    return batch_results
+
+
 if __name__ == "__main__":
-    # 运行测试
-    test_result = test_technical_fallback()
+    import argparse
     
-    # 保存测试结果
-    output_file = "database/arena/technical_fallback_test.json"
-    os.makedirs(os.path.dirname(output_file), exist_ok=True)
+    parser = argparse.ArgumentParser(description="Technical Fallback 测试工具")
+    parser.add_argument("--mode", choices=["decision", "data", "all"], default="all",
+                       help="测试模式: decision=决策降级, data=数据降级, all=全部")
     
-    with open(output_file, "w", encoding="utf-8") as f:
-        json.dump(test_result, f, ensure_ascii=False, indent=2)
+    args = parser.parse_args()
     
-    print(f"\n✅ 测试完成，结果保存至: {output_file}")
+    print("🔧 Technical Fallback 测试工具")
+    print("==============================")
+    
+    test_results = {}
+    
+    if args.mode in ["decision", "all"]:
+        print("\n🧠 测试决策降级模块 (TechnicalFallback)...")
+        decision_result = test_technical_fallback()
+        test_results["decision"] = decision_result
+        
+        # 保存决策测试结果
+        decision_file = "database/arena/technical_fallback_decision_test.json"
+        os.makedirs(os.path.dirname(decision_file), exist_ok=True)
+        with open(decision_file, "w", encoding="utf-8") as f:
+            json.dump(decision_result, f, ensure_ascii=False, indent=2)
+        print(f"✅ 决策测试结果保存至: {decision_file}")
+    
+    if args.mode in ["data", "all"]:
+        print("\n📊 测试数据降级模块 (DataFallback)...")
+        data_result = test_data_fallback()
+        test_results["data"] = data_result
+        
+        # 保存数据测试结果
+        data_file = "database/arena/technical_fallback_data_test.json"
+        os.makedirs(os.path.dirname(data_file), exist_ok=True)
+        with open(data_file, "w", encoding="utf-8") as f:
+            json.dump(data_result, f, ensure_ascii=False, indent=2)
+        print(f"✅ 数据测试结果保存至: {data_file}")
+    
+    print("\n🎉 所有测试完成!")
