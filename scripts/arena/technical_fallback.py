@@ -784,7 +784,7 @@ class DataFallback:
             return {"success": False, "reason": f"history_error: {str(e)}"}
     
     def _try_extracted_data(self, ticker: str, date: str) -> Dict[str, Any]:
-        """尝试从extracted_data目录获取数据"""
+        """尝试从extracted_data目录获取数据，支持多级降级"""
         try:
             # 查找extracted_data目录下的所有JSON文件
             extracted_files = []
@@ -802,40 +802,103 @@ class DataFallback:
             with open(latest_file, 'r', encoding='utf-8') as f:
                 extracted_data = json.load(f)
             
-            # 尝试从提取的数据中查找股票信息
-            # 当前extracted_data主要包含共振评分数据，可能没有价格信息
-            # 这里我们检查是否有任何价格相关信息
+            # 记录提取的文件信息，用于调试
+            file_info = {
+                "extracted_file": os.path.basename(latest_file),
+                "extraction_date": extracted_data.get("extraction_date", "unknown"),
+                "file_size_kb": os.path.getsize(latest_file) / 1024,
+                "ticker_count": extracted_data.get("ticker_count", 0)
+            }
             
-            # 检查常见的数据结构
+            # 增强的价格查找逻辑 - 多级尝试
             price_found = False
             price = 0.0
             change_pct = 0.0
+            price_source = "unknown"
+            price_note = ""
             
-            # 方法1: 检查ticker_details中是否有价格字段
+            # 第1级: 检查ticker_details中的价格字段
             ticker_details = extracted_data.get("ticker_details", {})
             if ticker in ticker_details:
                 ticker_info = ticker_details[ticker]
                 # 检查常见价格字段
-                for field in ["price", "close", "current_price", "last_price"]:
+                for field in ["price", "close", "current_price", "last_price", "market_price"]:
                     if field in ticker_info:
                         try:
                             price = float(ticker_info[field])
                             price_found = True
+                            price_source = f"ticker_details.{field}"
+                            price_note = "从ticker_details中提取价格"
                             break
-                        except:
+                        except (ValueError, TypeError):
                             continue
             
-            # 方法2: 检查其他可能的数据结构
+            # 第2级: 检查通用数据结构中的价格信息
             if not price_found:
-                # 尝试从历史记录中查找
                 for key, value in extracted_data.items():
-                    if isinstance(value, dict) and "price" in value:
-                        try:
-                            price = float(value["price"])
-                            price_found = True
-                            break
-                        except:
-                            continue
+                    if isinstance(value, dict):
+                        # 检查是否为股票数据字典
+                        if "price" in value and ("ticker" in value or key.upper() == ticker):
+                            try:
+                                price = float(value["price"])
+                                price_found = True
+                                price_source = f"{key}.price"
+                                price_note = f"从{key}数据中提取价格"
+                                break
+                            except (ValueError, TypeError):
+                                continue
+                        # 检查是否有成交价格字段
+                        elif "成交价" in value or "成交价格" in value:
+                            for price_key in ["成交价", "成交价格", "trade_price"]:
+                                if price_key in value:
+                                    try:
+                                        price = float(value[price_key])
+                                        price_found = True
+                                        price_source = f"{key}.{price_key}"
+                                        price_note = f"从{key}中提取成交价格"
+                                        break
+                                    except (ValueError, TypeError):
+                                        continue
+                            if price_found:
+                                break
+            
+            # 第3级: 如果文件中有其他股票的价格数据，使用平均值作为降级参考
+            if not price_found and ticker_details:
+                # 收集所有能找到的价格
+                all_prices = []
+                for ticker_key, ticker_info in ticker_details.items():
+                    if isinstance(ticker_info, dict):
+                        for field in ["price", "close", "current_price"]:
+                            if field in ticker_info:
+                                try:
+                                    price_val = float(ticker_info[field])
+                                    all_prices.append(price_val)
+                                    break
+                                except (ValueError, TypeError):
+                                    continue
+                
+                if all_prices:
+                    # 使用价格中位数作为参考值
+                    price = statistics.median(all_prices) if len(all_prices) > 1 else all_prices[0]
+                    price_found = True
+                    price_source = "ticker_details.average"
+                    price_note = f"基于{len(all_prices)}个股票价格的中位数 ({min(all_prices):.2f}-{max(all_prices):.2f}范围)"
+            
+            # 第4级: 从文件元数据中提取日期信息，用于智能降级
+            if not price_found:
+                # 如果文件中包含历史数据日期，可以提供日期参考
+                report_date = extracted_data.get("report_date", extracted_data.get("date", "unknown"))
+                if report_date != "unknown":
+                    # 返回失败但有更多上下文信息
+                    return {
+                        "success": False, 
+                        "reason": "no_price_in_extracted",
+                        "extracted_file": os.path.basename(latest_file),
+                        "extraction_date": extracted_data.get("extraction_date", "unknown"),
+                        "report_date": report_date,
+                        "file_info": file_info,
+                        "note": f"extracted_data文件包含{extracted_data.get('ticker_count', 0)}个股票的共振评分数据，但无价格信息。报告日期: {report_date}"
+                    }
             
             if price_found:
                 result = {
@@ -847,22 +910,32 @@ class DataFallback:
                     "data_source": "extracted_data",
                     "backup_marker": self.backup_marker,
                     "timestamp": datetime.now().isoformat(),
-                    "extracted_file": os.path.basename(latest_file),
-                    "note": "从extracted_data中找到价格信息"
+                    "price_source": price_source,
+                    "note": price_note,
+                    "file_info": file_info
                 }
                 return result
             else:
-                # 没有找到价格信息，返回失败，让流程继续到下一级
+                # 没有找到任何价格信息，提供详细的失败信息
                 return {
                     "success": False, 
                     "reason": "no_price_in_extracted",
                     "extracted_file": os.path.basename(latest_file),
-                    "extraction_date": extracted_data.get("extraction_date", "unknown")
+                    "extraction_date": extracted_data.get("extraction_date", "unknown"),
+                    "file_info": file_info,
+                    "available_data": list(extracted_data.keys())[:5],  # 前5个键
+                    "note": "extracted_data文件不包含可识别的价格信息。文件包含以下数据字段: " + ", ".join(list(extracted_data.keys())[:5])
                 }
             
         except Exception as e:
             print(f"⚠️  extracted_data错误: {e}")
-            return {"success": False, "reason": f"extracted_error: {str(e)}"}
+            import traceback
+            error_details = traceback.format_exc()
+            return {
+                "success": False, 
+                "reason": f"extracted_error: {str(e)}",
+                "error_details": error_details[:500]  # 限制长度
+            }
     
     def _get_default_data(self, ticker: str, date: str) -> Dict[str, Any]:
         """获取默认数据（最后一道防线）"""

@@ -168,7 +168,7 @@ def test_port_monitor_disaster():
         return False
 
 def test_cron_preflight_disaster():
-    """测试Cron预检的灾变场景"""
+    """测试Cron预检的灾变场景，真实验证所有预检项"""
     print("\n🔄 测试Cron预检灾变场景")
     print("=" * 50)
     
@@ -185,30 +185,69 @@ def test_cron_preflight_disaster():
         cmd = [cron_script, "--dry-run"]
         result = subprocess.run(cmd, capture_output=True, text=True)
         
+        test_passed = False
+        detailed_results = {}
+        
         if result.returncode == 0:
-            print("   ✅ Cron预检通过")
+            print("   ✅ Cron脚本执行成功")
             
             # 检查输出中是否包含预检信息
             output = result.stdout + result.stderr
-            preflight_checks = [
-                "开始架构加固预检",
-                "10168端口健康",
-                "数据降级模块",
-                "arena_watch_list.json"
-            ]
+            preflight_checks = {
+                "预检开始": "开始架构加固预检",
+                "端口健康": "10168端口健康",
+                "数据降级": "数据降级模块",
+                "监控列表": "arena_watch_list.json"
+            }
             
-            for check in preflight_checks:
-                if check in output:
-                    print(f"   ✅ 包含: {check}")
+            # 验证每个预检项
+            all_checks_passed = True
+            for check_name, check_text in preflight_checks.items():
+                if check_text in output:
+                    print(f"   ✅ 预检项 '{check_name}' 存在: {check_text}")
+                    detailed_results[check_name] = True
                 else:
-                    print(f"   ⚠️  未找到: {check}")
+                    print(f"   ❌ 预检项 '{check_name}' 缺失: {check_text}")
+                    detailed_results[check_name] = False
+                    all_checks_passed = False
+            
+            # 验证是否有错误信息
+            error_indicators = ["错误", "失败", "ERROR", "FAILED", "无法"]
+            has_errors = any(indicator in output for indicator in error_indicators)
+            
+            if all_checks_passed and not has_errors:
+                print("   ✅ 所有预检项验证通过")
+                test_passed = True
+            else:
+                print(f"   ❌ 预检验证失败: 通过{sum(detailed_results.values())}/{len(detailed_results)}项，发现错误: {has_errors}")
+                
+                # 输出错误片段帮助调试
+                if has_errors:
+                    error_lines = [line for line in output.split('\n') if any(indicator in line for indicator in error_indicators)]
+                    if error_lines:
+                        print("   发现的错误信息:")
+                        for error_line in error_lines[:3]:  # 最多显示3行
+                            print(f"      - {error_line}")
         else:
-            print(f"   ❌ Cron预检失败: {result.stderr}")
+            print(f"   ❌ Cron脚本执行失败，返回码: {result.returncode}")
+            print(f"      标准错误: {result.stderr[:200] if result.stderr else '空'}")
+            
+            # 尝试从错误中提取信息
+            if result.stderr:
+                error_lines = result.stderr.split('\n')
+                if error_lines:
+                    print(f"      第一行错误: {error_lines[0]}")
         
-        return True
+        # 返回测试结果
+        if test_passed:
+            print("   ✅ Cron预检测试通过")
+        else:
+            print("   ❌ Cron预检测试失败")
+            
+        return test_passed
         
     except Exception as e:
-        print(f"❌ Cron预检测试失败: {e}")
+        print(f"❌ Cron预检测试异常: {e}")
         import traceback
         traceback.print_exc()
         return False
