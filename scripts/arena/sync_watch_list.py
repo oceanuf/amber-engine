@@ -272,6 +272,93 @@ class WatchListSyncer:
         }
         return name_map.get(ticker, ticker)
     
+    def sync_from_candidates(self, watch_list_data: Dict) -> Dict:
+        """
+        从候选生成报告同步到2队监控列表
+        
+        Args:
+            watch_list_data: 监控列表数据
+            
+        Returns:
+            更新后的监控列表数据
+        """
+        candidate_file = os.path.join(
+            self.workspace_root, "reports", "candidates", "candidate_generation_today.json"
+        )
+        
+        if not os.path.exists(candidate_file):
+            logger.warning(f"候选生成报告不存在: {candidate_file}")
+            return watch_list_data
+        
+        try:
+            with open(candidate_file, 'r', encoding='utf-8') as f:
+                candidate_data = json.load(f)
+            
+            candidate_profiles = candidate_data.get("candidate_profiles", [])
+            
+            if not candidate_profiles:
+                logger.warning("候选生成报告无候选股票")
+                return watch_list_data
+            
+            logger.info(f"加载候选生成报告，包含{len(candidate_profiles)}个候选股票")
+            
+            # 获取现有标的集合
+            existing_tickers = {item["ticker"] for item in watch_list_data.get("watch_list", [])}
+            
+            updates_made = False
+            current_date = datetime.datetime.now().strftime("%Y-%m-%d")
+            
+            for candidate in candidate_profiles:
+                ticker = candidate.get("stock_code")
+                if not ticker:
+                    continue
+                
+                # 检查是否已存在
+                if ticker in existing_tickers:
+                    continue
+                
+                # 获取候选信息
+                stock_name = candidate.get("stock_name", f"股票{ticker}")
+                overall_score = candidate.get("overall_score", 0)
+                theme = candidate.get("theme", "宏观主题驱动")
+                
+                # 只同步评分较高的候选（≥0.5）
+                if overall_score >= 0.5:
+                    # 从候选生成的标的默认为2队
+                    team = "2队"
+                    
+                    new_item = {
+                        "ticker": ticker,
+                        "name": stock_name,
+                        "team": team,
+                        "added_date": current_date,
+                        "added_by": "sync_watch_list_candidates",
+                        "status": "active",
+                        "priority": "medium",
+                        "reason": f"候选生成评分: {overall_score:.3f}, 主题: {theme}",
+                        "monitoring_required": True,
+                        "last_synced": datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S+08:00"),
+                        "sync_status": "auto_sync_from_candidates"
+                    }
+                    
+                    watch_list_data["watch_list"].append(new_item)
+                    existing_tickers.add(ticker)
+                    updates_made = True
+                    logger.info(f"新增候选监控标的: {ticker} ({stock_name}) -> {team} (评分: {overall_score:.3f})")
+            
+            if updates_made:
+                watch_list_data["status"]["total_tickers"] = len(watch_list_data["watch_list"])
+                watch_list_data["status"]["active_tickers"] = len([item for item in watch_list_data["watch_list"] if item.get("status") == "active"])
+                watch_list_data["status"]["last_updated"] = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S+08:00")
+                watch_list_data["status"]["update_method"] = "auto_sync_from_candidates"
+                logger.info(f"候选同步完成，新增{updates_made}个候选标的到2队")
+            
+            return watch_list_data
+            
+        except Exception as e:
+            logger.error(f"加载候选生成报告失败: {e}")
+            return watch_list_data
+    
     def run_sync(self, sync_mode: str = "all") -> bool:
         """
         执行同步
@@ -294,6 +381,9 @@ class WatchListSyncer:
             
             if sync_mode in ["resonance", "all"]:
                 watch_list_data = self.sync_from_resonance_scores(watch_list_data)
+            
+            if sync_mode in ["candidates", "all"]:
+                watch_list_data = self.sync_from_candidates(watch_list_data)
             
             # 保存更新后的监控列表
             self.save_watch_list(watch_list_data)
@@ -327,8 +417,8 @@ def main():
     import argparse
     
     parser = argparse.ArgumentParser(description="演武场监控列表同步钩子")
-    parser.add_argument("--mode", choices=["positions", "resonance", "all"], default="all",
-                       help="同步模式: positions=仅持仓, resonance=仅共振评分, all=全部")
+    parser.add_argument("--mode", choices=["positions", "resonance", "candidates", "all"], default="all",
+                       help="同步模式: positions=仅持仓, resonance=仅共振评分, candidates=仅候选生成, all=全部")
     parser.add_argument("--dry-run", action="store_true", help="干运行，不保存更改")
     
     args = parser.parse_args()
@@ -347,6 +437,20 @@ def main():
             
             resonance_scores = syncer.get_resonance_scores()
             print(f"当前共振评分标的数: {len(resonance_scores)}")
+            
+            # 检查候选生成报告
+            candidate_file = os.path.join(syncer.workspace_root, "reports", "candidates", "candidate_generation_today.json")
+            if os.path.exists(candidate_file):
+                try:
+                    with open(candidate_file, 'r', encoding='utf-8') as f:
+                        candidate_data = json.load(f)
+                    candidate_count = len(candidate_data.get("candidate_profiles", []))
+                    print(f"当前候选生成标的数: {candidate_count}")
+                except Exception as e:
+                    print(f"读取候选生成报告失败: {e}")
+            else:
+                print("当前候选生成报告: 不存在")
+            
             print("干运行完成")
             return 0
         

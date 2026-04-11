@@ -1,7 +1,7 @@
 # 💓 HEARTBEAT.md - 琥珀引擎架构心跳法典
 
 **当前系统状态**: 🟢 **NORMAL (稳定运行)**
-**最后心跳时间**: 2026-04-12 07:28
+**最后心跳时间**: 2026-04-12 07:40
 **当前执行准则**: [AGENTS.md V2.0] / [ARENA-SOP.md V2.1]
 
 ---
@@ -24,7 +24,8 @@
 | **P0E** | `nav_recorder.py` (净值核算) + `trade_settler.py` (自动清算) | ✅ 已实装 | `6e044bd` |
 | **P0F** | `data_sanitizer.py` (输入端防火墙) + 异常波动熔断 | ✅ 已实装 | `50c1a80` |
 | **1102** | `reports/2615_1102.md` (全链路架构审计报告) | ✅ 已归档 | `833e75a` |
-| **P1** | `news_sentinel.py` (宏观感知哨兵) + `macro_pulse_dispatcher.py` (脉冲分发器) | ✅ 已实装 | `待生成` |
+| **P1** | `news_sentinel.py` (宏观感知哨兵) + `macro_pulse_dispatcher.py` (脉冲分发器) | ✅ 已实装 | `3a6b692` |
+| **P2** | `hotspot_correlation.py` (热点关联) + `candidate_generator.py` (候选生成) + `sync_watch_list.py` 升级 | ✅ 已实装 | `待生成` |
 
 ---
 
@@ -47,7 +48,7 @@
 ## 🚀 当前待办序列 (Current Backlog)
 
 1. ✅ **[P1] 宏观感知自动化**：已实装 `news_sentinel.py` + `macro_pulse_dispatcher.py`，SOP 第一阶段真空已填补。
-2. 🟡 **[P2] 标的挖掘增强**：建立外部情报接口与 `sync_watch_list.py` 的自动化逻辑。
+2. ✅ **[P2] 标的挖掘增强**：已实装 `hotspot_correlation.py` + `candidate_generator.py` + `sync_watch_list.py` 升级，SOP 第二阶段自动化挖掘链路建成。
 3. 🟢 **[P4] 交易审判优化**：在 `trade_settler.py` 中引入滑点模拟与流动性检查模型。
 
 ---
@@ -59,4 +60,4 @@
 
 ---
 **"数据不撒谎，逻辑在进化。"**
-**Status: 🟢 ACTIVE - 宏观感知哨兵已激活，等待09:00首轮脉冲测试。**
+**Status: 🟢 ACTIVE - 宏观感知哨兵已激活，SOP第二阶段自动化挖掘链路建成。等待09:00首轮脉冲测试。**
