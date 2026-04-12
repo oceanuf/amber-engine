@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "report_type": "宏观脉冲简报",
+    "date": "2026-04-12",
+    "generated_by": "MacroPulseDispatcher",
+    "version": "1.0.0",
+    "generation_time": "2026-04-12T11:59:17.882988"
+  },
+  "executive_summary": {
+    "total_news_analyzed": 0,
+    "macro_news_count": 0,
+    "macro_intensity_index": 0.0,
+    "overall_tone": "平静",
+    "risk_level": "很低",
+    "investment_implication": "无明显宏观事件"
+  },
+  "detailed_analysis": {
+    "category_distribution": {},
+    "tag_distribution": {},
+    "key_themes": [],
+    "watch_items": []
+  },
+  "key_news_highlights": [],
+  "technical_details": {
+    "analysis_methodology": "基于新闻哨兵的关键词矩阵与置信度算法",
+    "intensity_calculation": "综合考虑新闻源权重、置信度得分、关键词数量",
+    "thresholds": {
+      "macro_impact": "confidence_score >= 0.5",
+      "high_intensity": ">= 0.7",
+      "medium_intensity": "0.4-0.7",
+      "low_intensity": "0.1-0.4"
+    }
+  }
+}

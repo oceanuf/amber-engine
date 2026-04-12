@@ -20,6 +20,7 @@ import datetime
 import hashlib
 import requests
 import feedparser  # RSS解析库
+# Akshare在fetch_from_akshare方法中动态导入，避免未安装时影响其他功能
 from typing import Dict, List, Optional, Any, Tuple
 from dataclasses import dataclass, asdict
 from collections import defaultdict
@@ -60,12 +61,12 @@ class NewsSource:
 # 新闻源列表
 NEWS_SOURCES = [
     NewsSource(
-        name="Tushare VIP新闻",
+        name="Tushare新闻",
         type="tushare",
-        url="https://api.tushare.pro/v1/news/vip",
+        url="https://api.tushare.pro/v1",
         weight=0.8,
         enabled=True,
-        rate_limit_seconds=5  # Tushare API频率限制
+        rate_limit_seconds=1800  # Tushare API频率限制：每小时最多2次，设置30分钟间隔
     ),
     NewsSource(
         name="财联社RSS",
@@ -98,6 +99,14 @@ NEWS_SOURCES = [
         weight=0.5,
         enabled=True,
         rate_limit_seconds=15
+    ),
+    NewsSource(
+        name="央视新闻(Akshare)",
+        type="akshare",
+        url="",  # Akshare不使用URL
+        weight=0.7,
+        enabled=True,
+        rate_limit_seconds=10
     ),
 ]
 
@@ -227,7 +236,7 @@ class NewsSentinel:
         logger.info(f"📰 从Tushare获取新闻 (限制: {limit})")
         
         api_data = {
-            "api_name": "news/vip",
+            "api_name": "news",
             "token": self.tushare_token,
             "params": {
                 "src": "sina",  # 新闻来源，可以是sina, 163等
@@ -235,7 +244,7 @@ class NewsSentinel:
                 "end_date": datetime.datetime.now().strftime("%Y%m%d"),
                 "limit": limit
             },
-            "fields": "title,content,pub_time,src,tags,related_stocks"
+            "fields": "title,content,pub_time,src"
         }
         
         try:
@@ -306,6 +315,54 @@ class NewsSentinel:
             logger.error(f"❌ RSS源 {source.name} 请求失败: {e}")
             return []
     
+    def fetch_from_akshare(self, source: NewsSource, limit: int = 10) -> List[Dict]:
+        """从Akshare获取新闻"""
+        if not self._can_make_request(source):
+            logger.warning(f"频率限制: {source.name}，跳过本次请求")
+            return []
+        
+        logger.info(f"📰 从Akshare获取新闻: {source.name}")
+        
+        try:
+            import akshare as ak
+            self._update_request_time(source)
+            
+            # 获取央视新闻
+            df = ak.news_cctv()
+            
+            news_items = []
+            for i, row in df.head(limit).iterrows():
+                title = row.get('title', '')
+                content = row.get('content', '')
+                date = row.get('date', '')
+                
+                # 转换日期格式
+                pub_time = ''
+                if date:
+                    try:
+                        # 假设日期格式为YYYYMMDD
+                        pub_time = f"{date[:4]}-{date[4:6]}-{date[6:8]} 00:00:00"
+                    except:
+                        pub_time = str(date)
+                
+                news_items.append({
+                    'title': title,
+                    'content': content,
+                    'url': '',  # Akshare新闻通常没有URL
+                    'pub_time': pub_time,
+                    'source': source.name,
+                    'tags': []
+                })
+            
+            logger.info(f"✅ 从 {source.name} 获取到 {len(news_items)} 条新闻")
+            return news_items
+        except ImportError:
+            logger.error("❌ Akshare库未安装，请运行: pip install akshare")
+            return []
+        except Exception as e:
+            logger.error(f"❌ Akshare源 {source.name} 请求失败: {e}")
+            return []
+    
     def fetch_news(self, limit_per_source: int = 10) -> List[Dict]:
         """从所有启用的新闻源获取新闻"""
         all_news = []
@@ -320,6 +377,8 @@ class NewsSentinel:
                 news_items = self.fetch_from_tushare(source, limit_per_source)
             elif source.type == "rss":
                 news_items = self.fetch_from_rss(source, limit_per_source)
+            elif source.type == "akshare":
+                news_items = self.fetch_from_akshare(source, limit_per_source)
             else:
                 logger.warning(f"⚠️  未知的新闻源类型: {source.type}")
                 continue

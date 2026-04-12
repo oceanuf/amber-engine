@@ -6502,11 +6502,11 @@
     }
   ],
   "metadata": {
-    "fetch_time": "2026-04-11 19:00:10",
+    "fetch_time": "2026-04-12 12:03:23",
     "module": "ingest_tushare_adapter",
     "ticker_count": 1,
     "data_points": 500
   },
-  "cleaned_time": "2026-04-11 19:00:14",
+  "cleaned_time": "2026-04-12 12:03:28",
   "cleaned_by": "cleaner_etf_purify"
 }

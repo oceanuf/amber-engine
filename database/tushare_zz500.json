@@ -6502,7 +6502,7 @@
     }
   ],
   "metadata": {
-    "fetch_time": "2026-04-11 19:00:12",
+    "fetch_time": "2026-04-12 12:03:25",
     "module": "ingest_tushare_adapter",
     "ticker_count": 1,
     "data_points": 500

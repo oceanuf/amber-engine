@@ -3,6 +3,11 @@
   "name": "华夏上证50ETF",
   "history": [
     {
+      "date": "2026-04-12",
+      "price": "2.6060",
+      "change": "+0.04%"
+    },
+    {
       "date": "2026-04-11",
       "price": "2.5120",
       "change": "-0.47%"
@@ -93,8 +98,8 @@
       "change": "-0.11%"
     }
   ],
-  "last_updated": "2026-04-11 19:00:15",
+  "last_updated": "2026-04-12 12:03:28",
   "created_time": "2026-03-29 13:56:25",
   "source_module": "storer_vault_storer",
-  "update_count": 195
+  "update_count": 201
 }

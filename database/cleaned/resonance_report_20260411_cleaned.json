@@ -1,14 +1,14 @@
 {
   "metadata": {
     "report_id": "resonance_report_20260411",
-    "generated_at": "2026-04-11T18:03:55.600747",
+    "generated_at": "2026-04-11T19:00:15.390896",
     "module": "synthesizer_resonance_engine",
     "strategies_count": 11,
     "tickers_count": 3
   },
   "overall_analysis": {
     "total_tickers": 3,
-    "avg_resonance_score": 39.44,
+    "avg_resonance_score": 40.65,
     "signals_by_status": {
       "中性": 1,
       "谨慎": 2
@@ -24,7 +24,7 @@
       {
         "ticker": "510500",
         "name": "中证500ETF",
-        "resonance_score": 34.68,
+        "resonance_score": 38.31,
         "signal_status": "谨慎",
         "action": "减持"
       },
@@ -54,7 +54,7 @@
     "518880": {
       "ticker": "518880",
       "name": "黄金ETF",
-      "signal_time": "2026-04-11T18:03:55.588627",
+      "signal_time": "2026-04-11T19:00:15.378779",
       "resonance_score": 49.75,
       "signal_status": "中性",
       "action": "减持",
@@ -189,7 +189,7 @@
     "510300": {
       "ticker": "510300",
       "name": "沪深300ETF",
-      "signal_time": "2026-04-11T18:03:55.594783",
+      "signal_time": "2026-04-11T19:00:15.384802",
       "resonance_score": 33.89,
       "signal_status": "谨慎",
       "action": "减持",
@@ -321,8 +321,8 @@
     "510500": {
       "ticker": "510500",
       "name": "中证500ETF",
-      "signal_time": "2026-04-11T18:03:55.600704",
-      "resonance_score": 34.68,
+      "signal_time": "2026-04-11T19:00:15.390850",
+      "resonance_score": 38.31,
       "signal_status": "谨慎",
       "action": "减持",
       "action_type": "REDUCE",
@@ -428,10 +428,10 @@
         },
         "OBV-Divergence": {
           "hit": true,
-          "score": 0.72,
-          "confidence": 0.63,
+          "score": 25.24,
+          "confidence": 0.5,
           "signals": [
-            "看跌背离: 价格up，OBVdown，强度0.98",
+            "看跌背离: 价格up，OBVdown，强度0.37",
             "注意: 使用模拟成交量数据，需接入真实成交量"
           ],
           "signal_type": "bearish_divergence"
@@ -498,6 +498,6 @@
       "category": "未知"
     }
   },
-  "cleaned_time": "2026-04-11 19:00:14",
+  "cleaned_time": "2026-04-12 12:03:27",
   "cleaned_by": "cleaner_etf_purify"
 }
