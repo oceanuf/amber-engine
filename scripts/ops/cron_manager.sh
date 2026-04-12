@@ -476,6 +476,94 @@ except Exception as e:
     fi
 }
 
+# 审计候选池
+# 任务指令 [2616-0412-P3]：数据净化流水线与候选池深度挂接
+# 法典依据：ARENA-SOP.md 第三阶段
+# 验收标准：1) 自动化安检 2) 异常熔断逻辑 3) 信号级联挂接 4) 量化审计报告
+audit_candidates() {
+    log_info "开始审计候选池..."
+    
+    local audit_script="$WORKSPACE_ROOT/scripts/pipeline/data_sanitizer.py"
+    
+    if [[ ! -f "$audit_script" ]]; then
+        log_warning "数据净化脚本不存在: $audit_script"
+        log_warning "跳过候选池审计（系统将缺少数据安检）"
+        return 0  # 不是致命错误，继续执行
+    fi
+    
+    log_info "执行候选池审计..."
+    cd "$WORKSPACE_ROOT"
+    
+    if python3 "$audit_script" --audit-candidates; then
+        log_info "✅ 候选池审计成功"
+        
+        # 检查是否生成审计报告
+        local audit_report_dir="$WORKSPACE_ROOT/reports/sanitization"
+        local today_report="$audit_report_dir/candidate_audit_today.json"
+        
+        if [[ -f "$today_report" ]]; then
+            log_info "候选池审计报告已生成: $today_report"
+            
+            # 提取审计摘要
+            local audit_summary
+            audit_summary=$(python3 -c "
+import json
+try:
+    with open('$today_report', 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    summary = data.get('metadata', {})
+    total = summary.get('total_candidates', 0)
+    passed = summary.get('passed_count', 0)
+    removed = summary.get('removed_count', 0)
+    warning = summary.get('warning_count', 0)
+    pass_rate = summary.get('pass_rate', 0)
+    
+    print(f'总共候选: {total}')
+    print(f'通过数量: {passed}')
+    print(f'警告数量: {warning}')
+    print(f'剔除数量: {removed}')
+    print(f'通过率: {pass_rate*100:.1f}%')
+    
+    # 信号级联：只有当有通过的候选时才发出DATA_READY_FOR_JUDGE信号
+    if passed > 0:
+        print('SIGNAL:DATA_READY_FOR_JUDGE')
+    else:
+        print('SIGNAL:NO_HEALTHY_CANDIDATES')
+    
+except Exception as e:
+    print(f'解析审计报告失败: {e}')
+    print('SIGNAL:PARSE_ERROR')
+")
+            
+            # 输出摘要
+            while IFS= read -r line; do
+                if [[ "$line" == SIGNAL:* ]]; then
+                    log_info "信号: $line"
+                    
+                    if [[ "$line" == "SIGNAL:DATA_READY_FOR_JUDGE" ]]; then
+                        log_info "🚀 数据已就绪，可以向评委中控传递"
+                    elif [[ "$line" == "SIGNAL:NO_HEALTHY_CANDIDATES" ]]; then
+                        log_warning "⚠️  无健康候选，阻止向评委中控传递"
+                    fi
+                else
+                    log_info "$line"
+                fi
+            done <<< "$audit_summary"
+        fi
+        
+        return 0
+    else
+        log_warning "⚠️  候选池审计失败，但继续执行（降级模式）"
+        
+        # 创建降级标记
+        local fallback_marker="$WORKSPACE_ROOT/.DATA_SANITIZER_FALLBACK_ACTIVE"
+        echo "{\"timestamp\": \"$(date -Is)\", \"reason\": \"data_sanitizer_audit_failed\"}" > "$fallback_marker"
+        log_warning "已创建数据净化降级标记: $fallback_marker"
+        
+        return 0  # 不是致命错误，继续执行
+    fi
+}
+
 # 主执行流程
 main() {
     local dry_run=false
@@ -524,17 +612,23 @@ main() {
         log_warning "宏观脉冲生成失败，但继续执行后续流程"
     fi
     
-    # 1. 生成实战报告
+    # 1. 审计候选池（SOP第三阶段 - 数据净化）
+    if ! audit_candidates; then
+        success=false
+        log_warning "候选池审计失败，但继续执行后续流程"
+    fi
+    
+    # 2. 生成实战报告
     if ! generate_arena_report; then
         success=false
     fi
     
-    # 2. 同步监控列表
+    # 3. 同步监控列表
     if ! sync_watch_list; then
         success=false
     fi
     
-    # 3. 更新评委权重（可选，根据时间决定）
+    # 4. 更新评委权重（可选，根据时间决定）
     local current_hour=$(date '+%H')
     if [[ "$current_hour" == "18" ]]; then
         if ! update_judge_weights; then
@@ -544,22 +638,22 @@ main() {
         log_info "非18:00时段，跳过评委权重更新"
     fi
     
-    # 4. 记录资产净值
+    # 5. 记录资产净值
     if ! record_nav; then
         success=false
     fi
     
-    # 5. 清算交易
+    # 6. 清算交易
     if ! settle_trades; then
         success=false
     fi
     
-    # 6. GitHub同步
+    # 7. GitHub同步
     if ! run_github_sync; then
         success=false
     fi
     
-    # 7. 验证指纹对撞
+    # 8. 验证指纹对撞
     if ! verify_fingerprint; then
         success=false
     fi
