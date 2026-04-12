@@ -13,9 +13,14 @@ import sys
 import json
 import datetime
 import logging
+import math
 from typing import Dict, List, Optional, Tuple, Any
 from dataclasses import dataclass, asdict
 import hashlib
+
+# 导入滑点模型和流动性检查器
+from scripts.finance.slippage_model import SlippageModel, PriceData, SlippageResult
+from scripts.finance.liquidity_checker import LiquidityChecker, TradeRequest, MarketData, LiquidityCheckResult, LiquidityStatus, ExecutionResult
 
 # 添加项目根目录到路径
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
@@ -67,6 +72,12 @@ class SettledTrade:
     status: str  # 'open', 'closed', 'partial'
     strategy_signal: Dict[str, Any]
     execution_details: Dict[str, Any]
+    execution_friction_loss: float = 0.0  # 总执行摩擦损失（金额）
+    slippage_loss: float = 0.0            # 滑点损失（金额）
+    liquidity_discount_loss: float = 0.0  # 流动性折价损失（金额）
+    execution_price_buy: float = 0.0      # 实际买入执行价格（含摩擦）
+    execution_price_sell: float = 0.0     # 实际卖出执行价格（含摩擦）
+    friction_analysis: Dict[str, Any] = None  # 摩擦分析详情
     
     def to_dict(self):
         return asdict(self)
@@ -192,6 +203,190 @@ class TradeSettler:
         logger.info(f"匹配到 {len(pairs)} 个交易对（{sum(1 for _, sell in pairs if sell is not None)} 个已清算）")
         return pairs
     
+    def _calculate_execution_friction(self, ticker: str, direction: str, price: float, 
+                                   quantity: int, timestamp: str) -> Dict[str, Any]:
+        """
+        计算执行摩擦损失（滑点 + 流动性折价）
+        
+        Args:
+            ticker: 股票代码
+            direction: 交易方向（'buy' 或 'sell'）
+            price: 原始价格
+            quantity: 交易数量
+            timestamp: 交易时间戳
+            
+        Returns:
+            摩擦分析结果字典
+        """
+        try:
+            # 初始化滑点模型和流动性检查器
+            slippage_model = SlippageModel(model_type="dynamic_volatility")
+            liquidity_checker = LiquidityChecker(threshold_ratio=0.001)  # 0.1%阈值
+            
+            # 获取市场数据（简化版：从本地数据库或模拟数据）
+            # 这里简化处理，实际应该从数据库获取真实数据
+            market_data = self._get_market_data(ticker, timestamp)
+            
+            if market_data:
+                # 创建价格数据用于滑点计算
+                price_data = PriceData(
+                    open_price=market_data.get("open", price),
+                    high_price=market_data.get("high", price * 1.05),
+                    low_price=market_data.get("low", price * 0.95),
+                    close_price=price,
+                    volume=market_data.get("volume", quantity * 100),  # 假设市场成交量是交易量的100倍
+                    amount=market_data.get("amount", price * quantity * 100)
+                )
+                
+                # 计算滑点
+                slippage_result = slippage_model.calculate_slippage(
+                    direction, price, price_data
+                )
+                
+                # 创建交易请求和市场数据用于流动性检查
+                trade_request = TradeRequest(
+                    ticker=ticker,
+                    direction=direction,
+                    quantity=quantity,
+                    price=price,
+                    request_time=timestamp
+                )
+                
+                market_data_obj = MarketData(
+                    ticker=ticker,
+                    date=timestamp[:10],  # 取日期部分
+                    volume=market_data.get("volume", quantity * 100),
+                    amount=market_data.get("amount", price * quantity * 100),
+                    turnover_rate=market_data.get("turnover_rate", 2.5),  # 默认2.5%换手率
+                    avg_price=price
+                )
+                
+                # 检查流动性
+                liquidity_result = liquidity_checker.check_liquidity(
+                    trade_request, market_data_obj
+                )
+                
+                # 计算摩擦损失
+                slippage_loss = abs(slippage_result.execution_price - price) * quantity
+                
+                # 流动性折价损失
+                liquidity_discount_loss = 0.0
+                if liquidity_result.execution_result != ExecutionResult.FULL_EXECUTION:
+                    # 计算流动性导致的损失
+                    liquidity_discount_loss = abs(
+                        liquidity_result.adjusted_price - price
+                    ) * liquidity_result.execution_quantity
+                
+                execution_friction_loss = slippage_loss + liquidity_discount_loss
+                
+                # 计算实际执行价格
+                execution_price = price
+                if direction == "buy":
+                    execution_price = slippage_result.execution_price
+                    if liquidity_result.adjusted_price > execution_price:
+                        execution_price = liquidity_result.adjusted_price
+                else:  # sell
+                    execution_price = slippage_result.execution_price
+                    if liquidity_result.adjusted_price < execution_price:
+                        execution_price = liquidity_result.adjusted_price
+                
+                return {
+                    "execution_friction_loss": execution_friction_loss,
+                    "slippage_loss": slippage_loss,
+                    "liquidity_discount_loss": liquidity_discount_loss,
+                    "execution_price": execution_price,
+                    "slippage_rate": slippage_result.slippage_rate,
+                    "liquidity_ratio": liquidity_result.liquidity_ratio,
+                    "liquidity_status": liquidity_result.status.value,
+                    "execution_result": liquidity_result.execution_result.value,
+                    "execution_ratio": liquidity_result.execution_ratio,
+                    "slippage_analysis": slippage_result.to_dict(),
+                    "liquidity_analysis": liquidity_result.to_dict(),
+                    "friction_details": {
+                        "original_price": price,
+                        "adjusted_for_slippage": slippage_result.execution_price,
+                        "adjusted_for_liquidity": liquidity_result.adjusted_price,
+                        "final_execution_price": execution_price
+                    }
+                }
+            
+            else:
+                # 无法获取市场数据，返回默认值
+                logger.warning(f"无法获取{ticker}的市场数据，使用默认摩擦系数")
+                return self._get_default_friction_analysis(direction, price, quantity)
+                
+        except Exception as e:
+            logger.error(f"计算执行摩擦损失失败: {e}")
+            return self._get_default_friction_analysis(direction, price, quantity)
+    
+    def _get_market_data(self, ticker: str, timestamp: str) -> Optional[Dict]:
+        """
+        获取市场数据（简化实现）
+        
+        实际实现应该从数据库获取真实的高、低、成交量、成交额等数据
+        """
+        # 这里简化处理，返回模拟数据
+        # 实际应该查询数据库，例如：database/{ticker}.json
+        
+        market_data_file = os.path.join(
+            self.workspace_root, "database", f"{ticker}.json"
+        )
+        
+        if os.path.exists(market_data_file):
+            try:
+                with open(market_data_file, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                
+                # 根据时间戳查找对应日期的数据
+                # 简化：返回最新数据
+                if isinstance(data, list) and len(data) > 0:
+                    return data[-1]  # 返回最新数据
+                elif isinstance(data, dict):
+                    return data
+            except Exception as e:
+                logger.warning(f"读取市场数据文件失败: {e}")
+        
+        # 返回模拟数据
+        return {
+            "open": 10.0,
+            "high": 10.5,
+            "low": 9.5,
+            "close": 10.0,
+            "volume": 1000000,
+            "amount": 10000000,
+            "turnover_rate": 2.5
+        }
+    
+    def _get_default_friction_analysis(self, direction: str, price: float, quantity: int) -> Dict[str, Any]:
+        """获取默认摩擦分析结果"""
+        # 默认摩擦系数：买入0.2%，卖出0.15%
+        if direction == "buy":
+            slippage_rate = 0.002
+        else:
+            slippage_rate = 0.0015
+        
+        slippage_loss = price * slippage_rate * quantity
+        
+        return {
+            "execution_friction_loss": slippage_loss,
+            "slippage_loss": slippage_loss,
+            "liquidity_discount_loss": 0.0,
+            "execution_price": price * (1 + (slippage_rate if direction == "buy" else -slippage_rate)),
+            "slippage_rate": slippage_rate,
+            "liquidity_ratio": 0.0001,
+            "liquidity_status": "normal",
+            "execution_result": "full_execution",
+            "execution_ratio": 1.0,
+            "slippage_analysis": {"model_used": "default"},
+            "liquidity_analysis": {"status": "normal"},
+            "friction_details": {
+                "original_price": price,
+                "adjusted_for_slippage": price * (1 + (slippage_rate if direction == "buy" else -slippage_rate)),
+                "adjusted_for_liquidity": price,
+                "final_execution_price": price * (1 + (slippage_rate if direction == "buy" else -slippage_rate))
+            }
+        }
+    
     def _calculate_settlement(self, buy_tx: TradeRecord, sell_tx: Optional[TradeRecord]) -> SettledTrade:
         """
         计算交易清算结果
@@ -273,6 +468,55 @@ class TradeSettler:
         # 获取执行详情
         execution_details = buy_details.get('execution_details', {}) if buy_details else {}
         
+        # 计算执行摩擦损失
+        buy_friction = self._calculate_execution_friction(
+            ticker=buy_tx.ticker,
+            direction="buy",
+            price=buy_price,
+            quantity=buy_quantity,
+            timestamp=buy_tx.timestamp
+        )
+        
+        sell_friction = None
+        if sell_tx:
+            sell_friction = self._calculate_execution_friction(
+                ticker=buy_tx.ticker,
+                direction="sell",
+                price=sell_price,
+                quantity=sell_quantity,
+                timestamp=sell_tx.timestamp
+            )
+        
+        # 计算摩擦损失总额
+        execution_friction_loss = buy_friction["execution_friction_loss"]
+        if sell_friction:
+            execution_friction_loss += sell_friction["execution_friction_loss"]
+        
+        slippage_loss = buy_friction["slippage_loss"] + (sell_friction["slippage_loss"] if sell_friction else 0)
+        liquidity_discount_loss = buy_friction["liquidity_discount_loss"] + (sell_friction["liquidity_discount_loss"] if sell_friction else 0)
+        
+        # 计算实际执行价格
+        execution_price_buy = buy_friction["execution_price"]
+        execution_price_sell = sell_friction["execution_price"] if sell_friction else sell_price
+        
+        # 重新计算实际投资和收益（考虑摩擦）
+        total_investment_actual = execution_price_buy * buy_quantity
+        total_proceeds_actual = execution_price_sell * sell_quantity if sell_tx else 0
+        
+        # 调整净收益（减去摩擦损失）
+        net_pnl_after_friction = net_pnl - execution_friction_loss
+        
+        # 合并摩擦分析详情
+        friction_analysis = {
+            "buy": buy_friction,
+            "sell": sell_friction if sell_friction else None,
+            "total_friction_loss": execution_friction_loss,
+            "impact_on_roi": (execution_friction_loss / total_investment * 100) if total_investment > 0 else 0,
+            "recommendation": "考虑摩擦后实际收益率降低{:.2f}%".format(
+                (execution_friction_loss / total_investment * 100) if total_investment > 0 else 0
+            )
+        }
+        
         settlement = SettledTrade(
             settlement_id=settlement_id,
             ticker=buy_tx.ticker,
@@ -292,11 +536,17 @@ class TradeSettler:
             pnl_percentage=pnl_percentage,
             commission=commission,
             stamp_duty=stamp_duty,
-            net_pnl=net_pnl,
+            net_pnl=net_pnl_after_friction,  # 调整后的净收益（已扣除摩擦损失）
             roi=roi,
             status=status,
             strategy_signal=strategy_signal,
-            execution_details=execution_details
+            execution_details=execution_details,
+            execution_friction_loss=execution_friction_loss,
+            slippage_loss=slippage_loss,
+            liquidity_discount_loss=liquidity_discount_loss,
+            execution_price_buy=execution_price_buy,
+            execution_price_sell=execution_price_sell,
+            friction_analysis=friction_analysis
         )
         
         return settlement
