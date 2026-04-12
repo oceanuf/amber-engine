@@ -15,12 +15,23 @@ def analyze_grain_status() -> Dict[str, int]:
         with open(GRAIN_FILE, 'r', encoding='utf-8') as f:
             content = f.read()
         
-        # 统计任务状态
-        completed = content.count("✅")
-        pending = content.count("🔲")
-        running = content.count("⏳")
-        blocked = content.count("❌")
-        cancelled = content.count("🚫")
+        # 只统计任务部分，排除状态说明部分
+        # 找到第一个"---"之后的内容（跳过状态说明）
+        parts = content.split("---", 2)
+        if len(parts) >= 3:
+            # 第一部分是状态说明，第二部分是任务内容，第三部分是历史记录
+            task_content = parts[1]
+            history_content = parts[2] if len(parts) > 2 else ""
+        else:
+            task_content = content
+            history_content = ""
+        
+        # 统计任务状态（只统计任务部分）
+        completed = task_content.count("✅")
+        pending = task_content.count("🔲")
+        running = task_content.count("⏳")
+        blocked = task_content.count("❌")
+        cancelled = task_content.count("🚫")
         
         total = completed + pending + running + blocked + cancelled
         
