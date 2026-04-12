@@ -26,7 +26,7 @@
 | **1102** | `reports/2615_1102.md` (全链路架构审计报告) | ✅ 已归档 | `833e75a` |
 | **P1** | `news_sentinel.py` (宏观感知哨兵) + `macro_pulse_dispatcher.py` (脉冲分发器) | ✅ 已实装 | `3a6b692` |
 | **P2** | `hotspot_correlation.py` (热点关联) + `candidate_generator.py` (候选生成) + `sync_watch_list.py` 升级 | ✅ 已实装 | `cb2d97d` |
-| **P4** | `slippage_model.py` (滑点仿真) + `liquidity_checker.py` (流动性检查) + `trade_settler.py` 重构 | ✅ 已实装 | `待生成` |
+| **P4** | `slippage_model.py` (滑点仿真) + `liquidity_checker.py` (流动性检查) + `trade_settler.py` 重构 | ✅ 已实装 | `4939992` |
 
 ---
 
